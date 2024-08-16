@@ -2,7 +2,7 @@
 Simple Webstream Player, to listen and record web radios and other web streams.
 Change live the tempo and pitch.
 
-StrumPract was compiled with: FPC 3.2.2: http://www.freepascal.org
+Simple Webstream Player was compiled with: FPC 3.2.2: http://www.freepascal.org
 
 Graphic widgetset: MSEgui 5.10.4: https://github.com/mse-org/mseide-msegui
 
