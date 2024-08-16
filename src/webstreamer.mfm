@@ -2,8 +2,8 @@ object webstreamerfo: twebstreamerfo
   face.localprops = []
   face.template = tfacecomp2
   visible = False
-  bounds_x = 437
-  bounds_y = 441
+  bounds_x = 454
+  bounds_y = 276
   bounds_cx = 364
   bounds_cy = 225
   bounds_cxmin = 364
@@ -25,7 +25,7 @@ object webstreamerfo: twebstreamerfo
   )
   options = [fo_main, fo_terminateonclose, fo_freeonclose, fo_screencentered, fo_autoreadstat, fo_autowritestat, fo_savepos, fo_savezorder, fo_savestate]
   statfile = tstatfile1
-  caption = 'Simple WebSteam Player'
+  caption = 'Simple WebStream Player'
   icon.options = [bmo_masked, bmo_graymask]
   icon.origformat = 'png'
   icon.image = {

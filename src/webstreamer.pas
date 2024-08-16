@@ -341,7 +341,7 @@ begin
       tstringdisp1.Value    := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
-      brecord.Caption := 'Recording...';
+      brecord.Caption := 'Recording...' else brecord.Caption := 'Only playing';
 
     onchangevol(nil);
 
