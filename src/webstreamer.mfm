@@ -5707,7 +5707,7 @@ object webstreamerfo: twebstreamerfo
     top = 150
   end
   object tstatfile1: tstatfile
-    filename = 'status.sta'
+    filename = 'swp.ini'
     left = 309
     top = 166
   end
