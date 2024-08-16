@@ -1,0 +1,31 @@
+[webstreamerfo.showwave]
+value=0
+[webstreamerfo.historyfn]
+value=http://stream-uk1.radioparadise.com/mp3-128
+history=3
+ http://stream-uk1.radioparadise.com/mp3-128
+ https://radio.lotustechnologieslk.net:2020/stream/hirufmgarden
+ http://icecast.kodicable.net:8000/lennyfmrap
+[webstreamerfo.edvol]
+value=1
+[webstreamerfo.edvolr]
+value=1
+[webstreamerfo]
+splitdir=0
+useroptions=268435463
+stackedunder=
+parent=
+mdistate=3
+nx=0
+ny=0
+ncx=0
+ncy=0
+x=352
+y=299
+cx=364
+cy=146
+rcx=0
+rcy=0
+wsize=0
+active=1
+visible=1
