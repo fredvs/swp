@@ -5890,13 +5890,14 @@ object webstreamerfo: twebstreamerfo
         submenu.items = <        
           item
             caption = '          Simple Webstream Player'
+            name = 'title'
             state = [as_localcaption]
           end        
           item
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
-            caption = 'Compiler: Free Pascal: https://www.freepascal.org/'
+            caption = 'Compiler: Free Pascal Compiler: https://www.freepascal.org/'
             state = [as_localcaption]
           end        
           item

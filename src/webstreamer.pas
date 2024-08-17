@@ -9,7 +9,7 @@ uses
  msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
  msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
  msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap;
-
+ 
 type
   twebstreamerfo = class(tdockform)
     historyfn: thistoryedit;
@@ -73,6 +73,9 @@ type
    procedure cancelclear(const sender: TObject);
    procedure showclear(const sender: TObject);
   end;
+  
+const
+version = 240817;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -82,7 +85,6 @@ var
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   ordir, arecnp: string;
-
 
 implementation
 
@@ -451,6 +453,11 @@ begin
 
   isinit := True;
 
+  tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
+  
+  tmainmenu1.menu.itembynames(['about','title']).caption :=
+   '        Simple Webstream Player v1.' + inttostr(version);
+            
   application.ProcessMessages;
  
 end;
