@@ -3415,24 +3415,24 @@ object webstreamerfo: twebstreamerfo
       scrollbar.framebutton.template = tframecomp2
       direction = gd_up
     end
-    object tlabel2: tlabel
+    object lvl: tlabel
       color = -2147483645
       taborder = 11
-      bounds_x = 152
+      bounds_x = 150
       bounds_y = 4
-      bounds_cx = 19
+      bounds_cx = 24
       bounds_cy = 15
-      caption = 'V L'
+      caption = '100'
       reffontheight = 15
     end
-    object tlabel3: tlabel
+    object lvr: tlabel
       color = -2147483645
       taborder = 12
-      bounds_x = 181
+      bounds_x = 180
       bounds_y = 4
-      bounds_cx = 20
+      bounds_cx = 24
       bounds_cy = 15
-      caption = 'V R'
+      caption = '100'
       reffontheight = 15
     end
     object tlabel4: tlabel

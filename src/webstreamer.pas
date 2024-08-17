@@ -31,8 +31,8 @@ type
     tfacecomp2: tfacecomp;
     tfacecomp3: tfacecomp;
     edpitch: tslider;
-    tlabel2: tlabel;
-    tlabel3: tlabel;
+    lvl: tlabel;
+    lvr: tlabel;
     tlabel4: tlabel;
     tlabel5: tlabel;
     tstatfile1: tstatfile;
@@ -512,6 +512,8 @@ end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
 begin
+ lvl.caption := inttostr(round(edvol.Value*100));
+ lvr.caption := inttostr(round(edvolr.Value*100));
   uos_InputSetDSPVolume(webindex, webinindex,
     edvol.Value, edvolr.Value, True);
 end;
