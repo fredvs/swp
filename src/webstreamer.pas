@@ -63,12 +63,14 @@ type
     tlabel3: tlabel;
     tlabel4: tlabel;
     tlabel5: tlabel;
-    showwave: tbooleanedit;
     tstatfile1: tstatfile;
     btempo: TButton;
     brecord: TButton;
     timagelist3: timagelist;
     tframecomp2: tframecomp;
+    tmainmenu1: tmainmenu;
+    runselect: tbooleanedit;
+    showwave: tbooleanedit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -87,6 +89,9 @@ type
     procedure onreset(const Sender: TObject);
     procedure onrec(const Sender: TObject);
     procedure ontempo(const Sender: TObject);
+    procedure onafterdropdown(const Sender: TObject);
+    procedure onaftermenushowwav(const Sender: TObject);
+    procedure onafterplayafter(const Sender: TObject);
   end;
 
 var
@@ -95,6 +100,7 @@ var
   rectrecform: rectty;
   xreclive: integer;
   plugsoundtouch: Boolean = False;
+  isinit: Boolean = False;
   ordir, arecnp: string;
 
 
@@ -330,10 +336,6 @@ begin
     if brecord.tag = 1 then
       brecord.color := cl_red;
 
-    // ChangePlugSetSoundTouch(nil);
-
-    application.ProcessMessages;
-
     tstringdisp1.font.color := cl_black;
     if brecord.tag = 1 then
       tstringdisp1.Value    := 'Play + Record ' + historyfn.Value
@@ -341,9 +343,13 @@ begin
       tstringdisp1.Value    := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
-      brecord.Caption := 'Recording...' else brecord.Caption := 'Only playing';
+      brecord.Caption := 'Recording...'
+    else
+      brecord.Caption := 'Only playing';
 
     onchangevol(nil);
+    
+    application.ProcessMessages;
 
     uos_Play(webindex);  /////// everything is ready, here we are, lets play it...
   end
@@ -455,6 +461,14 @@ begin
   btempo.color := $B6C4AF;
   btempo.tag   := 0;
 
+  tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
+
+  tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
+
+  onchangeshowwave(nil);
+
+  isinit := True;
+
   application.ProcessMessages;
 
 end;
@@ -517,18 +531,18 @@ begin
   if showwave.Value then
   begin
     trackbar1.Visible := True;
-    Height := 225;
+    Height := 234;
   end
   else
   begin
     trackbar1.Visible := False;
-    Height := 146;
+    Height := 154;
   end;
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 begin
-  Height  := 146;
+  Height  := 154;
   Visible := False;
 end;
 
@@ -566,6 +580,27 @@ begin
     btempo.color := $B6C4AF;
     btempo.tag   := 0;
   end;
+end;
+
+procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
+begin
+  if (isinit) and (runselect.Value) then
+  begin
+    onstop(nil);
+    application.ProcessMessages;
+    onplay(nil);
+  end;
+end;
+
+procedure twebstreamerfo.onaftermenushowwav(const Sender: TObject);
+begin
+  showwave.Value := tmainmenu1.menu.itembynames(['showwav']).Checked;
+  onchangeshowwave(nil);
+end;
+
+procedure twebstreamerfo.onafterplayafter(const Sender: TObject);
+begin
+  runselect.Value := tmainmenu1.menu.itembynames(['playaf']).Checked;
 end;
 
 end.
