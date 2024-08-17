@@ -4,39 +4,11 @@ unit webstreamer;
 interface
 
 uses
-  uos_flat,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap;
+ uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
+ msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
+ msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
+ msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
+ msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap;
 
 type
   twebstreamerfo = class(tdockform)
@@ -71,6 +43,11 @@ type
     tmainmenu1: tmainmenu;
     runselect: tbooleanedit;
     showwave: tbooleanedit;
+   thistoryedit2: thistoryedit;
+   tstringdisp2: tstringdisp;
+   tbutton2: tbutton;
+   tbutton3: tbutton;
+   tfacecomp4: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -92,6 +69,9 @@ type
     procedure onafterdropdown(const Sender: TObject);
     procedure onaftermenushowwav(const Sender: TObject);
     procedure onafterplayafter(const Sender: TObject);
+   procedure onclearhist(const sender: TObject);
+   procedure cancelclear(const sender: TObject);
+   procedure showclear(const sender: TObject);
   end;
 
 var
@@ -349,6 +329,8 @@ begin
 
     onchangevol(nil);
     
+    tstringdisp1.face.template := tfacecomp4;
+    
     application.ProcessMessages;
 
     uos_Play(webindex);  /////// everything is ready, here we are, lets play it...
@@ -470,7 +452,7 @@ begin
   isinit := True;
 
   application.ProcessMessages;
-
+ 
 end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
@@ -492,6 +474,7 @@ begin
   brecord.tag          := 0;
   brecord.Caption      := 'Record';
   brecord.color        := $B6C4AF;
+  tstringdisp1.face.template := tfacecomp3;
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
@@ -548,6 +531,8 @@ end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
 begin
+ askconfirmation('Do you want to delete all the history of url?');
+
   edtempo.Value := 0.5;
   edpitch.Value := 0.5;
 end;
@@ -601,6 +586,22 @@ end;
 procedure twebstreamerfo.onafterplayafter(const Sender: TObject);
 begin
   runselect.Value := tmainmenu1.menu.itembynames(['playaf']).Checked;
+end;
+
+procedure twebstreamerfo.onclearhist(const sender: TObject);
+begin
+ historyfn.dropdown.valuelist.asarray := thistoryedit2.dropdown.valuelist.asarray;
+ tstringdisp2.visible := false;
+end;
+
+procedure twebstreamerfo.cancelclear(const sender: TObject);
+begin
+tstringdisp2.visible := false;
+end;
+
+procedure twebstreamerfo.showclear(const sender: TObject);
+begin
+tstringdisp2.visible := true;
 end;
 
 end.

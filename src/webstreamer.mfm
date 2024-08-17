@@ -3006,6 +3006,7 @@ object webstreamerfo: twebstreamerfo
         frame.localprops = [frl_optionsskin]
         frame.localprops1 = []
       end>
+    taborder = 1
     hint = ' History of Cue URL, Paste here the link wanted.'
     bounds_x = 0
     bounds_y = 0
@@ -3035,7 +3036,6 @@ object webstreamerfo: twebstreamerfo
     color = 14408667
     face.localprops = []
     face.template = tfacecomp3
-    taborder = 1
     hint = ' Player 1 '
     bounds_x = 0
     bounds_y = 23
@@ -3067,6 +3067,55 @@ object webstreamerfo: twebstreamerfo
       statfile = tstatfile1
       visible = False
     end
+    object thistoryedit2: thistoryedit
+      optionswidget1 = [ow1_fontglyphheight]
+      color = -2147483645
+      frame.levelo = 0
+      frame.framei_left = 0
+      frame.framei_top = 0
+      frame.framei_right = 0
+      frame.framei_bottom = 0
+      frame.captionpos = cp_lefttop
+      frame.captiondist = 0
+      frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
+      frame.localprops1 = [frl1_captiondist]
+      frame.button.face.fade_direction = gd_down
+      frame.button.face.localprops = []
+      frame.button.frame.optionsskin = [fso_flat]
+      frame.button.frame.localprops = [frl_optionsskin]
+      frame.button.frame.localprops1 = []
+      frame.buttons.count = 1
+      frame.buttons.items = <      
+        item
+          face.fade_direction = gd_down
+          face.localprops = []
+          frame.optionsskin = [fso_flat]
+          frame.localprops = [frl_optionsskin]
+          frame.localprops1 = []
+        end>
+      taborder = 2
+      visible = False
+      bounds_x = 200
+      bounds_y = 0
+      bounds_cx = 12
+      bounds_cy = 22
+      statfile = tstatfile1
+      optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
+      optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
+      font.name = 'stf_default'
+      font.localprops = []
+      dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
+      dropdown.dropdownrowcount = 100
+      dropdown.cols.count = 1
+      dropdown.cols.colorselect = 16764303
+      dropdown.cols.items = <      
+        item
+          textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
+          colorselect = 16764303
+        end>
+      dropdown.historymaxcount = 50
+      reffontheight = 15
+    end
   end
   object panelcommand: tpaintbox
     optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
@@ -3089,6 +3138,7 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp3
+      taborder = 1
       hint = ' Reset to tempo/pitch original '
       bounds_x = 234
       bounds_y = 55
@@ -3109,7 +3159,7 @@ object webstreamerfo: twebstreamerfo
       frame.captionpos = cp_top
       frame.localprops = [frl_levelo]
       frame.localprops1 = []
-      taborder = 1
+      taborder = 2
       hint = ' Change Right volume '
       bounds_x = 180
       bounds_y = 22
@@ -3137,7 +3187,7 @@ object webstreamerfo: twebstreamerfo
     end
     object vuRight: tprogressbar
       color = -2147483645
-      taborder = 2
+      taborder = 3
       bounds_x = 211
       bounds_y = 6
       bounds_cx = 14
@@ -3160,7 +3210,7 @@ object webstreamerfo: twebstreamerfo
     end
     object vuLeft: tprogressbar
       color = -2147483645
-      taborder = 3
+      taborder = 4
       bounds_x = 129
       bounds_y = 6
       bounds_cx = 14
@@ -3187,7 +3237,7 @@ object webstreamerfo: twebstreamerfo
       frame.captionpos = cp_top
       frame.localprops = [frl_levelo]
       frame.localprops1 = []
-      taborder = 4
+      taborder = 5
       hint = ' Change Left volume '
       bounds_x = 150
       bounds_y = 22
@@ -3221,7 +3271,7 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp2
-      taborder = 5
+      taborder = 6
       hint = ' Stop player '
       bounds_x = 93
       bounds_y = 44
@@ -3241,7 +3291,7 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp2
-      taborder = 6
+      taborder = 7
       hint = ' Resume player '
       bounds_x = 65
       bounds_y = 44
@@ -3266,7 +3316,7 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp2
-      taborder = 7
+      taborder = 8
       hint = ' Pause player '
       bounds_x = 37
       bounds_y = 44
@@ -3290,7 +3340,6 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp2
-      taborder = 8
       hint = 'Start player '
       bounds_x = 9
       bounds_y = 44
@@ -3474,13 +3523,75 @@ object webstreamerfo: twebstreamerfo
     scrollbar.framebutton.localprops1 = []
     scrollbar.color = -2147483645
   end
+  object tstringdisp2: tstringdisp
+    frame.localprops = []
+    frame.localprops1 = []
+    face.localprops = []
+    face.template = tfacecomp3
+    taborder = 4
+    visible = False
+    bounds_x = 55
+    bounds_y = 0
+    bounds_cx = 237
+    bounds_cy = 36
+    text = '  Delete all URL history ?'
+    textflags = [tf_left, tf_ycentered]
+    reffontheight = 15
+    object tbutton2: tbutton
+      Tag = 1
+      color = -2147483645
+      frame.localprops = [frl_optionsskin]
+      frame.localprops1 = []
+      frame.template = tframecomp2
+      face.fade_direction = gd_down
+      face.localprops = [fal_fadirection]
+      face.template = tfacecomp3
+      hint = ' Reset to tempo/pitch original '
+      bounds_x = 159
+      bounds_y = 8
+      bounds_cx = 30
+      bounds_cy = 19
+      state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
+      caption = 'Yes'
+      font.height = 10
+      font.name = 'stf_default'
+      font.localprops = [flp_height]
+      imagenr = 27
+      focusrectdist = 0
+      onexecute = onclearhist
+    end
+    object tbutton3: tbutton
+      Tag = 1
+      color = -2147483645
+      frame.localprops = [frl_optionsskin]
+      frame.localprops1 = []
+      frame.template = tframecomp2
+      face.fade_direction = gd_down
+      face.localprops = [fal_fadirection]
+      face.template = tfacecomp3
+      taborder = 1
+      hint = ' Reset to tempo/pitch original '
+      bounds_x = 196
+      bounds_y = 8
+      bounds_cx = 30
+      bounds_cy = 19
+      state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
+      caption = 'No'
+      font.height = 10
+      font.name = 'stf_default'
+      font.localprops = [flp_height]
+      imagenr = 27
+      focusrectdist = 0
+      onexecute = cancelclear
+    end
+  end
   object buttonicons: timagelist
     width = 24
     height = 24
     options = [bmo_masked, bmo_graymask]
     count = 38
-    left = 238
-    top = 23
+    left = 221
+    top = 151
     image = {
       0000000012000000A8000000A800000044A30000000000000000000000000000
       0000000000000000000000000000000000000000C0C0C01800000030D0D0D018
@@ -5675,8 +5786,8 @@ object webstreamerfo: twebstreamerfo
     }
   end
   object sliderimage: tbitmapcomp
-    left = 26
-    top = 12
+    left = 15
+    top = 74
   end
   object tfacecomp2: tfacecomp
     template.fade_pos.count = 2
@@ -5751,7 +5862,7 @@ object webstreamerfo: twebstreamerfo
     top = 163
   end
   object tmainmenu1: tmainmenu
-    menu.submenu.count = 3
+    menu.submenu.count = 4
     menu.submenu.items = <    
       item
         caption = ' Show wave '
@@ -5768,6 +5879,11 @@ object webstreamerfo: twebstreamerfo
         state = [as_localcaption, as_localhint, as_localonafterexecute]
         options = [mao_checkbox, mao_shortcutcaption]
         onafterexecute = onafterplayafter
+      end    
+      item
+        caption = ' Clear history'
+        state = [as_localcaption, as_localonexecute, as_localonafterexecute]
+        onafterexecute = showclear
       end    
       item
         submenu.count = 7
@@ -5799,12 +5915,27 @@ object webstreamerfo: twebstreamerfo
             caption = 'Fred van Stappen 2024 <fiens@hotmail.com>'
             state = [as_localcaption]
           end>
-        caption = '     &About SWP     '
+        caption = ' &About'
         name = 'about'
         state = [as_localcaption]
       end>
     menu.state = [as_localcaption]
     left = 123
     top = 151
+  end
+  object tfacecomp4: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      16580602
+      15786697
+    )
+    template.fade_direction = gd_down
+    left = 13
+    top = 139
   end
 end
