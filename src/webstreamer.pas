@@ -75,7 +75,7 @@ type
   end;
   
 const
-version = 240817;
+version = 240818;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -85,7 +85,8 @@ var
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   ordir, arecnp: string;
-
+ // icy_data: pchar;
+   
 implementation
 
 uses
@@ -153,14 +154,6 @@ end;
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
   ShowLevel;
-{
-  if isrecording = False then
-    ShowPosition;
-
-  if (spectrumrecfo.spect1.Value = True) and (spectrumrecfo.Visible = True) and
-    (commanderfo.speccalc.Value = True) then
-    ShowSpectrum(nil);
-}
 end;
 
 procedure twebstreamerfo.ShowLevel();
@@ -195,6 +188,7 @@ var
   abool: Boolean;
   arec: string;
   aformat: integer;
+ 
 begin
   tstringdisp1.font.color := cl_blue;
   tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
@@ -218,7 +212,7 @@ begin
 
   application.ProcessMessages;
 
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, 1024 * 2, 0, False);
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, 1024 * 2, 0, false);
 
   /////// Add a Input from Audio URL with custom parameters
   ////////// URL : URL of audio file (like  'http://someserver/somesound.mp3')
@@ -283,13 +277,6 @@ begin
     ////////// VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
     ////////// VolRight : Right volume
 
-    uos_InputSetDSPVolume(webindex, webinindex, edvol.Value / 100, edvolr.Value / 100, True);
-    ////////// PlayerIndex1 : Index of a existing Player
-    ////////// In1Index : InputIndex of a existing Input
-    ////////// VolLeft : Left volume
-    ////////// VolRight : Right volume
-    ////////// Enable : Enabled
-
     if (plugsoundtouch = True) and (brecord.tag = 0) then
     begin
       if btempo.tag = 0 then
@@ -302,13 +289,6 @@ begin
       uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
       //// Change plugin settings
     end;
-
-    /////// procedure to execute when stream is terminated
-    // uos_EndProc(webindex, @ClosePlayer1);
-    ///// Assign the procedure of object to execute at end
-    //////////// PlayerIndex : Index of a existing Player
-    //////////// ClosePlayer1 : procedure of object to execute inside the loop
-
 
     btnStart.Enabled  := False;
     btnResume.Enabled := False;
@@ -336,6 +316,8 @@ begin
     application.ProcessMessages;
 
     uos_Play(webindex);  /////// everything is ready, here we are, lets play it...
+    //uos_InputUpdateICY(webindex, webplugindex, icy_data);
+    //caption := icy_data;
   end
   else
   begin
@@ -540,10 +522,10 @@ end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
 begin
- askconfirmation('Do you want to delete all the history of url?');
-
   edtempo.Value := 0.5;
   edpitch.Value := 0.5;
+  //uos_InputUpdateICY(webindex, webplugindex, icy_data);
+  //caption := icy_data;
 end;
 
 procedure twebstreamerfo.onrec(const Sender: TObject);
