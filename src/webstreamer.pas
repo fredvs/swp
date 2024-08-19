@@ -294,7 +294,7 @@ begin
     if brecord.tag = 1 then
       brecord.Caption := 'Recording...'
     else
-      brecord.Caption := 'Only playing';
+      brecord.Caption := 'Playing...';
 
     onchangevol(nil);
 
@@ -413,7 +413,7 @@ begin
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
-  tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
+  tmainmenu1.menu.itembynames(['config','playaf']).Checked := runselect.Value;
 
   tmainmenu1.menu.itembynames(['showgrid']).Checked := showgrid.Value;
   
@@ -487,12 +487,15 @@ begin
 end;
 
 procedure twebstreamerfo.onchangeshowwave(const Sender: TObject);
-begin
+begin 
+  bounds_cymax := 0;
+  bounds_cymin := 0;
+  
   if showwave.Value then
   begin
     panelwave.Visible := True;
     if showgrid.Value then
-    begin
+    begin 
       griddisp.Visible := True;
       griddisp.top := panelwave.bottom + 1;
       Height       := 18 + panelwave.bottom + griddisp.Height;
@@ -519,12 +522,15 @@ begin
     end;
   end;
   application.ProcessMessages;
+  
+  bounds_cymax := bounds_cy;
+  bounds_cymin := bounds_cy;
+
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 begin
   Height       := 154;
-  griddisp.top := 0;
   Visible      := False;
 end;
 
@@ -585,7 +591,7 @@ end;
 
 procedure twebstreamerfo.onafterplayafter(const Sender: TObject);
 begin
-  runselect.Value := tmainmenu1.menu.itembynames(['playaf']).Checked;
+  runselect.Value := tmainmenu1.menu.itembynames(['config','playaf']).Checked;
 end;
 
 procedure twebstreamerfo.onclearhist(const Sender: TObject);

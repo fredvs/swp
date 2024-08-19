@@ -3594,6 +3594,14 @@ object webstreamerfo: twebstreamerfo
     frame.sbvert.framebutton.localprops = []
     frame.sbvert.framebutton.localprops1 = []
     frame.sbvert.framebutton.template = tframecomp2
+    frame.sbvert.frameendbutton1.optionsskin = [fso_flat]
+    frame.sbvert.frameendbutton1.colorclient = -2147483645
+    frame.sbvert.frameendbutton1.localprops = [frl_optionsskin]
+    frame.sbvert.frameendbutton1.localprops1 = []
+    frame.sbvert.frameendbutton2.optionsskin = [fso_flat]
+    frame.sbvert.frameendbutton2.colorclient = -2147483645
+    frame.sbvert.frameendbutton2.localprops = [frl_optionsskin]
+    frame.sbvert.frameendbutton2.localprops1 = []
     frame.sbhorz.options = []
     frame.sbhorz.width = 0
     frame.localprops = [frl_levelo, frl_fileft, frl_fitop, frl_firight, frl_fibottom]
@@ -6008,7 +6016,7 @@ object webstreamerfo: twebstreamerfo
   end
   object tmainmenu1: tmainmenu
     facetemplate = tfacecomp5
-    menu.submenu.count = 5
+    menu.submenu.count = 4
     menu.submenu.items = <    
       item
         caption = ' Wave'
@@ -6027,22 +6035,25 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        caption = ' Select>Play'
-        hint = 'Play the url after selected it.'
-        name = 'playaf'
-        state = [as_localcaption, as_localhint, as_localonafterexecute]
-        options = [mao_checkbox, mao_shortcutcaption]
-        onafterexecute = onafterplayafter
-      end    
-      item
-        submenu.count = 1
+        submenu.count = 2
         submenu.items = <        
           item
+            caption = ' Select>Play'
+            hint = ' Play after url selected '
+            name = 'playaf'
+            state = [as_localcaption, as_localhint, as_localonafterexecute]
+            options = [mao_checkbox, mao_shortcutcaption]
+            onafterexecute = onafterplayafter
+          end        
+          item
             caption = ' Clear history of URL'
-            state = [as_localcaption, as_localonexecute, as_localonafterexecute]
+            hint = ' Clear list of URL in history '
+            name = 'clearhistory'
+            state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
             onexecute = showclear
           end>
-        caption = ' Config '
+        caption = '  Config '
+        name = 'config'
         state = [as_localcaption, as_localonexecute, as_localonafterexecute]
       end    
       item
@@ -6051,22 +6062,22 @@ object webstreamerfo: twebstreamerfo
           item
             caption = '          Simple Webstream Player'
             name = 'title'
-            state = [as_localcaption]
+            state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
             caption = 'Compiler: Free Pascal Compiler: https://www.freepascal.org/'
-            state = [as_localcaption]
+            state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
             caption = 'Widgetset: MSEgui: https://github.com/mse-org/mseide-msegui/'
-            state = [as_localcaption]
+            state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
             caption = 'Audio: uos: https://github.com/fredvs/uos/'
-            state = [as_localcaption]
+            state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
             state = [as_localcaption]
@@ -6074,9 +6085,9 @@ object webstreamerfo: twebstreamerfo
           end        
           item
             caption = 'Fred van Stappen 2024 <fiens@hotmail.com>'
-            state = [as_localcaption]
+            state = [as_disabled, as_localdisabled, as_localcaption]
           end>
-        caption = '   &About   '
+        caption = ' &About  '
         name = 'about'
         state = [as_localcaption]
       end>
