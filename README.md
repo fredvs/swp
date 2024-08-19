@@ -8,8 +8,12 @@ Graphic widgetset: MSEgui 5.10.4: https://github.com/mse-org/mseide-msegui
 
 Audio library: uos 1.8.0: https://github.com/fredvs/uos
 
-![simplewebplayer2](https://github.com/user-attachments/assets/022b4f71-2b49-4131-8471-282c0f80eebe)
+![simplewebplayer_1](https://github.com/user-attachments/assets/265720a1-12e2-49a0-9a83-db00f5002705)
 
-![simplewebplayer_rec2](https://github.com/user-attachments/assets/d19183cc-e5e5-40f8-b21b-2516664121fd)
+![simplewebplayer_2](https://github.com/user-attachments/assets/d560a654-fc98-4b3f-8ce0-a6e7c95a24d7)
+
+![simplewebplayer_3](https://github.com/user-attachments/assets/90a6cf98-3d24-4cec-a912-570feebbe220)
+
+![simplewebplayer_4](https://github.com/user-attachments/assets/943dd7b1-d3b1-49f7-b4e5-905c212147ad)
 
 Fred van Stappen <fiens@hotmail.com>
