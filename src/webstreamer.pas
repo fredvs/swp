@@ -45,7 +45,6 @@ type
     panelcommand: tpaintbox;
     buttonicons: timagelist;
     sliderimage: tbitmapcomp;
-    trackbar1: tslider;
     breset: TButton;
     edvolr: tslider;
     vuRight: tprogressbar;
@@ -76,6 +75,7 @@ type
     tbutton2: TButton;
     tbutton3: TButton;
     tfacecomp4: tfacecomp;
+    trackbar1: tpaintbox;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -135,15 +135,10 @@ procedure twebstreamerfo.InitDrawLive();
 const
   transpcolor = $B6C4AF;
 begin
-
-  trackbar1.invalidate();
-
   rectrecform.pos  := nullpoint;
-  rectrecform.size := trackbar1.paintsize;
+  rectrecform.size := trackbar1.size;
 
   xreclive := 1;
-
-  TrackBar1.Value := 0;
 
   with sliderimage.bitmap do
   begin
@@ -153,6 +148,7 @@ begin
     transparentcolor := transpcolor;
   end;
 
+  trackbar1.invalidate();
 end;
 
 procedure twebstreamerfo.DrawLive(lv, rv: double);
@@ -165,10 +161,11 @@ begin
   poswavrec.y  := (trackbar1.Height div 2) - 2;
   poswavrec2.y := ((trackbar1.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC99D6);
-  poswavrec.y := (trackbar1.Height div 2);
+  poswavrec.y  := (trackbar1.Height div 2);
   poswavrec2.y := poswavrec.y + (round((rv) * ((trackbar1.Height div 2) - 3)));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC79D6);
-  xreclive := xreclive + 1;
+  trackbar1.invalidate();
+  xreclive     := xreclive + 1;
 end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
@@ -198,7 +195,6 @@ begin
     if (xreclive) > (Width) then
       InitDrawLive();
 
-    TrackBar1.Value := xreclive / (TrackBar1.Width);
     DrawLive(leftlev, rightlev);
   end;
 end;
@@ -214,7 +210,6 @@ begin
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
-  InitDrawLive();
 
   uos_CreatePlayer(webindex);
   // Create the player.
@@ -241,9 +236,7 @@ begin
   if webinindex <> -1 then
   begin
 
-    // radiogroup1.Enabled := False;
-
-    weboutindex := uos_AddIntoDevOut(webindex, -1, 1.5, uos_InputGetSampleRate(webindex, webinindex),
+      weboutindex := uos_AddIntoDevOut(webindex, -1, 1.5, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, 1024 * 2, -1);
 
     if brecord.tag = 1 then
@@ -329,9 +322,12 @@ begin
 
     tstringdisp1.face.template := tfacecomp4;
 
+    InitDrawLive();
+
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
+    
     //uos_InputUpdateICY(webindex, webplugindex, icy_data);
     //caption := icy_data;
   end
@@ -347,9 +343,9 @@ var
   pa, mp, st: string;
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
-{$ENDIF}
+ {$ENDIF}
 begin
- {$if defined(darwin) and defined(macapp)}
+  {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
   ordir := copy(binPath, 1, length(binPath) -6) + 'Resources/';
   {$else}
@@ -357,37 +353,35 @@ begin
   {$ENDIF}
 
   {$IFDEF Windows}
-         {$if defined(cpu64)}
+  {$if defined(cpu64)}
   pa := AnsiString(ordir + 'lib\Windows\64bit\LibPortaudio-64.dll');
   mp := AnsiString(ordir + 'lib\Windows\64bit\LibMpg123-64.dll');
   st := AnsiString(ordir + 'lib\Windows\64bit\LibSoundTouch-64.dll');
 
-       {$else}
+  {$else}
   pa := AnsiString(ordir + 'lib\Windows\32bit\LibPortaudio-32.dll');
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
   st := AnsiString(ordir + 'lib\Windows\32bit\LibSoundTouch-32.dll');
-         {$endif}
-     {$ENDIF}
+  {$endif}
+  {$ENDIF}
 
- {$if defined(CPUAMD64) and defined(linux) }
- pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
- mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
- st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
- //op :=  ordir + 'lib/Linux/64bit/LibOpusFile-64.so';
- {$ENDIF}
-
+  {$if defined(CPUAMD64) and defined(linux) }
+  pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
+  mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
+  st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
+  {$ENDIF}
 
   {$if defined(CPUAMD64) and defined(openbsd) }
   pa := AnsiString(ordir + 'lib/OpenBSD/64bit/LibPortaudio-64.so');
   mp := AnsiString(ordir + 'lib/OpenBSD/64bit/LibMpg123-64.so');
   st := AnsiString(ordir + 'lib/OpenBSD/64bit/LibSoundTouch-64.so');
-     {$ENDIF}
+  {$ENDIF}
 
-     {$if defined(cpu64) and defined(darwin) }
+  {$if defined(cpu64) and defined(darwin) }
   pa := AnsiString(ordir + 'lib/Mac/64bit/LibPortaudio-64.dylib');
   mp := AnsiString(ordir + 'lib/Mac/64bit/LibMpg123-64.dylib');
   st := AnsiString(ordir + 'lib/Mac/64bit/libSoundTouchDLL.dylib');
-     {$ENDIF}
+  {$ENDIF}
 
   {$if defined(cpu86) and defined(linux)}
   pa := AnsiString(ordir + 'lib/Linux/32bit/LibPortaudio-32.so');
@@ -395,7 +389,7 @@ begin
   st := AnsiString(ordir + 'lib/Linux/32bit/LibSoundTouch-32.so');
   {$ENDIF}
 
-   {$if defined(linux) and defined(cpuarm)}
+  {$if defined(linux) and defined(cpuarm)}
   pa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libportaudio-arm.so');
   mp := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libmpg123-arm.so');
   st := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libsoundtouch-arm.so');
@@ -407,11 +401,11 @@ begin
   st := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libsoundtouch_aarch64.so');
   {$ENDIF}
 
-   {$if defined(freebsd) and defined(cpuamd64) }
+  {$if defined(freebsd) and defined(cpuamd64) }
   pa := AnsiString(ordir + 'lib/FreeBSD/amd64/libportaudio-64.so');
   mp := AnsiString(ordir + 'lib/FreeBSD/amd64/libmpg123-64.so');
   st := AnsiString(ordir + 'lib/FreeBSD/amd64/libsoundtouch-64.so');
-   {$endif}
+  {$endif}
 
   {$if defined(freebsd) and defined(cpui386) }
   pa := AnsiString(ordir + 'lib/FreeBSD/i386/libportaudio-32.so');
@@ -430,13 +424,9 @@ begin
 
   if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
     plugsoundtouch := True
-  // writeln('Yes plugsoundtouch');
   else
     plugsoundtouch := False;
-  // writeln('NO plugsoundtouch');
-
-  Visible := True;
-
+ 
   brecord.color := $B6C4AF;
   brecord.tag   := 0;
 
@@ -455,6 +445,8 @@ begin
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '        Simple Webstream Player v1.' + IntToStr(version);
+    
+  Visible := True;  
 
   application.ProcessMessages;
 

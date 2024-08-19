@@ -1,8 +1,8 @@
 object webstreamerfo: twebstreamerfo
   face.localprops = []
   face.template = tfacecomp2
-  bounds_x = 454
-  bounds_y = 276
+  bounds_x = 672
+  bounds_y = 201
   bounds_cx = 346
   bounds_cy = 234
   bounds_cxmin = 346
@@ -3496,39 +3496,12 @@ object webstreamerfo: twebstreamerfo
       onexecute = onrec
     end
   end
-  object trackbar1: tslider
-    optionswidget1 = [ow1_autoscale, ow1_noclampinview]
-    color = -2147483645
-    face.localprops = []
-    face.template = tfacecomp2
-    taborder = 3
-    hint = ' Click to change position of sound '
-    bounds_x = 0
-    bounds_y = 136
-    bounds_cx = 346
-    bounds_cy = 80
-    enabled = False
-    scrollbar.options = [sbo_thumbtrack, sbo_clicktovalue, sbo_moveauto, sbo_showauto, sbo_valuekeys]
-    scrollbar.buttonlength = 1
-    scrollbar.buttonminlength = 1
-    scrollbar.buttonendlength = -1
-    scrollbar.face.image.source = sliderimage
-    scrollbar.face.fade_direction = gd_down
-    scrollbar.face.localprops = [fal_fadirection, fal_image]
-    scrollbar.face1.localprops = []
-    scrollbar.face2.localprops = []
-    scrollbar.facebutton.localprops = []
-    scrollbar.framebutton.colorclient = -2147483645
-    scrollbar.framebutton.localprops = [frl_colorframe, frl_hiddenedges, frl_optionsskin]
-    scrollbar.framebutton.localprops1 = []
-    scrollbar.color = -2147483645
-  end
   object tstringdisp2: tstringdisp
     frame.localprops = []
     frame.localprops1 = []
     face.localprops = []
     face.template = tfacecomp3
-    taborder = 4
+    taborder = 3
     visible = False
     bounds_x = 55
     bounds_y = 0
@@ -3584,6 +3557,19 @@ object webstreamerfo: twebstreamerfo
       focusrectdist = 0
       onexecute = cancelclear
     end
+  end
+  object trackbar1: tpaintbox
+    optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
+    color = -2147483645
+    frame.localprops = []
+    frame.localprops1 = []
+    face.image.source = sliderimage
+    face.localprops = [fal_image]
+    taborder = 4
+    bounds_x = 0
+    bounds_y = 136
+    bounds_cx = 346
+    bounds_cy = 82
   end
   object buttonicons: timagelist
     width = 24
@@ -5832,8 +5818,8 @@ object webstreamerfo: twebstreamerfo
     cornermask_bottomleft = #2#1
     cornermask_bottomright = #2#1
     cornermask_topright = #2#1
-    left = 141
-    top = 179
+    left = 114
+    top = 180
     image = {
       00000000020000000C0000000C000000E8000000000000000000000000000000
       0000000000000000000000000000000000000000FFFFFF028B8B8B02A5A5A501
@@ -5858,8 +5844,8 @@ object webstreamerfo: twebstreamerfo
     template.frameimage_top = -4
     template.frameimage_right = -4
     template.frameimage_bottom = -4
-    left = 172
-    top = 163
+    left = 229
+    top = 168
   end
   object tmainmenu1: tmainmenu
     menu.submenu.count = 4
