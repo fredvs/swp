@@ -1,7 +1,7 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 636
-  bounds_y = 192
+  bounds_x = 759
+  bounds_y = 195
   bounds_cx = 346
   bounds_cy = 346
   bounds_cxmin = 346
@@ -3141,19 +3141,16 @@ object webstreamerfo: twebstreamerfo
     bounds_cy = 86
     object breset: tbutton
       Tag = 1
-      color = -2147483645
+      color = 10595738
+      frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
-      frame.template = tframecomp2
-      face.fade_direction = gd_down
-      face.localprops = [fal_fadirection]
-      face.template = tfacecomp3
       taborder = 1
       hint = ' Reset to tempo/pitch original '
       bounds_x = 234
       bounds_y = 55
       bounds_cx = 30
-      bounds_cy = 19
+      bounds_cy = 20
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '=1'
       font.height = 10
@@ -3467,15 +3464,16 @@ object webstreamerfo: twebstreamerfo
     end
     object btempo: tbutton
       Tag = 1
+      color = 11977903
       frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
       taborder = 15
       hint = 'Enable/Disable Tempo/Pitch plugin'
-      bounds_x = 233
+      bounds_x = 234
       bounds_y = 28
       bounds_cx = 30
-      bounds_cy = 17
+      bounds_cy = 20
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'T / P'
       font.height = 10
@@ -3487,6 +3485,7 @@ object webstreamerfo: twebstreamerfo
     end
     object brecord: tbutton
       Tag = 1
+      color = 11977903
       frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
