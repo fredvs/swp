@@ -3591,6 +3591,10 @@ object webstreamerfo: twebstreamerfo
     frame.sbvert.face.localprops = []
     frame.sbvert.face1.localprops = []
     frame.sbvert.facebutton.localprops = []
+    frame.sbvert.facebutton.template = tfacecomp3
+    frame.sbvert.framebutton.localprops = []
+    frame.sbvert.framebutton.localprops1 = []
+    frame.sbvert.framebutton.template = tframecomp2
     frame.sbhorz.options = []
     frame.sbhorz.width = 0
     frame.localprops = [frl_levelo, frl_fileft, frl_fitop, frl_firight, frl_fibottom]
@@ -6004,6 +6008,7 @@ object webstreamerfo: twebstreamerfo
     top = 168
   end
   object tmainmenu1: tmainmenu
+    facetemplate = tfacecomp5
     menu.submenu.count = 5
     menu.submenu.items = <    
       item
@@ -6094,5 +6099,20 @@ object webstreamerfo: twebstreamerfo
     template.fade_direction = gd_down
     left = 13
     top = 139
+  end
+  object tfacecomp5: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      14342874
+      12632256
+    )
+    template.fade_direction = gd_down
+    left = 18
+    top = 178
   end
 end

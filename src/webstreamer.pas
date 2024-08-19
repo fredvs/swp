@@ -51,6 +51,7 @@ type
     timagelist3: timagelist;
     griddisp: tstringgrid;
    showgrid: tbooleanedit;
+   tfacecomp5: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
