@@ -3008,9 +3008,9 @@ object webstreamerfo: twebstreamerfo
       end>
     taborder = 1
     hint = ' History of Cue URL, Paste here the link wanted.'
-    bounds_x = 28
+    bounds_x = 2
     bounds_y = 0
-    bounds_cx = 318
+    bounds_cx = 342
     bounds_cy = 22
     statfile = tstatfile1
     optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
@@ -3114,6 +3114,17 @@ object webstreamerfo: twebstreamerfo
         end>
       dropdown.historymaxcount = 50
       reffontheight = 15
+    end
+    object showgrid: tbooleanedit
+      color = -2147483645
+      taborder = 3
+      hint = 'Show/Hide wave image'
+      bounds_x = 252
+      bounds_y = 0
+      bounds_cx = 27
+      bounds_cy = 17
+      statfile = tstatfile1
+      visible = False
     end
   end
   object panelcommand: tpaintbox
@@ -3571,28 +3582,6 @@ object webstreamerfo: twebstreamerfo
     bounds_cx = 346
     bounds_cy = 82
   end
-  object tbutton4: tbutton
-    Tag = 1
-    frame.optionsskin = [fso_flat]
-    frame.localprops = [frl_optionsskin]
-    frame.localprops1 = []
-    face.localprops = []
-    face.template = tfacecomp3
-    taborder = 5
-    hint = 'Show/hide grid of URL'
-    bounds_x = 0
-    bounds_y = 0
-    bounds_cx = 26
-    bounds_cy = 22
-    state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
-    caption = 'url'
-    font.height = 10
-    font.name = 'stf_default'
-    font.localprops = [flp_height]
-    imagenr = 27
-    focusrectdist = 0
-    onexecute = showlis
-  end
   object griddisp: tstringgrid
     optionswidget1 = [ow1_fontglyphheight, ow1_noclampinview]
     optionsskin = [osk_noalignx, osk_noaligny]
@@ -3616,7 +3605,7 @@ object webstreamerfo: twebstreamerfo
     )
     face.fade_direction = gd_down
     face.localprops = []
-    taborder = 6
+    taborder = 5
     hint = '2x Click to select, Right click to add/delete row.'
     visible = False
     bounds_x = 0
@@ -6015,10 +6004,10 @@ object webstreamerfo: twebstreamerfo
     top = 168
   end
   object tmainmenu1: tmainmenu
-    menu.submenu.count = 4
+    menu.submenu.count = 5
     menu.submenu.items = <    
       item
-        caption = ' Show wave '
+        caption = ' Wave'
         hint = 'Show/Hide wave image'
         name = 'showwav'
         state = [as_localcaption, as_localhint, as_localonafterexecute]
@@ -6026,7 +6015,15 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        caption = ' Play after select '
+        caption = '  Grid'
+        hint = 'Show/hide list of URL'
+        name = 'showgrid'
+        state = [as_localcaption, as_localhint, as_localonafterexecute]
+        options = [mao_checkbox, mao_shortcutcaption]
+        onafterexecute = onaftermenushowwav
+      end    
+      item
+        caption = ' Select>Play'
         hint = 'Play the url after selected it.'
         name = 'playaf'
         state = [as_localcaption, as_localhint, as_localonafterexecute]

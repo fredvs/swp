@@ -4,42 +4,12 @@ unit webstreamer;
 interface
 
 uses
-  uos_flat,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob;
+ uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
+ msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
+ msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
+ msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
+ msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
+ msedragglob,msegrids,msegridsglob;
 
 type
   twebstreamerfo = class(tdockform)
@@ -78,9 +48,9 @@ type
     tbutton3: TButton;
     tfacecomp4: tfacecomp;
     panelwave: tpaintbox;
-    tbutton4: TButton;
     timagelist3: timagelist;
     griddisp: tstringgrid;
+   showgrid: tbooleanedit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -444,9 +414,9 @@ begin
 
   tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
 
+  tmainmenu1.menu.itembynames(['showgrid']).Checked := showgrid.Value;
+  
   onchangeshowwave(nil);
-
-  tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '        Simple Webstream Player v1.' + IntToStr(version);
@@ -520,26 +490,32 @@ begin
   if showwave.Value then
   begin
     panelwave.Visible := True;
-    if griddisp.Visible = True then
+    if showgrid.Value then
     begin
+      griddisp.Visible := True;
       griddisp.top := panelwave.bottom + 1;
       Height       := 18 + panelwave.bottom + griddisp.Height;
     end
     else
     begin
+      griddisp.Visible := false;
       Height := 18 + panelwave.bottom;
     end;
   end
   else
   begin
     panelwave.Visible := False;
-    if griddisp.Visible = True then
+    if showgrid.Value then
     begin
+      griddisp.Visible := True;
       griddisp.top := panelwave.top;
       Height       := 18 + griddisp.bottom;
     end
     else
+    begin
+      griddisp.Visible := false;
       Height       := 18 + panelcommand.bottom;
+    end;
   end;
   application.ProcessMessages;
 end;
@@ -602,6 +578,7 @@ end;
 procedure twebstreamerfo.onaftermenushowwav(const Sender: TObject);
 begin
   showwave.Value := tmainmenu1.menu.itembynames(['showwav']).Checked;
+  showgrid.Value := tmainmenu1.menu.itembynames(['showgrid']).Checked;
   onchangeshowwave(nil);
 end;
 
