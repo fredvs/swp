@@ -80,7 +80,7 @@ type
   end;
 
 const
-  version = 240818;
+  version = 240820;
 
 var
   webstreamerfo: twebstreamerfo;
