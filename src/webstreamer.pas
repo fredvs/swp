@@ -4,12 +4,40 @@ unit webstreamer;
 interface
 
 uses
- uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
- msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
- msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
- msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
- msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap;
- 
+  uos_flat,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap;
+
 type
   twebstreamerfo = class(tdockform)
     historyfn: thistoryedit;
@@ -43,11 +71,11 @@ type
     tmainmenu1: tmainmenu;
     runselect: tbooleanedit;
     showwave: tbooleanedit;
-   thistoryedit2: thistoryedit;
-   tstringdisp2: tstringdisp;
-   tbutton2: tbutton;
-   tbutton3: tbutton;
-   tfacecomp4: tfacecomp;
+    thistoryedit2: thistoryedit;
+    tstringdisp2: tstringdisp;
+    tbutton2: TButton;
+    tbutton3: TButton;
+    tfacecomp4: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -62,20 +90,19 @@ type
     procedure onchangeshowwave(const Sender: TObject);
     procedure oncreate(const Sender: TObject);
     procedure ChangePlugSetSoundTouch(const Sender: TObject);
-
     procedure onreset(const Sender: TObject);
     procedure onrec(const Sender: TObject);
     procedure ontempo(const Sender: TObject);
     procedure onafterdropdown(const Sender: TObject);
     procedure onaftermenushowwav(const Sender: TObject);
     procedure onafterplayafter(const Sender: TObject);
-   procedure onclearhist(const sender: TObject);
-   procedure cancelclear(const sender: TObject);
-   procedure showclear(const sender: TObject);
+    procedure onclearhist(const Sender: TObject);
+    procedure cancelclear(const Sender: TObject);
+    procedure showclear(const Sender: TObject);
   end;
-  
+
 const
-version = 240818;
+  version = 240818;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -85,8 +112,8 @@ var
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   ordir, arecnp: string;
- // icy_data: pchar;
-   
+// icy_data: pchar;
+
 implementation
 
 uses
@@ -106,7 +133,6 @@ end;
 
 procedure twebstreamerfo.InitDrawLive();
 const
-  // transpcolor = $FFF0F0;
   transpcolor = $B6C4AF;
 begin
 
@@ -133,22 +159,16 @@ procedure twebstreamerfo.DrawLive(lv, rv: double);
 var
   poswavrec, poswavrec2: pointty;
 begin
-
   sliderimage.bitmap.masked := False;
-
   poswavrec.x  := xreclive;
   poswavrec2.x := poswavrec.x;
   poswavrec.y  := (trackbar1.Height div 2) - 2;
   poswavrec2.y := ((trackbar1.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC99D6);
-
   poswavrec.y := (trackbar1.Height div 2);
-
   poswavrec2.y := poswavrec.y + (round((rv) * ((trackbar1.Height div 2) - 3)));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC79D6);
-
   xreclive := xreclive + 1;
-
 end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
@@ -188,22 +208,18 @@ var
   abool: Boolean;
   arec: string;
   aformat: integer;
- 
 begin
   tstringdisp1.font.color := cl_blue;
   tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
-  // PlayerIndex : from 0 to what your computer can do ! (depends of ram, cpu, ...)
-  // If PlayerIndex exists already, it will be overwritten...
-
   InitDrawLive();
 
   uos_CreatePlayer(webindex);
-  //// Create the player.
-  //// PlayerIndex : from 0 to what your computer can do !
-  //// If PlayerIndex exists already, it will be overwriten...
+  // Create the player.
+  // PlayerIndex : from 0 to what your computer can do !
+  // If PlayerIndex exists already, it will be overwriten...
 
   if brecord.tag = 0 then
     aformat := 0
@@ -212,14 +228,14 @@ begin
 
   application.ProcessMessages;
 
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, 1024 * 2, 0, false);
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, 1024 * 2, 0, False);
 
-  /////// Add a Input from Audio URL with custom parameters
-  ////////// URL : URL of audio file (like  'http://someserver/somesound.mp3')
-  ////////// OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
-  ////////// SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
-  //////////// FramesCount : default : -1 (1024)
-  //////////// AudioFormat : default : -1 (mp3) (0: mp3, 1: opus)
+  // Add a Input from Audio URL with custom parameters
+  // URL : URL of audio file (like  'http://someserver/somesound.mp3')
+  // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
+  // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
+  // FramesCount : default : -1 (1024)
+  // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus)
   // ICY data on/off
 
   if webinindex <> -1 then
@@ -245,37 +261,37 @@ begin
       brecord.color   := cl_red;
     end;
 
-    //// add a Output into device with custom parameters
-    //////////// PlayerIndex : Index of a existing Player
-    //////////// Device ( -1 is default Output device )
-    //////////// Latency  ( -1 is latency suggested ) )
-    //////////// SampleRate : delault : -1 (44100)   /// here default samplerate of input
-    //////////// Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
-    //////////// SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
-    //////////// FramesCount : default : -1 (65536)
+    // add a Output into device with custom parameters
+    // PlayerIndex : Index of a existing Player
+    // Device ( -1 is default Output device )
+    // Latency  ( -1 is latency suggested ) )
+    // SampleRate : delault : -1 (44100)   // here default samplerate of input
+    // Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
+    // SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
+    // FramesCount : default : -1 (65536)
     // ChunkCount : default : -1 (= 512)
     //  result : -1 nothing created, otherwise Output Index in array
 
     uos_InputSetLevelEnable(webindex, webinindex, 2);
-    ///// set calculation of level/volume (usefull for showvolume procedure)
-    ///////// set level calculation (default is 0)
+    // set calculation of level/volume (usefull for showvolume procedure)
+    // set level calculation (default is 0)
     // 0 => no calcul
     // 1 => calcul before all DSP procedures.
     // 2 => calcul after all DSP procedures.
     // 3 => calcul before and after all DSP procedures.
 
     uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
-    ///// Assign the procedure of object to execute inside the loop for a Input
-    //////////// PlayerIndex : Index of a existing Player
-    //////////// InIndex : Index of a existing Input
-    //////////// LoopProcPlayer1 : procedure of object to execute inside the loop
+    // Assign the procedure of object to execute inside the loop for a Input
+    // PlayerIndex : Index of a existing Player
+    // InIndex : Index of a existing Input
+    // LoopProcPlayer1 : procedure of object to execute inside the loop
 
     uos_InputAddDSPVolume(webindex, webinindex, 1, 1);
-    ///// DSP Volume changer
-    ////////// PlayerIndex1 : Index of a existing Player
-    ////////// In1Index : InputIndex of a existing input
-    ////////// VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
-    ////////// VolRight : Right volume
+    // DSP Volume changer
+    // PlayerIndex1 : Index of a existing Player
+    // In1Index : InputIndex of a existing input
+    // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
+    // VolRight : Right volume
 
     if (plugsoundtouch = True) and (brecord.tag = 0) then
     begin
@@ -285,9 +301,9 @@ begin
         abool := True;
       webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
         uos_InputGetChannels(webindex, webinindex));
-      ///// add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
+      // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
       uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
-      //// Change plugin settings
+      // Change plugin settings
     end;
 
     btnStart.Enabled  := False;
@@ -310,12 +326,12 @@ begin
       brecord.Caption := 'Only playing';
 
     onchangevol(nil);
-    
+
     tstringdisp1.face.template := tfacecomp4;
-    
+
     application.ProcessMessages;
 
-    uos_Play(webindex);  /////// everything is ready, here we are, lets play it...
+    uos_Play(webindex);  // everything is ready, here we are, lets play it...
     //uos_InputUpdateICY(webindex, webplugindex, icy_data);
     //caption := icy_data;
   end
@@ -436,12 +452,12 @@ begin
   isinit := True;
 
   tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
-  
-  tmainmenu1.menu.itembynames(['about','title']).caption :=
-   '        Simple Webstream Player v1.' + inttostr(version);
-            
+
+  tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
+    '        Simple Webstream Player v1.' + IntToStr(version);
+
   application.ProcessMessages;
- 
+
 end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
@@ -494,8 +510,8 @@ end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
 begin
- lvl.caption := inttostr(round(edvol.Value*100));
- lvr.caption := inttostr(round(edvolr.Value*100));
+  lvl.Caption := IntToStr(round(edvol.Value * 100));
+  lvr.Caption := IntToStr(round(edvolr.Value * 100));
   uos_InputSetDSPVolume(webindex, webinindex,
     edvol.Value, edvolr.Value, True);
 end;
@@ -579,20 +595,20 @@ begin
   runselect.Value := tmainmenu1.menu.itembynames(['playaf']).Checked;
 end;
 
-procedure twebstreamerfo.onclearhist(const sender: TObject);
+procedure twebstreamerfo.onclearhist(const Sender: TObject);
 begin
- historyfn.dropdown.valuelist.asarray := thistoryedit2.dropdown.valuelist.asarray;
- tstringdisp2.visible := false;
+  historyfn.dropdown.valuelist.asarray := thistoryedit2.dropdown.valuelist.asarray;
+  tstringdisp2.Visible := False;
 end;
 
-procedure twebstreamerfo.cancelclear(const sender: TObject);
+procedure twebstreamerfo.cancelclear(const Sender: TObject);
 begin
-tstringdisp2.visible := false;
+  tstringdisp2.Visible := False;
 end;
 
-procedure twebstreamerfo.showclear(const sender: TObject);
+procedure twebstreamerfo.showclear(const Sender: TObject);
 begin
-tstringdisp2.visible := true;
+  tstringdisp2.Visible := True;
 end;
 
 end.
