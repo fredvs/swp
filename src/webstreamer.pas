@@ -36,7 +36,10 @@ uses
   SysUtils,
   msegraphedits,
   msescrollbar,
-  msebitmap;
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob;
 
 type
   twebstreamerfo = class(tdockform)
@@ -65,7 +68,6 @@ type
     tstatfile1: tstatfile;
     btempo: TButton;
     brecord: TButton;
-    timagelist3: timagelist;
     tframecomp2: tframecomp;
     tmainmenu1: tmainmenu;
     runselect: tbooleanedit;
@@ -75,7 +77,10 @@ type
     tbutton2: TButton;
     tbutton3: TButton;
     tfacecomp4: tfacecomp;
-    trackbar1: tpaintbox;
+    panelwave: tpaintbox;
+    tbutton4: TButton;
+    timagelist3: timagelist;
+    griddisp: tstringgrid;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -99,6 +104,8 @@ type
     procedure onclearhist(const Sender: TObject);
     procedure cancelclear(const Sender: TObject);
     procedure showclear(const Sender: TObject);
+    procedure showlis(const Sender: TObject);
+    procedure oncellev(const Sender: TObject; var info: celleventinfoty);
   end;
 
 const
@@ -136,7 +143,7 @@ const
   transpcolor = $B6C4AF;
 begin
   rectrecform.pos  := nullpoint;
-  rectrecform.size := trackbar1.size;
+  rectrecform.size := panelwave.size;
 
   xreclive := 1;
 
@@ -148,7 +155,7 @@ begin
     transparentcolor := transpcolor;
   end;
 
-  trackbar1.invalidate();
+  panelwave.invalidate();
 end;
 
 procedure twebstreamerfo.DrawLive(lv, rv: double);
@@ -158,13 +165,13 @@ begin
   sliderimage.bitmap.masked := False;
   poswavrec.x  := xreclive;
   poswavrec2.x := poswavrec.x;
-  poswavrec.y  := (trackbar1.Height div 2) - 2;
-  poswavrec2.y := ((trackbar1.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
+  poswavrec.y  := (panelwave.Height div 2) - 2;
+  poswavrec2.y := ((panelwave.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC99D6);
-  poswavrec.y  := (trackbar1.Height div 2);
-  poswavrec2.y := poswavrec.y + (round((rv) * ((trackbar1.Height div 2) - 3)));
+  poswavrec.y  := (panelwave.Height div 2);
+  poswavrec2.y := poswavrec.y + (round((rv) * ((panelwave.Height div 2) - 3)));
   sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC79D6);
-  trackbar1.invalidate();
+  panelwave.invalidate();
   xreclive     := xreclive + 1;
 end;
 
@@ -189,7 +196,7 @@ begin
   if (rightlev >= 0) and (rightlev <= 1) then
     vuRight.Value := rightlev;
 
-  if trackbar1.Visible = True then
+  if panelwave.Visible = True then
   begin
 
     if (xreclive) > (Width) then
@@ -236,7 +243,7 @@ begin
   if webinindex <> -1 then
   begin
 
-      weboutindex := uos_AddIntoDevOut(webindex, -1, 1.5, uos_InputGetSampleRate(webindex, webinindex),
+    weboutindex := uos_AddIntoDevOut(webindex, -1, 1.5, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, 1024 * 2, -1);
 
     if brecord.tag = 1 then
@@ -327,7 +334,7 @@ begin
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
-    
+
     //uos_InputUpdateICY(webindex, webplugindex, icy_data);
     //caption := icy_data;
   end
@@ -426,7 +433,7 @@ begin
     plugsoundtouch := True
   else
     plugsoundtouch := False;
- 
+
   brecord.color := $B6C4AF;
   brecord.tag   := 0;
 
@@ -439,16 +446,16 @@ begin
 
   onchangeshowwave(nil);
 
-  isinit := True;
-
   tmainmenu1.menu.itembynames(['playaf']).Checked := runselect.Value;
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '        Simple Webstream Player v1.' + IntToStr(version);
-    
-  Visible := True;  
 
+  Visible := True;
+  
   application.ProcessMessages;
+ 
+  isinit := True;
 
 end;
 
@@ -512,20 +519,36 @@ procedure twebstreamerfo.onchangeshowwave(const Sender: TObject);
 begin
   if showwave.Value then
   begin
-    trackbar1.Visible := True;
-    Height := 234;
+    panelwave.Visible := True;
+    if griddisp.Visible = True then
+    begin
+      griddisp.top := panelwave.bottom + 1;
+      Height       := 18 + panelwave.bottom + griddisp.Height;
+    end
+    else
+    begin
+      Height := 18 + panelwave.bottom;
+    end;
   end
   else
   begin
-    trackbar1.Visible := False;
-    Height := 154;
+    panelwave.Visible := False;
+    if griddisp.Visible = True then
+    begin
+      griddisp.top := panelwave.top;
+      Height       := 18 + griddisp.bottom;
+    end
+    else
+      Height       := 18 + panelcommand.bottom;
   end;
+  application.ProcessMessages;
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 begin
-  Height  := 154;
-  Visible := False;
+  Height       := 154;
+  griddisp.top := 0;
+  Visible      := False;
 end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
@@ -601,6 +624,29 @@ end;
 procedure twebstreamerfo.showclear(const Sender: TObject);
 begin
   tstringdisp2.Visible := True;
+end;
+
+procedure twebstreamerfo.showlis(const Sender: TObject);
+begin
+  if griddisp.Visible = True then
+    griddisp.Visible := False
+  else
+    griddisp.Visible := True;
+
+  onchangeshowwave(nil);
+end;
+
+procedure twebstreamerfo.oncellev(const Sender: TObject; var info: celleventinfoty);
+var
+  cellpos: gridcoordty;
+  x, thefocusedcell: integer;
+begin
+  if isinit and griddisp.Visible then
+    if (info.eventkind = cek_buttonrelease) then
+      if (ss_double in info.mouseeventinfopo^.shiftstate) then
+      begin
+        historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+      end;  
 end;
 
 end.

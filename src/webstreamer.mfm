@@ -1,26 +1,25 @@
 object webstreamerfo: twebstreamerfo
-  face.localprops = []
-  face.template = tfacecomp2
-  bounds_x = 672
-  bounds_y = 201
+  visible = False
+  bounds_x = 636
+  bounds_y = 192
   bounds_cx = 346
-  bounds_cy = 234
+  bounds_cy = 346
   bounds_cxmin = 346
   bounds_cymin = 154
   bounds_cxmax = 346
-  bounds_cymax = 234
+  bounds_cymax = 346
   container.color = 13750737
   container.frame.localprops = []
   container.frame.localprops1 = []
   container.frame.sbhorz.options = []
   container.frame.sbvert.options = []
   container.face.localprops = []
-  container.face.template = tfacecomp2
+  container.face.template = tfacecomp3
   container.bounds = (
     0
     17
     346
-    217
+    329
   )
   mainmenu = tmainmenu1
   options = [fo_main, fo_terminateonclose, fo_freeonclose, fo_screencentered, fo_autoreadstat, fo_autowritestat, fo_savepos, fo_savezorder, fo_savestate]
@@ -2982,6 +2981,7 @@ object webstreamerfo: twebstreamerfo
   moduleclassname = 'tdockform'
   object historyfn: thistoryedit
     optionswidget1 = [ow1_fontglyphheight]
+    optionswidget = [ow_mousefocus, ow_arrowfocus, ow_destroywidgets]
     color = -2147483645
     frame.levelo = 0
     frame.framei_left = 0
@@ -2992,29 +2992,29 @@ object webstreamerfo: twebstreamerfo
     frame.captiondist = 0
     frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
     frame.localprops1 = [frl1_captiondist]
-    frame.button.face.fade_direction = gd_down
     frame.button.face.localprops = []
+    frame.button.face.template = tfacecomp3
     frame.button.frame.optionsskin = [fso_flat]
     frame.button.frame.localprops = [frl_optionsskin]
     frame.button.frame.localprops1 = []
     frame.buttons.count = 1
     frame.buttons.items = <    
       item
-        face.fade_direction = gd_down
         face.localprops = []
+        face.template = tfacecomp3
         frame.optionsskin = [fso_flat]
         frame.localprops = [frl_optionsskin]
         frame.localprops1 = []
       end>
     taborder = 1
     hint = ' History of Cue URL, Paste here the link wanted.'
-    bounds_x = 0
+    bounds_x = 28
     bounds_y = 0
-    bounds_cx = 346
+    bounds_cx = 318
     bounds_cy = 22
     statfile = tstatfile1
     optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
-    optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
+    optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_shiftreturn, oe_eatreturn, oe_resetselectonexit, oe_exitoncursor, oe_endonenter, oe_autoselect, oe_autoselectonfirstclick]
     font.name = 'stf_default'
     font.localprops = []
     onchange = onafterdropdown
@@ -3036,7 +3036,6 @@ object webstreamerfo: twebstreamerfo
     color = 14408667
     face.localprops = []
     face.template = tfacecomp3
-    hint = ' Player 1 '
     bounds_x = 0
     bounds_y = 23
     bounds_cx = 346
@@ -3126,7 +3125,7 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp2
     taborder = 2
     bounds_x = 0
-    bounds_y = 50
+    bounds_y = 48
     bounds_cx = 346
     bounds_cy = 86
     object breset: tbutton
@@ -3558,18 +3557,186 @@ object webstreamerfo: twebstreamerfo
       onexecute = cancelclear
     end
   end
-  object trackbar1: tpaintbox
+  object panelwave: tpaintbox
     optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
     color = -2147483645
     frame.localprops = []
     frame.localprops1 = []
     face.image.source = sliderimage
     face.localprops = [fal_image]
+    face.template = tfacecomp2
     taborder = 4
     bounds_x = 0
-    bounds_y = 136
+    bounds_y = 134
     bounds_cx = 346
     bounds_cy = 82
+  end
+  object tbutton4: tbutton
+    Tag = 1
+    frame.optionsskin = [fso_flat]
+    frame.localprops = [frl_optionsskin]
+    frame.localprops1 = []
+    face.localprops = []
+    face.template = tfacecomp3
+    taborder = 5
+    hint = 'Show/hide grid of URL'
+    bounds_x = 0
+    bounds_y = 0
+    bounds_cx = 26
+    bounds_cy = 22
+    state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
+    caption = 'url'
+    font.height = 10
+    font.name = 'stf_default'
+    font.localprops = [flp_height]
+    imagenr = 27
+    focusrectdist = 0
+    onexecute = showlis
+  end
+  object griddisp: tstringgrid
+    optionswidget1 = [ow1_fontglyphheight, ow1_noclampinview]
+    optionsskin = [osk_noalignx, osk_noaligny]
+    color = -2147483645
+    frame.levelo = 0
+    frame.sbvert.width = 10
+    frame.sbvert.face.localprops = []
+    frame.sbvert.face1.localprops = []
+    frame.sbvert.facebutton.localprops = []
+    frame.sbhorz.options = []
+    frame.sbhorz.width = 0
+    frame.localprops = [frl_levelo, frl_fileft, frl_fitop, frl_firight, frl_fibottom]
+    frame.localprops1 = []
+    face.fade_pos.count = 1
+    face.fade_pos.items = (
+      0
+    )
+    face.fade_color.count = 1
+    face.fade_color.items = (
+      -1610612731
+    )
+    face.fade_direction = gd_down
+    face.localprops = []
+    taborder = 6
+    hint = '2x Click to select, Right click to add/delete row.'
+    visible = False
+    bounds_x = 0
+    bounds_y = 215
+    bounds_cx = 344
+    bounds_cy = 114
+    font.name = 'stf_default'
+    font.localprops = []
+    optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
+    datacols.count = 3
+    datacols.colorselect = 16763002
+    datacols.options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
+    datacols.optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
+    datacols.items = <    
+      item
+        colorselect = 16763002
+        width = 84
+        options = [co_rowselect, co_savevalue, co_savestate, co_cancopy, co_canpaste, co_mousescrollrow]
+        optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
+        datalist.data = (
+          ''
+          ''
+          ''
+          ''
+          ''
+          ''
+        )
+        valuefalse = '0'
+        valuetrue = '1'
+      end    
+      item
+        colorselect = 16763002
+        width = 59
+        options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
+        textflags = [tf_xcentered, tf_ycentered, tf_noselect]
+        optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
+        datalist.data = (
+          ''
+          ''
+          ''
+          ''
+          ''
+          ''
+        )
+        valuefalse = '0'
+        valuetrue = '1'
+      end    
+      item
+        colorselect = 16763002
+        width = 186
+        options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
+        textflags = [tf_xcentered, tf_right, tf_ycentered, tf_noselect]
+        optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
+        datalist.data = (
+          ''
+          ''
+          ''
+          ''
+          ''
+          ''
+        )
+        valuefalse = '0'
+        valuetrue = '1'
+      end>
+    fixrows.count = 1
+    fixrows.items = <    
+      item
+        face.localprops = []
+        face.template = tfacecomp3
+        height = 16
+        numstep = 1
+        captions.count = 3
+        captions.items = <        
+          item
+            caption = 'Name'
+            face.localprops = []
+            face.template = tfacecomp3
+            options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
+          end        
+          item
+            caption = 'Type'
+            face.localprops = []
+            face.template = tfacecomp3
+            options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
+          end        
+          item
+            caption = 'URL'
+            face.localprops = []
+            face.template = tfacecomp3
+            options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
+          end>
+      end>
+    rowcount = 6
+    rowcolors.count = 3
+    rowcolors.items = (
+      2752308
+      16744576
+      28173
+    )
+    rowfonts.count = 2
+    rowfonts.items = <    
+      item
+        color = -1610612734
+        height = 12
+        name = 'unifont'
+        localprops = []
+      end    
+      item
+        color = -1610612730
+        colorselect = -1610612730
+        height = 12
+        name = 'stf_default'
+        localprops = [flp_color, flp_colorselect]
+      end>
+    zebra_start = 1
+    datarowheight = 17
+    statfile = tstatfile1
+    statpriority = 1
+    oncellevent = oncellev
+    reffontheight = 15
   end
   object buttonicons: timagelist
     width = 24
@@ -5772,8 +5939,8 @@ object webstreamerfo: twebstreamerfo
     }
   end
   object sliderimage: tbitmapcomp
-    left = 15
-    top = 74
+    left = 29
+    top = 177
   end
   object tfacecomp2: tfacecomp
     template.fade_pos.count = 2
@@ -5867,9 +6034,15 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onafterplayafter
       end    
       item
-        caption = ' Clear history'
+        submenu.count = 1
+        submenu.items = <        
+          item
+            caption = ' Clear history of URL'
+            state = [as_localcaption, as_localonexecute, as_localonafterexecute]
+            onexecute = showclear
+          end>
+        caption = ' Config '
         state = [as_localcaption, as_localonexecute, as_localonafterexecute]
-        onafterexecute = showclear
       end    
       item
         submenu.count = 7
@@ -5902,7 +6075,7 @@ object webstreamerfo: twebstreamerfo
             caption = 'Fred van Stappen 2024 <fiens@hotmail.com>'
             state = [as_localcaption]
           end>
-        caption = ' &About'
+        caption = '   &About   '
         name = 'about'
         state = [as_localcaption]
       end>
