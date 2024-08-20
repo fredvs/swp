@@ -630,6 +630,7 @@ begin
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+        historyfn.savehistoryvalue;
       end;  
 end;
 
