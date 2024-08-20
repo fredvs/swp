@@ -16,7 +16,6 @@ type
     historyfn: thistoryedit;
     tstringdisp1: tstringdisp;
     panelcommand: tpaintbox;
-    buttonicons: timagelist;
     sliderimage: tbitmapcomp;
     breset: TButton;
     edvolr: tslider;
