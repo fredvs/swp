@@ -181,7 +181,7 @@ procedure twebstreamerfo.onplay(const Sender: TObject);
 var
   abool: Boolean;
   arec: string;
-  aformat: integer;
+  aformat, sizebuf: integer;
 begin
   tstringdisp1.font.color := cl_blue;
   tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
@@ -198,10 +198,12 @@ begin
     aformat := 0
   else
     aformat := 2;
-
+  
+  sizebuf := 1024 * 8;
+ 
   application.ProcessMessages;
-
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, 1024 * 2, 0, False);
+  
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, 0, False);
 
   // Add a Input from Audio URL with custom parameters
   // URL : URL of audio file (like  'http://someserver/somesound.mp3')
@@ -214,8 +216,8 @@ begin
   if webinindex <> -1 then
   begin
 
-    weboutindex := uos_AddIntoDevOut(webindex, -1, 1.5, uos_InputGetSampleRate(webindex, webinindex),
-      uos_InputGetChannels(webindex, webinindex), aformat, 1024 * 2, -1);
+    weboutindex := uos_AddIntoDevOut(webindex, -1, -1, uos_InputGetSampleRate(webindex, webinindex),
+      uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
     if brecord.tag = 1 then
     begin
@@ -223,7 +225,7 @@ begin
         msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + '.wav';
 
       arec := ordir + arecnp;
-      uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, 1024 * 2, 0);
+      uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, 0);
 
       btempo.Enabled  := False;
       edtempo.Enabled := False;
