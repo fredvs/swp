@@ -90,6 +90,10 @@ var
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   ordir, arecnp: string;
+  pa, mp, st: string;
+ {$if defined(darwin) and defined(macapp)}
+  binPath: string;
+ {$ENDIF}
 // icy_data: pchar;
 
 implementation
@@ -183,6 +187,14 @@ var
   arec: string;
   aformat, sizebuf: integer;
 begin
+  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
+    application.terminate;
+
+  if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
+    plugsoundtouch := True
+  else
+    plugsoundtouch := False;
+  
   tstringdisp1.font.color := cl_blue;
   tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -319,11 +331,6 @@ begin
 end;
 
 procedure twebstreamerfo.oneventstart(const Sender: TObject);
-var
-  pa, mp, st: string;
- {$if defined(darwin) and defined(macapp)}
-  binPath: string;
- {$ENDIF}
 begin
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
@@ -399,14 +406,6 @@ begin
   st := '';
   {$endif}
 
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
-    application.terminate;
-
-  if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
-    plugsoundtouch := True
-  else
-    plugsoundtouch := False;
-
   brecord.color := $B6C4AF;
   brecord.tag   := 0;
 
@@ -452,12 +451,14 @@ begin
   brecord.Caption      := 'Record';
   brecord.color        := $B6C4AF;
   tstringdisp1.face.template := tfacecomp3;
+  
+  uos_free;
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   uos_Stop(webindex);
-  uos_free;
+ // uos_free;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
