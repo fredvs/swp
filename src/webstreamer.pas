@@ -299,10 +299,12 @@ begin
     btnStart.Enabled  := False;
     btnStart.face.template := tfacecomp6;
     btnResume.Enabled := False;
+    btnResume.visible := false;
     btnResume.face.template := tfacecomp6;
     btnStop.Enabled   := True;
     btnStop.face.template := tfacecomp7;
     btnPause.Enabled  := True;
+    btnpause.visible := true;
     btnPause.face.template := tfacecomp7;
   
     brecord.Enabled   := False;
@@ -456,10 +458,12 @@ begin
     btnStart.Enabled  := True;
     btnStart.face.template := tfacecomp7;
     btnResume.Enabled := False;
+    btnResume.visible := false;
     btnResume.face.template := tfacecomp6;
     btnStop.Enabled   := False;
     btnStop.face.template := tfacecomp6;
     btnPause.Enabled  := False;
+    btnpause.visible := true;
     btnPause.face.template := tfacecomp6;
     brecord.Enabled   := True;
     brecord.face.template := tfacecomp7;
@@ -493,12 +497,14 @@ begin
    btnStart.Enabled  := False;
     btnStart.face.template := tfacecomp6;
     btnResume.Enabled := true;
+    btnResume.visible := true;
     btnResume.face.template := tfacecomp7;
     btnStop.Enabled   := true;
     btnStop.face.template := tfacecomp7;
     btnPause.Enabled  := False;
+    btnPause.visible := false;
     btnPause.face.template := tfacecomp6;
-  
+    brecord.Caption := 'Paused...';  
   tstringdisp1.Value := historyfn.Value + ' paused...';
 end;
 
@@ -508,12 +514,14 @@ begin
    btnStart.Enabled   := False;
    btnStart.face.template := tfacecomp6;
     btnResume.Enabled := false;
+    btnResume.visible := false;
     btnResume.face.template := tfacecomp6;
     btnStop.Enabled   := true;
     btnStop.face.template := tfacecomp7;
     btnPause.Enabled  := true;
+    btnpause.visible := true;
     btnPause.face.template := tfacecomp7;
-
+    brecord.Caption := 'Resumed...';
  tstringdisp1.Value := historyfn.Value + ' resumed...';
 end;
 

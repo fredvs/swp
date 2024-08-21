@@ -3282,8 +3282,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 6
       hint = ' Stop player '
-      bounds_x = 93
-      bounds_y = 44
+      bounds_x = 77
+      bounds_y = 40
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3307,11 +3307,11 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 7
       hint = ' Resume player '
-      bounds_x = 65
-      bounds_y = 44
+      bounds_x = 49
+      bounds_y = 40
       bounds_cx = 28
       bounds_cy = 28
-      state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
+      state = [as_disabled, as_invisible, as_localdisabled, as_localinvisible, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
       caption = '>>'
       captiondist = 0
       font.color = 15071196
@@ -3337,8 +3337,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 8
       hint = ' Pause player '
-      bounds_x = 37
-      bounds_y = 44
+      bounds_x = 49
+      bounds_y = 40
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
@@ -3366,8 +3366,8 @@ object webstreamerfo: twebstreamerfo
       face.localprops = [fal_fadirection]
       face.template = tfacecomp7
       hint = 'Start player '
-      bounds_x = 9
-      bounds_y = 44
+      bounds_x = 21
+      bounds_y = 40
       bounds_cx = 28
       bounds_cy = 28
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
