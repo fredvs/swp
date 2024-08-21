@@ -3429,7 +3429,7 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 58
       optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread, oe1_thumbtrack]
       onchange = ChangePlugSetSoundTouch
-      value = 0.51
+      value = 0.5
       scrollbar.options = [sbo_thumbtrack, sbo_clicktovalue, sbo_moveauto, sbo_showauto, sbo_valuekeys]
       scrollbar.buttonlength = 17
       scrollbar.buttonminlength = -1
@@ -3466,20 +3466,20 @@ object webstreamerfo: twebstreamerfo
       caption = '100'
       reffontheight = 15
     end
-    object tlabel4: tlabel
+    object lte: tlabel
       color = -2147483645
       taborder = 13
-      bounds_x = 261
+      bounds_x = 258
       bounds_y = 4
       bounds_cx = 41
       bounds_cy = 15
       caption = 'Tempo'
       reffontheight = 15
     end
-    object tlabel5: tlabel
+    object lpi: tlabel
       color = -2147483645
       taborder = 14
-      bounds_x = 309
+      bounds_x = 307
       bounds_y = 4
       bounds_cx = 30
       bounds_cy = 15

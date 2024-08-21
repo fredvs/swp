@@ -4,12 +4,42 @@ unit webstreamer;
 interface
 
 uses
- uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
- msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
- msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
- msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
- msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
- msedragglob,msegrids,msegridsglob;
+  uos_flat,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob;
 
 type
   twebstreamerfo = class(tdockform)
@@ -32,8 +62,8 @@ type
     edpitch: tslider;
     lvl: tlabel;
     lvr: tlabel;
-    tlabel4: tlabel;
-    tlabel5: tlabel;
+    lte: tlabel;
+    lpi: tlabel;
     tstatfile1: tstatfile;
     btempo: TButton;
     brecord: TButton;
@@ -49,13 +79,13 @@ type
     panelwave: tpaintbox;
     timagelist3: timagelist;
     griddisp: tstringgrid;
-   showgrid: tbooleanedit;
-   tfacecomp5: tfacecomp;
-   tfacecomp6: tfacecomp;
-   tfacecomp7: tfacecomp;
-   tfacecomp8: tfacecomp;
-   tfacecomp9: tfacecomp;
-   tfacecomp10: tfacecomp;
+    showgrid: tbooleanedit;
+    tfacecomp5: tfacecomp;
+    tfacecomp6: tfacecomp;
+    tfacecomp7: tfacecomp;
+    tfacecomp8: tfacecomp;
+    tfacecomp9: tfacecomp;
+    tfacecomp10: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -114,7 +144,18 @@ begin
   else
     abool := True;
   if brecord.tag = 0 then
+  begin
+    if edtempo.Value = 0.5 then
+      lte.Caption := 'Tempo'
+    else
+      lte.Caption := ' T' + IntToStr(round(edtempo.Value * 200));
+    if edpitch.Value = 0.5 then
+      lpi.Caption := 'Pitch'
+    else
+      lpi.Caption := 'P' + IntToStr(round(edpitch.Value * 200));
     uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+  end;
+
 end;
 
 procedure twebstreamerfo.InitDrawLive();
@@ -198,7 +239,7 @@ begin
     plugsoundtouch := True
   else
     plugsoundtouch := False;
-  
+
   tstringdisp1.font.color := cl_blue;
   tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -214,11 +255,11 @@ begin
     aformat := 0
   else
     aformat := 2;
-  
+
   sizebuf := 1024 * 8;
- 
+
   application.ProcessMessages;
-  
+
   webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, 0, False);
 
   // Add a Input from Audio URL with custom parameters
@@ -243,10 +284,10 @@ begin
       arec := ordir + arecnp;
       uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, 0);
 
-      btempo.Enabled  := False;
-      edtempo.Enabled := False;
-      edpitch.Enabled := False;
-      breset.Enabled  := False;
+      btempo.Enabled        := False;
+      edtempo.Enabled       := False;
+      edpitch.Enabled       := False;
+      breset.Enabled        := False;
       //brecord.color   := cl_red;
       brecord.face.template := tfacecomp9;
     end;
@@ -296,23 +337,23 @@ begin
       // Change plugin settings
     end;
 
-    btnStart.Enabled  := False;
-    btnStart.face.template := tfacecomp6;
-    btnResume.Enabled := False;
-    btnResume.visible := false;
+    btnStart.Enabled        := False;
+    btnStart.face.template  := tfacecomp6;
+    btnResume.Enabled       := False;
+    btnResume.Visible       := False;
     btnResume.face.template := tfacecomp6;
-    btnStop.Enabled   := True;
-    btnStop.face.template := tfacecomp7;
-    btnPause.Enabled  := True;
-    btnpause.visible := true;
-    btnPause.face.template := tfacecomp7;
-  
-    brecord.Enabled   := False;
+    btnStop.Enabled         := True;
+    btnStop.face.template   := tfacecomp7;
+    btnPause.Enabled        := True;
+    btnpause.Visible        := True;
+    btnPause.face.template  := tfacecomp7;
+
+    brecord.Enabled       := False;
     brecord.face.template := tfacecomp7;
-  
+
     if brecord.tag = 1 then
       brecord.face.template := tfacecomp9;
-     // brecord.color := cl_red;
+    // brecord.color := cl_red;
 
     tstringdisp1.font.color := cl_black;
     if brecord.tag = 1 then
@@ -321,17 +362,17 @@ begin
       tstringdisp1.Value    := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
-      begin
-      brecord.Caption := 'Recording...';
+    begin
+      brecord.Caption       := 'Recording...';
       brecord.face.template := tfacecomp9;
-      end
-      else
-      begin
-      brecord.Caption := 'Playing...';
+    end
+    else
+    begin
+      brecord.Caption       := 'Playing...';
       brecord.face.template := tfacecomp7;
-      end;
-      
-     onchangevol(nil);
+    end;
+
+    onchangevol(nil);
 
     tstringdisp1.face.template := tfacecomp4;
 
@@ -435,19 +476,19 @@ begin
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
-  tmainmenu1.menu.itembynames(['config','playaf']).Checked := runselect.Value;
+  tmainmenu1.menu.itembynames(['config', 'playaf']).Checked := runselect.Value;
 
   tmainmenu1.menu.itembynames(['showgrid']).Checked := showgrid.Value;
-  
+
   onchangeshowwave(nil);
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '        Simple Webstream Player v1.' + IntToStr(version);
 
   Visible := True;
-  
+
   application.ProcessMessages;
- 
+
   isinit := True;
 
 end;
@@ -455,74 +496,74 @@ end;
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   uos_Stop(webindex);
-    btnStart.Enabled  := True;
-    btnStart.face.template := tfacecomp7;
-    btnResume.Enabled := False;
-    btnResume.visible := false;
-    btnResume.face.template := tfacecomp6;
-    btnStop.Enabled   := False;
-    btnStop.face.template := tfacecomp6;
-    btnPause.Enabled  := False;
-    btnpause.visible := true;
-    btnPause.face.template := tfacecomp6;
-    brecord.Enabled   := True;
-    brecord.face.template := tfacecomp7;
-    
-  btempo.Enabled    := True;
-  breset.Enabled    := True;
-  edtempo.Enabled   := True;
-  edpitch.Enabled   := True;
+  btnStart.Enabled        := True;
+  btnStart.face.template  := tfacecomp7;
+  btnResume.Enabled       := False;
+  btnResume.Visible       := False;
+  btnResume.face.template := tfacecomp6;
+  btnStop.Enabled         := False;
+  btnStop.face.template   := tfacecomp6;
+  btnPause.Enabled        := False;
+  btnpause.Visible        := True;
+  btnPause.face.template  := tfacecomp6;
+  brecord.Enabled         := True;
+  brecord.face.template   := tfacecomp7;
+
+  btempo.Enabled  := True;
+  breset.Enabled  := True;
+  edtempo.Enabled := True;
+  edpitch.Enabled := True;
   if brecord.tag = 1 then
     tstringdisp1.Value := 'Rec saved: ' + arecnp
   else
-    tstringdisp1.Value := historyfn.Value + ' stopped...';
-  brecord.tag          := 0;
-  brecord.Caption      := 'Record';
+    tstringdisp1.Value  := historyfn.Value + ' stopped...';
+  brecord.tag           := 0;
+  brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
-//  brecord.color        := $B6C4AF;
+  //  brecord.color        := $B6C4AF;
   tstringdisp1.face.template := tfacecomp3;
-  
+
   uos_free;
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   uos_Stop(webindex);
- // uos_free;
+  // uos_free;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-   btnStart.Enabled  := False;
-    btnStart.face.template := tfacecomp6;
-    btnResume.Enabled := true;
-    btnResume.visible := true;
-    btnResume.face.template := tfacecomp7;
-    btnStop.Enabled   := true;
-    btnStop.face.template := tfacecomp7;
-    btnPause.Enabled  := False;
-    btnPause.visible := false;
-    btnPause.face.template := tfacecomp6;
-    brecord.Caption := 'Paused...';  
-  tstringdisp1.Value := historyfn.Value + ' paused...';
+  btnStart.Enabled        := False;
+  btnStart.face.template  := tfacecomp6;
+  btnResume.Enabled       := True;
+  btnResume.Visible       := True;
+  btnResume.face.template := tfacecomp7;
+  btnStop.Enabled         := True;
+  btnStop.face.template   := tfacecomp7;
+  btnPause.Enabled        := False;
+  btnPause.Visible        := False;
+  btnPause.face.template  := tfacecomp6;
+  brecord.Caption         := 'Paused...';
+  tstringdisp1.Value      := historyfn.Value + ' paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-   btnStart.Enabled   := False;
-   btnStart.face.template := tfacecomp6;
-    btnResume.Enabled := false;
-    btnResume.visible := false;
-    btnResume.face.template := tfacecomp6;
-    btnStop.Enabled   := true;
-    btnStop.face.template := tfacecomp7;
-    btnPause.Enabled  := true;
-    btnpause.visible := true;
-    btnPause.face.template := tfacecomp7;
-    brecord.Caption := 'Resumed...';
- tstringdisp1.Value := historyfn.Value + ' resumed...';
+  btnStart.Enabled        := False;
+  btnStart.face.template  := tfacecomp6;
+  btnResume.Enabled       := False;
+  btnResume.Visible       := False;
+  btnResume.face.template := tfacecomp6;
+  btnStop.Enabled         := True;
+  btnStop.face.template   := tfacecomp7;
+  btnPause.Enabled        := True;
+  btnpause.Visible        := True;
+  btnPause.face.template  := tfacecomp7;
+  brecord.Caption         := 'Resumed...';
+  tstringdisp1.Value      := historyfn.Value + ' resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -534,23 +575,23 @@ begin
 end;
 
 procedure twebstreamerfo.onchangeshowwave(const Sender: TObject);
-begin 
+begin
   bounds_cymax := 0;
   bounds_cymin := 0;
-  
+
   if showwave.Value then
   begin
     panelwave.Visible := True;
     if showgrid.Value then
-    begin 
+    begin
       griddisp.Visible := True;
-      griddisp.top := panelwave.bottom + 1;
-      Height       := 18 + panelwave.bottom + griddisp.Height;
+      griddisp.top     := panelwave.bottom + 1;
+      Height           := 18 + panelwave.bottom + griddisp.Height;
     end
     else
     begin
-      griddisp.Visible := false;
-      Height := 18 + panelwave.bottom;
+      griddisp.Visible := False;
+      Height           := 18 + panelwave.bottom;
     end;
   end
   else
@@ -559,17 +600,17 @@ begin
     if showgrid.Value then
     begin
       griddisp.Visible := True;
-      griddisp.top := panelwave.top;
-      Height       := 18 + griddisp.bottom;
+      griddisp.top     := panelwave.top;
+      Height           := 18 + griddisp.bottom;
     end
     else
     begin
-      griddisp.Visible := false;
-      Height       := 18 + panelcommand.bottom;
+      griddisp.Visible := False;
+      Height           := 18 + panelcommand.bottom;
     end;
   end;
   application.ProcessMessages;
-  
+
   bounds_cymax := bounds_cy;
   bounds_cymin := bounds_cy;
 
@@ -577,8 +618,8 @@ end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 begin
-  Height       := 154;
-  Visible      := False;
+  Height  := 154;
+  Visible := False;
 end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
@@ -593,17 +634,17 @@ procedure twebstreamerfo.onrec(const Sender: TObject);
 begin
   if brecord.tag = 0 then
   begin
-    brecord.tag     := 1;
+    brecord.tag           := 1;
     //brecord.color   := $FFB759;
     brecord.face.template := tfacecomp8;
-    brecord.Caption := 'Cue Record';
+    brecord.Caption       := 'Cue Record';
   end
   else
   begin
     //brecord.color   := $B6C4AF;
     brecord.face.template := tfacecomp7;
-    brecord.Caption := 'Record';
-    brecord.tag     := 0;
+    brecord.Caption       := 'Record';
+    brecord.tag           := 0;
   end;
 end;
 
@@ -611,7 +652,7 @@ procedure twebstreamerfo.ontempo(const Sender: TObject);
 begin
   if btempo.tag = 0 then
   begin
-    btempo.tag   := 1;
+    btempo.tag           := 1;
     btempo.face.template := tfacecomp10;
     //btempo.color := cl_green;
   end
@@ -619,7 +660,7 @@ begin
   begin
     //btempo.color := $B6C4AF;
     btempo.face.template := tfacecomp7;
-    btempo.tag   := 0;
+    btempo.tag           := 0;
   end;
 end;
 
@@ -642,7 +683,7 @@ end;
 
 procedure twebstreamerfo.onafterplayafter(const Sender: TObject);
 begin
-  runselect.Value := tmainmenu1.menu.itembynames(['config','playaf']).Checked;
+  runselect.Value := tmainmenu1.menu.itembynames(['config', 'playaf']).Checked;
 end;
 
 procedure twebstreamerfo.onclearhist(const Sender: TObject);
@@ -682,7 +723,7 @@ begin
       begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
-      end;  
+      end;
 end;
 
 end.
