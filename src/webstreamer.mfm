@@ -1,7 +1,7 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 759
-  bounds_y = 195
+  bounds_x = 440
+  bounds_y = 218
   bounds_cx = 346
   bounds_cy = 346
   bounds_cxmin = 346
@@ -3141,16 +3141,18 @@ object webstreamerfo: twebstreamerfo
     bounds_cy = 86
     object breset: tbutton
       Tag = 1
-      color = 10595738
+      color = -2147483645
       frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
+      face.localprops = []
+      face.template = tfacecomp7
       taborder = 1
       hint = ' Reset to tempo/pitch original '
-      bounds_x = 234
-      bounds_y = 55
+      bounds_x = 235
+      bounds_y = 48
       bounds_cx = 30
-      bounds_cy = 20
+      bounds_cy = 18
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '=1'
       font.height = 10
@@ -3277,7 +3279,7 @@ object webstreamerfo: twebstreamerfo
       frame.localprops1 = []
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
-      face.template = tfacecomp2
+      face.template = tfacecomp6
       taborder = 6
       hint = ' Stop player '
       bounds_x = 93
@@ -3302,7 +3304,7 @@ object webstreamerfo: twebstreamerfo
       frame.localprops1 = []
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
-      face.template = tfacecomp2
+      face.template = tfacecomp6
       taborder = 7
       hint = ' Resume player '
       bounds_x = 65
@@ -3332,7 +3334,7 @@ object webstreamerfo: twebstreamerfo
       frame.localprops1 = []
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
-      face.template = tfacecomp2
+      face.template = tfacecomp6
       taborder = 8
       hint = ' Pause player '
       bounds_x = 37
@@ -3347,6 +3349,7 @@ object webstreamerfo: twebstreamerfo
       font.name = 'stf_default'
       font.localprops = [flp_color, flp_height]
       imagenr = 1
+      imagenrdisabled = -1
       focusrectdist = 0
       onexecute = onpause
       sc = (
@@ -3361,7 +3364,7 @@ object webstreamerfo: twebstreamerfo
       frame.localprops1 = []
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
-      face.template = tfacecomp2
+      face.template = tfacecomp7
       hint = 'Start player '
       bounds_x = 9
       bounds_y = 44
@@ -3485,16 +3488,18 @@ object webstreamerfo: twebstreamerfo
     end
     object btempo: tbutton
       Tag = 1
-      color = 11977903
+      color = -2147483645
       frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
+      face.localprops = []
+      face.template = tfacecomp7
       taborder = 15
       hint = 'Enable/Disable Tempo/Pitch plugin'
-      bounds_x = 234
-      bounds_y = 28
+      bounds_x = 235
+      bounds_y = 24
       bounds_cx = 30
-      bounds_cy = 20
+      bounds_cy = 18
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'T / P'
       font.height = 10
@@ -3510,6 +3515,8 @@ object webstreamerfo: twebstreamerfo
       frame.optionsskin = [fso_flat]
       frame.localprops = [frl_optionsskin]
       frame.localprops1 = []
+      face.localprops = []
+      face.template = tfacecomp7
       taborder = 16
       hint = 'Enable/Disable Recording'
       bounds_x = 25
@@ -3946,5 +3953,80 @@ object webstreamerfo: twebstreamerfo
     template.fade_direction = gd_down
     left = 219
     top = 143
+  end
+  object tfacecomp6: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      9079434
+      6184542
+    )
+    template.fade_direction = gd_down
+    left = 217
+    top = 204
+  end
+  object tfacecomp7: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      12504246
+      7895160
+    )
+    template.fade_direction = gd_down
+    left = 212
+    top = 234
+  end
+  object tfacecomp8: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      16775403
+      15776608
+    )
+    template.fade_direction = gd_down
+    left = 131
+    top = 250
+  end
+  object tfacecomp9: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      16760253
+      -1610612729
+    )
+    template.fade_direction = gd_down
+    left = 133
+    top = 274
+  end
+  object tfacecomp10: tfacecomp
+    template.fade_pos.count = 2
+    template.fade_pos.items = (
+      0
+      1
+    )
+    template.fade_color.count = 2
+    template.fade_color.items = (
+      12910532
+      56064
+    )
+    template.fade_direction = gd_down
+    left = 158
+    top = 290
   end
 end

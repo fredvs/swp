@@ -51,6 +51,11 @@ type
     griddisp: tstringgrid;
    showgrid: tbooleanedit;
    tfacecomp5: tfacecomp;
+   tfacecomp6: tfacecomp;
+   tfacecomp7: tfacecomp;
+   tfacecomp8: tfacecomp;
+   tfacecomp9: tfacecomp;
+   tfacecomp10: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -242,7 +247,8 @@ begin
       edtempo.Enabled := False;
       edpitch.Enabled := False;
       breset.Enabled  := False;
-      brecord.color   := cl_red;
+      //brecord.color   := cl_red;
+      brecord.face.template := tfacecomp9;
     end;
 
     // add a Output into device with custom parameters
@@ -291,12 +297,20 @@ begin
     end;
 
     btnStart.Enabled  := False;
+    btnStart.face.template := tfacecomp6;
     btnResume.Enabled := False;
+    btnResume.face.template := tfacecomp6;
     btnStop.Enabled   := True;
+    btnStop.face.template := tfacecomp7;
     btnPause.Enabled  := True;
+    btnPause.face.template := tfacecomp7;
+  
     brecord.Enabled   := False;
+    brecord.face.template := tfacecomp7;
+  
     if brecord.tag = 1 then
-      brecord.color := cl_red;
+      brecord.face.template := tfacecomp9;
+     // brecord.color := cl_red;
 
     tstringdisp1.font.color := cl_black;
     if brecord.tag = 1 then
@@ -305,11 +319,17 @@ begin
       tstringdisp1.Value    := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
-      brecord.Caption := 'Recording...'
-    else
+      begin
+      brecord.Caption := 'Recording...';
+      brecord.face.template := tfacecomp9;
+      end
+      else
+      begin
       brecord.Caption := 'Playing...';
-
-    onchangevol(nil);
+      brecord.face.template := tfacecomp7;
+      end;
+      
+     onchangevol(nil);
 
     tstringdisp1.face.template := tfacecomp4;
 
@@ -433,11 +453,17 @@ end;
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   uos_Stop(webindex);
-  btnStart.Enabled  := True;
-  btnResume.Enabled := False;
-  btnStop.Enabled   := False;
-  btnPause.Enabled  := False;
-  brecord.Enabled   := True;
+    btnStart.Enabled  := True;
+    btnStart.face.template := tfacecomp7;
+    btnResume.Enabled := False;
+    btnResume.face.template := tfacecomp6;
+    btnStop.Enabled   := False;
+    btnStop.face.template := tfacecomp6;
+    btnPause.Enabled  := False;
+    btnPause.face.template := tfacecomp6;
+    brecord.Enabled   := True;
+    brecord.face.template := tfacecomp7;
+    
   btempo.Enabled    := True;
   breset.Enabled    := True;
   edtempo.Enabled   := True;
@@ -448,7 +474,8 @@ begin
     tstringdisp1.Value := historyfn.Value + ' stopped...';
   brecord.tag          := 0;
   brecord.Caption      := 'Record';
-  brecord.color        := $B6C4AF;
+  brecord.face.template := tfacecomp7;
+//  brecord.color        := $B6C4AF;
   tstringdisp1.face.template := tfacecomp3;
   
   uos_free;
@@ -463,21 +490,31 @@ end;
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-  btnStart.Enabled   := False;
-  btnResume.Enabled  := True;
-  btnStop.Enabled    := True;
-  btnPause.Enabled   := False;
+   btnStart.Enabled  := False;
+    btnStart.face.template := tfacecomp6;
+    btnResume.Enabled := true;
+    btnResume.face.template := tfacecomp7;
+    btnStop.Enabled   := true;
+    btnStop.face.template := tfacecomp7;
+    btnPause.Enabled  := False;
+    btnPause.face.template := tfacecomp6;
+  
   tstringdisp1.Value := historyfn.Value + ' paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-  btnStart.Enabled   := False;
-  btnResume.Enabled  := False;
-  btnStop.Enabled    := True;
-  btnPause.Enabled   := True;
-  tstringdisp1.Value := historyfn.Value + ' resumed...';
+   btnStart.Enabled   := False;
+   btnStart.face.template := tfacecomp6;
+    btnResume.Enabled := false;
+    btnResume.face.template := tfacecomp6;
+    btnStop.Enabled   := true;
+    btnStop.face.template := tfacecomp7;
+    btnPause.Enabled  := true;
+    btnPause.face.template := tfacecomp7;
+
+ tstringdisp1.Value := historyfn.Value + ' resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -549,12 +586,14 @@ begin
   if brecord.tag = 0 then
   begin
     brecord.tag     := 1;
-    brecord.color   := $FFB759;
+    //brecord.color   := $FFB759;
+    brecord.face.template := tfacecomp8;
     brecord.Caption := 'Cue Record';
   end
   else
   begin
-    brecord.color   := $B6C4AF;
+    //brecord.color   := $B6C4AF;
+    brecord.face.template := tfacecomp7;
     brecord.Caption := 'Record';
     brecord.tag     := 0;
   end;
@@ -565,11 +604,13 @@ begin
   if btempo.tag = 0 then
   begin
     btempo.tag   := 1;
-    btempo.color := cl_green;
+    btempo.face.template := tfacecomp10;
+    //btempo.color := cl_green;
   end
   else
   begin
-    btempo.color := $B6C4AF;
+    //btempo.color := $B6C4AF;
+    btempo.face.template := tfacecomp7;
     btempo.tag   := 0;
   end;
 end;
