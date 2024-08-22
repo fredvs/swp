@@ -10,12 +10,8 @@ Audio library: uos 1.8.0: https://github.com/fredvs/uos
 
 Plugin: SoundTouch http://www.surina.net/soundtouch/
 
-![simplewebplayer_1](https://github.com/user-attachments/assets/265720a1-12e2-49a0-9a83-db00f5002705)
+![simplewebplayer_5](https://github.com/user-attachments/assets/4ac08b23-07d1-4969-b580-299c6e01db25)
 
-![simplewebplayer_2](https://github.com/user-attachments/assets/d560a654-fc98-4b3f-8ce0-a6e7c95a24d7)
-
-![simplewebplayer_3](https://github.com/user-attachments/assets/90a6cf98-3d24-4cec-a912-570feebbe220)
-
-![simplewebplayer_4](https://github.com/user-attachments/assets/943dd7b1-d3b1-49f7-b4e5-905c212147ad)
+![simplewebplayer_6](https://github.com/user-attachments/assets/b7d48c31-51c1-45d5-8b4e-94e5f0fb210f)
 
 Fred van Stappen <fiens@hotmail.com>
