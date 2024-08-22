@@ -8,6 +8,8 @@ Graphic widgetset: MSEgui 5.10.4: https://github.com/mse-org/mseide-msegui
 
 Audio library: uos 1.8.0: https://github.com/fredvs/uos
 
+Plugin: SoundTouch http://www.surina.net/soundtouch/
+
 ![simplewebplayer_1](https://github.com/user-attachments/assets/265720a1-12e2-49a0-9a83-db00f5002705)
 
 ![simplewebplayer_2](https://github.com/user-attachments/assets/d560a654-fc98-4b3f-8ce0-a6e7c95a24d7)

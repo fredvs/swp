@@ -483,7 +483,7 @@ begin
   onchangeshowwave(nil);
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
-    '        Simple Webstream Player v1.' + IntToStr(version);
+    '                  Simple Webstream Player v1.' + IntToStr(version);
 
   Visible := True;
 

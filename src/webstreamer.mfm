@@ -3886,10 +3886,10 @@ object webstreamerfo: twebstreamerfo
         state = [as_localcaption, as_localonexecute, as_localonafterexecute]
       end    
       item
-        submenu.count = 7
+        submenu.count = 8
         submenu.items = <        
           item
-            caption = '          Simple Webstream Player'
+            caption = 'Simple Webstream Player'
             name = 'title'
             state = [as_disabled, as_localdisabled, as_localcaption]
           end        
@@ -3909,11 +3909,15 @@ object webstreamerfo: twebstreamerfo
             state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
+            caption = 'Plugin: SoundTouch: http://www.surina.net/soundtouch/'
+            state = [as_disabled, as_localdisabled, as_localcaption]
+          end        
+          item
             state = [as_localcaption]
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
-            caption = 'Fred van Stappen 2024 <fiens@hotmail.com>'
+            caption = '               Fred van Stappen 2024 <fiens@hotmail.com>'
             state = [as_disabled, as_localdisabled, as_localcaption]
           end>
         caption = ' &About  '
