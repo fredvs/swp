@@ -4045,8 +4045,9 @@ object webstreamerfo: twebstreamerfo
             onexecute = showclear
           end>
         caption = '  Config '
+        hint = ' Select the output device to use '
         name = 'config'
-        state = [as_localcaption, as_localonexecute, as_localonafterexecute]
+        state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
       end    
       item
         submenu.count = 8
@@ -4076,7 +4077,7 @@ object webstreamerfo: twebstreamerfo
             state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
-            state = [as_invisible, as_localinvisible, as_localcaption]
+            state = [as_localinvisible, as_localcaption]
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
