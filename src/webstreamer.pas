@@ -86,6 +86,7 @@ type
     tfacecomp8: tfacecomp;
     tfacecomp9: tfacecomp;
     tfacecomp10: tfacecomp;
+    edeviceselected: thistoryedit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -111,6 +112,8 @@ type
     procedure showclear(const Sender: TObject);
     procedure showlis(const Sender: TObject);
     procedure oncellev(const Sender: TObject; var info: celleventinfoty);
+    procedure oncheckdevices();
+    procedure onafterdevice(const Sender: TObject);
   end;
 
 const
@@ -120,7 +123,7 @@ var
   webstreamerfo: twebstreamerfo;
   webindex, webinindex, weboutindex, webPlugIndex: integer;
   rectrecform: rectty;
-  xreclive: integer;
+  xreclive, devcount, deviceselected: integer;
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   ordir, arecnp: string;
@@ -134,6 +137,50 @@ implementation
 
 uses
   webstreamer_mfm;
+
+procedure twebstreamerfo.oncheckdevices();
+var
+  x: integer;
+  prestr: string;
+begin
+  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
+    application.terminate;
+
+  UOS_GetInfoDevice();
+
+  if UOSDeviceCount < 21 then
+    devcount := UOSDeviceCount
+  else
+    devcount := 21;
+  x := 0;
+  while x < devcount do
+  begin
+    if x < 10 then
+      prestr := ' '
+    else
+      prestr := '';
+
+    if (msestring(UOSDeviceInfos[x].DeviceType) = 'In/Out') and
+      (lowercase(msestring(UOSDeviceInfos[x].DeviceName)) <> 'default') then
+      tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Caption :=
+        '-1 = Default = ' + msestring(UOSDeviceInfos[x].DeviceName);
+
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := True;
+
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Caption :=
+      prestr + msestring(IntToStr(UOSDeviceInfos[x].DeviceNum)) +
+      ' = ' + msestring(UOSDeviceInfos[x].DeviceName);
+    Inc(x);
+  end;
+
+  deviceselected := StrToInt(edeviceselected.Value); // for stat file 
+
+  if deviceselected <> -1 then
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
+      [as_checked, as_localchecked, as_localcaption, as_localonafterexecute];
+
+  uos_free;
+end;
 
 procedure twebstreamerfo.ChangePlugSetSoundTouch(const Sender: TObject);
 var
@@ -273,7 +320,7 @@ begin
   if webinindex <> -1 then
   begin
 
-    weboutindex := uos_AddIntoDevOut(webindex, -1, -1, uos_InputGetSampleRate(webindex, webinindex),
+    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, -1, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
     if brecord.tag = 1 then
@@ -288,7 +335,6 @@ begin
       edtempo.Enabled       := False;
       edpitch.Enabled       := False;
       breset.Enabled        := False;
-      //brecord.color   := cl_red;
       brecord.face.template := tfacecomp9;
     end;
 
@@ -353,8 +399,7 @@ begin
 
     if brecord.tag = 1 then
       brecord.face.template := tfacecomp9;
-    // brecord.color := cl_red;
-
+ 
     tstringdisp1.font.color := cl_black;
     if brecord.tag = 1 then
       tstringdisp1.Value    := 'Play + Record ' + historyfn.Value
@@ -377,6 +422,8 @@ begin
     tstringdisp1.face.template := tfacecomp4;
 
     InitDrawLive();
+
+    tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := False;
 
     application.ProcessMessages;
 
@@ -485,9 +532,9 @@ begin
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '                  Simple Webstream Player v1.' + IntToStr(version);
 
-  Visible := True;
+  oncheckdevices();
 
-  application.ProcessMessages;
+  Visible := True;
 
   isinit := True;
 
@@ -520,16 +567,15 @@ begin
   brecord.tag           := 0;
   brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
-  //  brecord.color        := $B6C4AF;
   tstringdisp1.face.template := tfacecomp3;
-
   uos_free;
+  tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
+
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   uos_Stop(webindex);
-  // uos_free;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
@@ -635,13 +681,11 @@ begin
   if brecord.tag = 0 then
   begin
     brecord.tag           := 1;
-    //brecord.color   := $FFB759;
     brecord.face.template := tfacecomp8;
     brecord.Caption       := 'Cue Record';
   end
   else
   begin
-    //brecord.color   := $B6C4AF;
     brecord.face.template := tfacecomp7;
     brecord.Caption       := 'Record';
     brecord.tag           := 0;
@@ -654,11 +698,9 @@ begin
   begin
     btempo.tag           := 1;
     btempo.face.template := tfacecomp10;
-    //btempo.color := cl_green;
   end
   else
   begin
-    //btempo.color := $B6C4AF;
     btempo.face.template := tfacecomp7;
     btempo.tag           := 0;
   end;
@@ -726,5 +768,21 @@ begin
       end;
 end;
 
-end.
+procedure twebstreamerfo.onafterdevice(const Sender: TObject);
+var
+  x: integer = 0;
+begin
+  x := 0;
+  if tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Checked then
+    deviceselected := -1
+  else
+    while x < devcount do
+    begin
+      if tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Checked then
+        deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
+      Inc(x);
+    end;
+  edeviceselected.Value := IntToStr(deviceselected); // for stat file 
+end;
 
+end.

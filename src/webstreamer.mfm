@@ -3047,7 +3047,6 @@ object webstreamerfo: twebstreamerfo
     reffontheight = 15
     object runselect: tbooleanedit
       color = -2147483645
-      hint = 'Show/Hide wave image'
       bounds_x = 158
       bounds_y = 3
       bounds_cx = 31
@@ -3098,7 +3097,6 @@ object webstreamerfo: twebstreamerfo
       bounds_y = 0
       bounds_cx = 12
       bounds_cy = 22
-      statfile = tstatfile1
       optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
       optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
       font.name = 'stf_default'
@@ -3125,6 +3123,56 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 17
       statfile = tstatfile1
       visible = False
+    end
+    object edeviceselected: thistoryedit
+      optionswidget1 = [ow1_fontglyphheight]
+      color = -2147483645
+      frame.levelo = 0
+      frame.framei_left = 0
+      frame.framei_top = 0
+      frame.framei_right = 0
+      frame.framei_bottom = 0
+      frame.captionpos = cp_lefttop
+      frame.captiondist = 0
+      frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
+      frame.localprops1 = [frl1_captiondist]
+      frame.button.face.fade_direction = gd_down
+      frame.button.face.localprops = []
+      frame.button.frame.optionsskin = [fso_flat]
+      frame.button.frame.localprops = [frl_optionsskin]
+      frame.button.frame.localprops1 = []
+      frame.buttons.count = 1
+      frame.buttons.items = <      
+        item
+          face.fade_direction = gd_down
+          face.localprops = []
+          frame.optionsskin = [fso_flat]
+          frame.localprops = [frl_optionsskin]
+          frame.localprops1 = []
+        end>
+      taborder = 4
+      visible = False
+      bounds_x = 16
+      bounds_y = 1
+      bounds_cx = 12
+      bounds_cy = 22
+      statfile = tstatfile1
+      optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
+      optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
+      font.name = 'stf_default'
+      font.localprops = []
+      value = '-1'
+      dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
+      dropdown.dropdownrowcount = 100
+      dropdown.cols.count = 1
+      dropdown.cols.colorselect = 16764303
+      dropdown.cols.items = <      
+        item
+          textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
+          colorselect = 16764303
+        end>
+      dropdown.historymaxcount = 50
+      reffontheight = 15
     end
   end
   object panelcommand: tpaintbox
@@ -3541,7 +3589,7 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 55
+    bounds_x = 54
     bounds_y = 0
     bounds_cx = 237
     bounds_cy = 36
@@ -3558,7 +3606,7 @@ object webstreamerfo: twebstreamerfo
       face.localprops = [fal_fadirection]
       face.template = tfacecomp3
       hint = ' Reset to tempo/pitch original '
-      bounds_x = 158
+      bounds_x = 160
       bounds_y = 7
       bounds_cx = 30
       bounds_cy = 19
@@ -3864,7 +3912,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 2
+        submenu.count = 3
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -3873,6 +3921,157 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localhint, as_localonafterexecute]
             options = [mao_checkbox, mao_shortcutcaption]
             onafterexecute = onafterplayafter
+          end        
+          item
+            submenu.count = 22
+            submenu.items = <            
+              item
+                caption = '-1 = Default'
+                name = '-1'
+                state = [as_checked, as_localchecked, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 0 = Device 0'
+                name = '0'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 1 = Device 1'
+                name = '1'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 2 = Device 2'
+                name = '2'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 3 = Device 3'
+                name = '3'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 4 = Device 4'
+                name = '4'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 5 = Device 5'
+                name = '5'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 6 = Device 6'
+                name = '6'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 7 = Device 7'
+                name = '7'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 8 = Device 8'
+                name = '8'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = ' 9 = Device 9'
+                name = '9'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '10 = Device 10'
+                name = '10'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '11 = Device 11'
+                name = '11'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '12 = Device 12'
+                name = '12'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '13 = Device 13'
+                name = '13'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '14 = Device 14'
+                name = '14'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '15 = Device 15'
+                name = '15'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '16 = Device 16'
+                name = '16'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '17 = Device 17'
+                name = '17'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '18 = Device 18'
+                name = '18'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '19 = Device 19'
+                name = '19'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '20'
+                state = [as_invisible, as_localinvisible, as_localcaption]
+                options = [mao_radiobutton, mao_shortcutcaption]
+              end>
+            caption = ' Audio Devices '
+            name = 'devices'
+            state = [as_localcaption]
           end        
           item
             caption = ' Clear history of URL'
@@ -3913,7 +4112,7 @@ object webstreamerfo: twebstreamerfo
             state = [as_disabled, as_localdisabled, as_localcaption]
           end        
           item
-            state = [as_localcaption]
+            state = [as_invisible, as_localinvisible, as_localcaption]
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
