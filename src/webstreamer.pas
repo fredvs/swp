@@ -44,7 +44,7 @@ uses
 type
   twebstreamerfo = class(tdockform)
     historyfn: thistoryedit;
-    tstringdisp1: tstringdisp;
+    infopanel: tstringdisp;
     panelcommand: tpaintbox;
     sliderimage: tbitmapcomp;
     breset: TButton;
@@ -72,9 +72,9 @@ type
     runselect: tbooleanedit;
     showwave: tbooleanedit;
     thistoryedit2: thistoryedit;
-    tstringdisp2: tstringdisp;
-    tbutton2: TButton;
-    tbutton3: TButton;
+    deleteallurl: tstringdisp;
+    byes: TButton;
+    bno: TButton;
     tfacecomp4: tfacecomp;
     panelwave: tpaintbox;
     timagelist3: timagelist;
@@ -176,7 +176,7 @@ begin
   deviceselected := edeviceselected.Value; // for stat file 
 
   if deviceselected <> -1 then
-    tmainmenu1.menu.itembynames(['config', 'devices', inttostr(deviceselected)]).state :=
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
       [as_checked, as_localchecked, as_localcaption, as_localonafterexecute];
 
   uos_free;
@@ -287,8 +287,8 @@ begin
   else
     plugsoundtouch := False;
 
-  tstringdisp1.font.color := cl_blue;
-  tstringdisp1.Value := 'Trying to get ' + historyfn.Value;
+  infopanel.font.color := cl_blue;
+  infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
@@ -400,11 +400,11 @@ begin
     if brecord.tag = 1 then
       brecord.face.template := tfacecomp9;
 
-    tstringdisp1.font.color := cl_black;
+    infopanel.font.color := cl_black;
     if brecord.tag = 1 then
-      tstringdisp1.Value    := 'Play + Record ' + historyfn.Value
+      infopanel.Value    := 'Play + Record ' + historyfn.Value
     else
-      tstringdisp1.Value    := 'Playing ' + historyfn.Value;
+      infopanel.Value    := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
     begin
@@ -419,7 +419,7 @@ begin
 
     onchangevol(nil);
 
-    tstringdisp1.face.template := tfacecomp4;
+    infopanel.face.template := tfacecomp4;
 
     InitDrawLive();
 
@@ -434,8 +434,8 @@ begin
   end
   else
   begin
-    tstringdisp1.font.color := cl_red;
-    tstringdisp1.Value      := 'URL did not accessed';
+    infopanel.font.color := cl_red;
+    infopanel.Value      := 'URL did not accessed';
   end;
 end;
 
@@ -561,13 +561,13 @@ begin
   edtempo.Enabled := True;
   edpitch.Enabled := True;
   if brecord.tag = 1 then
-    tstringdisp1.Value := 'Rec saved: ' + arecnp
+    infopanel.Value := 'Rec saved: ' + arecnp
   else
-    tstringdisp1.Value  := historyfn.Value + ' stopped...';
+    infopanel.Value     := historyfn.Value + ' stopped...';
   brecord.tag           := 0;
   brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
-  tstringdisp1.face.template := tfacecomp3;
+  infopanel.face.template := tfacecomp3;
   uos_free;
   tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
 
@@ -592,7 +592,7 @@ begin
   btnPause.Visible        := False;
   btnPause.face.template  := tfacecomp6;
   brecord.Caption         := 'Paused...';
-  tstringdisp1.Value      := historyfn.Value + ' paused...';
+  infopanel.Value         := historyfn.Value + ' paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
@@ -609,7 +609,7 @@ begin
   btnpause.Visible        := True;
   btnPause.face.template  := tfacecomp7;
   brecord.Caption         := 'Resumed...';
-  tstringdisp1.Value      := historyfn.Value + ' resumed...';
+  infopanel.Value         := historyfn.Value + ' resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -731,17 +731,17 @@ end;
 procedure twebstreamerfo.onclearhist(const Sender: TObject);
 begin
   historyfn.dropdown.valuelist.asarray := thistoryedit2.dropdown.valuelist.asarray;
-  tstringdisp2.Visible := False;
+  deleteallurl.Visible := False;
 end;
 
 procedure twebstreamerfo.cancelclear(const Sender: TObject);
 begin
-  tstringdisp2.Visible := False;
+  deleteallurl.Visible := False;
 end;
 
 procedure twebstreamerfo.showclear(const Sender: TObject);
 begin
-  tstringdisp2.Visible := True;
+  deleteallurl.Visible := True;
 end;
 
 procedure twebstreamerfo.showlis(const Sender: TObject);
@@ -767,7 +767,7 @@ end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
 var
-  x: integer = 0;
+  x: integer;
 begin
   x := 0;
   if tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Checked then
@@ -783,4 +783,3 @@ begin
 end;
 
 end.
-
