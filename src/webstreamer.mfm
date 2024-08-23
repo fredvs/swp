@@ -3124,54 +3124,18 @@ object webstreamerfo: twebstreamerfo
       statfile = tstatfile1
       visible = False
     end
-    object edeviceselected: thistoryedit
-      optionswidget1 = [ow1_fontglyphheight]
-      color = -2147483645
-      frame.levelo = 0
-      frame.framei_left = 0
-      frame.framei_top = 0
-      frame.framei_right = 0
-      frame.framei_bottom = 0
-      frame.captionpos = cp_lefttop
-      frame.captiondist = 0
-      frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
-      frame.localprops1 = [frl1_captiondist]
-      frame.button.face.fade_direction = gd_down
-      frame.button.face.localprops = []
-      frame.button.frame.optionsskin = [fso_flat]
-      frame.button.frame.localprops = [frl_optionsskin]
-      frame.button.frame.localprops1 = []
-      frame.buttons.count = 1
-      frame.buttons.items = <      
-        item
-          face.fade_direction = gd_down
-          face.localprops = []
-          frame.optionsskin = [fso_flat]
-          frame.localprops = [frl_optionsskin]
-          frame.localprops1 = []
-        end>
+    object edeviceselected: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
       taborder = 4
       visible = False
-      bounds_x = 16
-      bounds_y = 1
-      bounds_cx = 12
-      bounds_cy = 22
+      bounds_x = 6
+      bounds_y = 0
+      bounds_cx = 23
+      bounds_cy = 21
       statfile = tstatfile1
-      optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
-      optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
-      font.name = 'stf_default'
-      font.localprops = []
-      value = '-1'
-      dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
-      dropdown.dropdownrowcount = 100
-      dropdown.cols.count = 1
-      dropdown.cols.colorselect = 16764303
-      dropdown.cols.items = <      
-        item
-          textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
-          colorselect = 16764303
-        end>
-      dropdown.historymaxcount = 50
+      value = -1
+      valuemin = -1
       reffontheight = 15
     end
   end

@@ -86,7 +86,7 @@ type
     tfacecomp8: tfacecomp;
     tfacecomp9: tfacecomp;
     tfacecomp10: tfacecomp;
-    edeviceselected: thistoryedit;
+    edeviceselected: tintegeredit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -173,7 +173,7 @@ begin
     Inc(x);
   end;
 
-  deviceselected := StrToInt(edeviceselected.Value); // for stat file 
+  deviceselected := edeviceselected.Value; // for stat file 
 
   if deviceselected <> -1 then
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
@@ -399,7 +399,7 @@ begin
 
     if brecord.tag = 1 then
       brecord.face.template := tfacecomp9;
- 
+
     tstringdisp1.font.color := cl_black;
     if brecord.tag = 1 then
       tstringdisp1.Value    := 'Play + Record ' + historyfn.Value
@@ -782,7 +782,8 @@ begin
         deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
       Inc(x);
     end;
-  edeviceselected.Value := IntToStr(deviceselected); // for stat file 
+  edeviceselected.Value := deviceselected; // for stat file 
 end;
 
 end.
+
