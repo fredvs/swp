@@ -176,7 +176,7 @@ begin
   deviceselected := edeviceselected.Value; // for stat file 
 
   if deviceselected <> -1 then
-    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
+    tmainmenu1.menu.itembynames(['config', 'devices', inttostr(deviceselected)]).state :=
       [as_checked, as_localchecked, as_localcaption, as_localonafterexecute];
 
   uos_free;
@@ -755,9 +755,6 @@ begin
 end;
 
 procedure twebstreamerfo.oncellev(const Sender: TObject; var info: celleventinfoty);
-var
-  cellpos: gridcoordty;
-  x, thefocusedcell: integer;
 begin
   if isinit and griddisp.Visible then
     if (info.eventkind = cek_buttonrelease) then
