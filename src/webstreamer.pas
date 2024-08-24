@@ -115,7 +115,7 @@ type
     procedure oncheckdevices();
     procedure onafterdevice(const Sender: TObject);
     procedure onexit(const Sender: TObject);
-   procedure onupdevices(const sender: TObject);
+    procedure onupdevices(const Sender: TObject);
   end;
 
 const
@@ -146,21 +146,21 @@ var
   x: integer;
   prestr: string;
 begin
-//  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
-//    application.terminate;
-  if isinit = false then
-  UOS_GetInfoDevice() else uos_UpdateDevice;
-  
+  if isinit = False then
+    UOS_GetInfoDevice()
+  else
+    uos_UpdateDevice;
+
   tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Visible := True;
-  
-  for x:= 0 to 20 do
-   tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := false;
- 
-  if UOSDeviceCount < 21 then
+
+  for x := 0 to 30 do
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := False;
+
+  if UOSDeviceCount < 31 then
     devcount := UOSDeviceCount
   else
-    devcount := 21;
- 
+    devcount := 31;
+
   x := 0;
   while x < devcount do
   begin
@@ -188,7 +188,6 @@ begin
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
       [as_checked, as_localchecked, as_localcaption, as_localonafterexecute];
 
-//  uos_free;
 end;
 
 procedure twebstreamerfo.ChangePlugSetSoundTouch(const Sender: TObject);
@@ -288,16 +287,6 @@ var
   arec: string;
   aformat, sizebuf: integer;
 begin
-{
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
-    application.terminate;
-
-  if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
-    plugsoundtouch := True
-  else
-    plugsoundtouch := False;
- }   
-
   infopanel.font.color := cl_blue;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -434,8 +423,8 @@ begin
 
     InitDrawLive();
 
-    tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := false;
-      
+    tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
+
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
@@ -464,7 +453,6 @@ begin
   pa := AnsiString(ordir + 'lib\Windows\64bit\LibPortaudio-64.dll');
   mp := AnsiString(ordir + 'lib\Windows\64bit\LibMpg123-64.dll');
   st := AnsiString(ordir + 'lib\Windows\64bit\LibSoundTouch-64.dll');
-
   {$else}
   pa := AnsiString(ordir + 'lib\Windows\32bit\LibPortaudio-32.dll');
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
@@ -525,7 +513,7 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   {$endif}
-  
+
   if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
     application.terminate;
 
@@ -534,11 +522,9 @@ begin
   else
     plugsoundtouch := False;
 
- // brecord.color := $B6C4AF;
-  brecord.tag   := 0;
+  brecord.tag := 0;
 
- // btempo.color := $B6C4AF;
-  btempo.tag   := 0;
+  btempo.tag := 0;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
@@ -574,11 +560,10 @@ begin
   btnPause.face.template  := tfacecomp6;
   brecord.Enabled         := True;
   brecord.face.template   := tfacecomp7;
-
-  btempo.Enabled  := True;
-  breset.Enabled  := True;
-  edtempo.Enabled := True;
-  edpitch.Enabled := True;
+  btempo.Enabled          := True;
+  breset.Enabled          := True;
+  edtempo.Enabled         := True;
+  edpitch.Enabled         := True;
   if brecord.tag = 1 then
     infopanel.Value := 'Rec saved: ' + arecnp
   else
@@ -587,8 +572,7 @@ begin
   brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
-  // uos_free();
-   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
+  tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
 
 end;
 
@@ -822,9 +806,10 @@ begin
   application.terminate;
 end;
 
-procedure twebstreamerfo.onupdevices(const sender: TObject);
+procedure twebstreamerfo.onupdevices(const Sender: TObject);
 begin
-if btnStart.enabled = true then oncheckdevices();
+  if btnStart.Enabled = True then
+    oncheckdevices();
 end;
 
 end.

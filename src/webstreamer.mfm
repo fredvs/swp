@@ -3299,7 +3299,8 @@ object webstreamerfo: twebstreamerfo
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
-      caption = '>|'
+      caption = #9633
+      textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
       font.color = 15071196
       font.height = 13
@@ -3354,7 +3355,8 @@ object webstreamerfo: twebstreamerfo
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
-      caption = '| |'
+      caption = '||'
+      textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
       font.color = 15071196
       font.height = 11
@@ -3885,7 +3887,7 @@ object webstreamerfo: twebstreamerfo
             onafterexecute = onafterplayafter
           end        
           item
-            submenu.count = 22
+            submenu.count = 32
             submenu.items = <            
               item
                 caption = '-1 = Default'
@@ -3974,62 +3976,142 @@ object webstreamerfo: twebstreamerfo
               item
                 caption = '11 = Device 11'
                 name = '11'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '12 = Device 12'
                 name = '12'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '13 = Device 13'
                 name = '13'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '14 = Device 14'
                 name = '14'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '15 = Device 15'
                 name = '15'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '16 = Device 16'
                 name = '16'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '17 = Device 17'
                 name = '17'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '18 = Device 18'
                 name = '18'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '19 = Device 19'
                 name = '19'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end            
               item
                 caption = '20 = Device 20'
                 name = '20'
-                state = [as_invisible, as_localinvisible, as_localcaption]
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '21'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '22'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '23'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '24'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '25'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '26'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '27'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '28'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '29'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
+              end            
+              item
+                caption = '20 = Device 20'
+                name = '30'
+                state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onafterdevice
               end>
             caption = ' Set Audio Devices '
             hint = '  Set audio device to use '
