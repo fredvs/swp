@@ -115,6 +115,7 @@ type
     procedure oncheckdevices();
     procedure onafterdevice(const Sender: TObject);
     procedure onexit(const Sender: TObject);
+   procedure onupdevices(const sender: TObject);
   end;
 
 const
@@ -145,15 +146,21 @@ var
   x: integer;
   prestr: string;
 begin
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
-    application.terminate;
-
-  UOS_GetInfoDevice();
-
+//  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
+//    application.terminate;
+  if isinit = false then
+  UOS_GetInfoDevice() else uos_UpdateDevice;
+  
+  tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Visible := True;
+  
+  for x:= 0 to 20 do
+   tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := false;
+ 
   if UOSDeviceCount < 21 then
     devcount := UOSDeviceCount
   else
     devcount := 21;
+ 
   x := 0;
   while x < devcount do
   begin
@@ -181,7 +188,7 @@ begin
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(deviceselected)]).state :=
       [as_checked, as_localchecked, as_localcaption, as_localonafterexecute];
 
-  uos_free;
+//  uos_free;
 end;
 
 procedure twebstreamerfo.ChangePlugSetSoundTouch(const Sender: TObject);
@@ -281,6 +288,7 @@ var
   arec: string;
   aformat, sizebuf: integer;
 begin
+{
   if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
     application.terminate;
 
@@ -288,6 +296,7 @@ begin
     plugsoundtouch := True
   else
     plugsoundtouch := False;
+ }   
 
   infopanel.font.color := cl_blue;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
@@ -425,7 +434,7 @@ begin
 
     InitDrawLive();
 
-    tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := False;
+   // tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := False;
 
     application.ProcessMessages;
 
@@ -516,11 +525,19 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   {$endif}
+  
+  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
+    application.terminate;
 
-  brecord.color := $B6C4AF;
+  if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
+    plugsoundtouch := True
+  else
+    plugsoundtouch := False;
+
+ // brecord.color := $B6C4AF;
   brecord.tag   := 0;
 
-  btempo.color := $B6C4AF;
+ // btempo.color := $B6C4AF;
   btempo.tag   := 0;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
@@ -570,8 +587,8 @@ begin
   brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
-  uos_free();
-  tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
+  // uos_free();
+ // tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
 
 end;
 
@@ -580,7 +597,9 @@ begin
   if isexit = False then
   begin
     onstop(nil);
+    sleep(300);
     application.ProcessMessages;
+    uos_free();
     sleep(300);
   end;
 end;
@@ -718,6 +737,7 @@ begin
   if (isinit) and (runselect.Value) then
   begin
     onstop(nil);
+    sleep(100);
     application.ProcessMessages;
     onplay(nil);
   end;
@@ -787,15 +807,24 @@ begin
       Inc(x);
     end;
   edeviceselected.Value := deviceselected; // for stat file 
+  // if btnStart.enabled = false then onafterdropdown(nil);
 end;
 
 procedure twebstreamerfo.onexit(const Sender: TObject);
 begin
   isexit := True;
   onstop(nil);
+  sleep(300);
   application.ProcessMessages;
-  sleep(400);
+  uos_free();
+  sleep(300);
+  application.ProcessMessages;
   application.terminate;
+end;
+
+procedure twebstreamerfo.onupdevices(const sender: TObject);
+begin
+if btnStart.enabled = true then oncheckdevices();
 end;
 
 end.

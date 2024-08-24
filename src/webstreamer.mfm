@@ -3874,7 +3874,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 3
+        submenu.count = 4
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4031,9 +4031,16 @@ object webstreamerfo: twebstreamerfo
                 state = [as_invisible, as_localinvisible, as_localcaption]
                 options = [mao_radiobutton, mao_shortcutcaption]
               end>
-            caption = ' Audio Devices '
+            caption = ' Set Audio Devices '
+            hint = '  Set audio device to use '
             name = 'devices'
-            state = [as_localcaption]
+            state = [as_localcaption, as_localhint]
+          end        
+          item
+            caption = ' Refresh Audio devices '
+            hint = ' Refresh list of audio devices '
+            state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
+            onafterexecute = onupdevices
           end        
           item
             caption = ' Clear history of URL'
