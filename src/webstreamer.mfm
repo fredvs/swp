@@ -3855,7 +3855,7 @@ object webstreamerfo: twebstreamerfo
   end
   object tmainmenu1: tmainmenu
     facetemplate = tfacecomp5
-    menu.submenu.count = 4
+    menu.submenu.count = 5
     menu.submenu.items = <    
       item
         caption = ' Wave'
@@ -4085,6 +4085,11 @@ object webstreamerfo: twebstreamerfo
         caption = ' &About  '
         name = 'about'
         state = [as_localcaption]
+      end    
+      item
+        caption = '      Exit      '
+        state = [as_localcaption, as_localonexecute]
+        onexecute = onexit
       end>
     menu.state = [as_localcaption]
     left = 123

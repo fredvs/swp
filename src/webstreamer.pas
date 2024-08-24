@@ -114,6 +114,7 @@ type
     procedure oncellev(const Sender: TObject; var info: celleventinfoty);
     procedure oncheckdevices();
     procedure onafterdevice(const Sender: TObject);
+    procedure onexit(const Sender: TObject);
   end;
 
 const
@@ -126,6 +127,7 @@ var
   xreclive, devcount, deviceselected: integer;
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
+  isexit: Boolean = False;
   ordir, arecnp: string;
   pa, mp, st: string;
  {$if defined(darwin) and defined(macapp)}
@@ -568,14 +570,19 @@ begin
   brecord.Caption       := 'Record';
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
-  uos_free;
+  uos_free();
   tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
 
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
-  uos_Stop(webindex);
+  if isexit = False then
+  begin
+    onstop(nil);
+    application.ProcessMessages;
+    sleep(300);
+  end;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
@@ -782,4 +789,14 @@ begin
   edeviceselected.Value := deviceselected; // for stat file 
 end;
 
+procedure twebstreamerfo.onexit(const Sender: TObject);
+begin
+  isexit := True;
+  onstop(nil);
+  application.ProcessMessages;
+  sleep(400);
+  application.terminate;
+end;
+
 end.
+
