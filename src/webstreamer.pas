@@ -434,8 +434,8 @@ begin
 
     InitDrawLive();
 
-   // tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := False;
-
+    tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := false;
+      
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
@@ -588,7 +588,7 @@ begin
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
   // uos_free();
- // tmainmenu1.menu.itembynames(['config', 'devices']).Enabled := True;
+   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
 
 end;
 

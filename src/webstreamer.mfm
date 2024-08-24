@@ -4037,8 +4037,9 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localhint]
           end        
           item
-            caption = ' Refresh Audio devices '
+            caption = ' Refresh Audio Devices '
             hint = ' Refresh list of audio devices '
+            name = 'refresh'
             state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
             onafterexecute = onupdevices
           end        
