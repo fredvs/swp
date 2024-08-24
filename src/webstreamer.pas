@@ -119,7 +119,7 @@ type
   end;
 
 const
-  version = 240822;
+  version = 240824;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -515,6 +515,7 @@ begin
   {$endif}
 
   if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
+  if uos_LoadLib('system', nil, 'system', nil, nil, nil) = -1 then
     application.terminate;
 
   if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
