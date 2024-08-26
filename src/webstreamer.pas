@@ -168,9 +168,8 @@ begin
       prestr := ' '
     else
       prestr := '';
-
-    if (msestring(UOSDeviceInfos[x].DeviceType) = 'In/Out') and
-      (lowercase(msestring(UOSDeviceInfos[x].DeviceName)) <> 'default') then
+  
+    if UOSDeviceInfos[x].DefaultDevOut = True then
       tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Caption :=
         '-1 = Default = ' + msestring(UOSDeviceInfos[x].DeviceName);
 
