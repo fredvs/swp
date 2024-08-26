@@ -144,7 +144,8 @@ uses
 procedure twebstreamerfo.oncheckdevices();
 var
   x: integer;
-  prestr: string;
+  prestr, typ : string;
+  
 begin
   if isinit = False then
     UOS_GetInfoDevice()
@@ -171,13 +172,24 @@ begin
   
     if UOSDeviceInfos[x].DefaultDevOut = True then
       tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Caption :=
-        '-1 = Default = ' + msestring(UOSDeviceInfos[x].DeviceName);
-
+        '-1 = Default = Out = ' + msestring(UOSDeviceInfos[x].DeviceName);
+    
+    if UOSDeviceInfos[x].DeviceType = 'In' then
+    begin
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).enabled := false;
+    typ := ' = In ' ;
+    end
+    else
+    begin
+    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).enabled := true;
+    typ := ' = Out ' ;
+    end;
+    
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := True;
 
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Caption :=
-      prestr + msestring(IntToStr(UOSDeviceInfos[x].DeviceNum)) +
-      ' = ' + msestring(UOSDeviceInfos[x].DeviceName);
+      prestr + msestring(IntToStr(UOSDeviceInfos[x].DeviceNum)) + typ +
+      '= ' + msestring(UOSDeviceInfos[x].DeviceName);
     Inc(x);
   end;
 
