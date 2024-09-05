@@ -726,6 +726,7 @@ begin
     btempo.face.template := tfacecomp7;
     btempo.tag           := 0;
   end;
+    ChangePlugSetSoundTouch(nil);
 end;
 
 procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
