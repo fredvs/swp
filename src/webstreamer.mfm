@@ -3320,8 +3320,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 7
       hint = ' Resume player '
-      bounds_x = 49
-      bounds_y = 40
+      bounds_x = 52
+      bounds_y = 52
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_invisible, as_localdisabled, as_localinvisible, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
