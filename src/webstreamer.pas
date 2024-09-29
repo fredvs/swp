@@ -4,42 +4,12 @@ unit webstreamer;
 interface
 
 uses
-  uos_flat,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob;
+ uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,ctypes,
+ msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
+ msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
+ msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
+ msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
+ msedragglob,msegrids,msegridsglob;
 
 type
   twebstreamerfo = class(tdockform)
@@ -87,6 +57,10 @@ type
     tfacecomp9: tfacecomp;
     tfacecomp10: tfacecomp;
     edeviceselected: tintegeredit;
+   mp3format: tbooleaneditradio;
+   tlabel2: tlabel;
+   tlabel3: tlabel;
+   aacformat: tbooleaneditradio;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -119,18 +93,18 @@ type
   end;
 
 const
-  version = 240824;
+  version = 240919;
 
 var
   webstreamerfo: twebstreamerfo;
   webindex, webinindex, weboutindex, webPlugIndex: integer;
   rectrecform: rectty;
-  xreclive, devcount, deviceselected: integer;
+  xreclive, devcount, incview, deviceselected: integer;
   plugsoundtouch: Boolean = False;
   isinit: Boolean = False;
   isexit: Boolean = False;
   ordir, arecnp: string;
-  pa, mp, st: string;
+  pa, mp, aa, st: string;
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
  {$ENDIF}
@@ -281,7 +255,7 @@ begin
 
   if (rightlev >= 0) and (rightlev <= 1) then
     vuRight.Value := rightlev;
-
+ 
   if panelwave.Visible = True then
   begin
 
@@ -296,42 +270,59 @@ procedure twebstreamerfo.onplay(const Sender: TObject);
 var
   abool: Boolean;
   arec: string;
-  aformat, sizebuf: integer;
+  aformat, webformat, sizebuf: integer;
+  latency: cfloat;
 begin
   infopanel.font.color := cl_blue;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
+  incview := 0;
 
   uos_CreatePlayer(webindex);
   // Create the player.
   // PlayerIndex : from 0 to what your computer can do !
   // If PlayerIndex exists already, it will be overwriten...
+  
+   if mp3format.value = true then
+    webformat := 0
+  else
+    webformat := 2;
 
   if brecord.tag = 0 then
     aformat := 0
   else
     aformat := 2;
 
-  sizebuf := 1024 * 8;
-
+  if webformat = 2 then
+  begin
+  sizebuf := 16384;
+  latency := 0.5;
+  end else
+  begin
+  sizebuf := 8192;
+  latency := -1;
+  end;
+  
   application.ProcessMessages;
+  
+  // 'https://radiorecord.hostingradio.ru/ps96.aacp';
 
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, 0, False);
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, webformat, False);
 
   // Add a Input from Audio URL with custom parameters
   // URL : URL of audio file (like  'http://someserver/somesound.mp3')
   // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
   // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
   // FramesCount : default : -1 (1024)
-  // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus)
+  // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
   // ICY data on/off
 
   if webinindex <> -1 then
   begin
 
-    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, -1, uos_InputGetSampleRate(webindex, webinindex),
+    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
     if brecord.tag = 1 then
@@ -463,10 +454,12 @@ begin
   {$if defined(cpu64)}
   pa := AnsiString(ordir + 'lib\Windows\64bit\LibPortaudio-64.dll');
   mp := AnsiString(ordir + 'lib\Windows\64bit\LibMpg123-64.dll');
+  aa := AnsiString(ordir + 'lib\Windows\64bit\libfdk-aac-64.dll');
   st := AnsiString(ordir + 'lib\Windows\64bit\LibSoundTouch-64.dll');
   {$else}
   pa := AnsiString(ordir + 'lib\Windows\32bit\LibPortaudio-32.dll');
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
+  aa := AnsiString(ordir + 'lib\Windows\32bit\libfdk-aac-32.dll');
   st := AnsiString(ordir + 'lib\Windows\32bit\LibSoundTouch-32.dll');
   {$endif}
   {$ENDIF}
@@ -474,6 +467,7 @@ begin
   {$if defined(CPUAMD64) and defined(linux) }
   pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
   mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
+  aa := ordir + 'lib/Linux/64bit/libfdk-aac-64.so';
   st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
   {$ENDIF}
 
@@ -524,9 +518,9 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   {$endif}
-
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil) = -1 then
-  if uos_LoadLib('system', nil, 'system', nil, nil, nil) = -1 then
+  
+  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil, nil, pchar(aa)) = -1 then
+  if uos_LoadLib('system', nil, 'system', nil, nil, nil, nil, 'system') = -1 then
     application.terminate;
 
   if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
@@ -786,6 +780,8 @@ begin
       begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
+        if lowercase(griddisp[3][griddisp.focusedcell.row]) = 'aac' then
+        aacformat.value := true else mp3format.value := true; 
       end;
 end;
 

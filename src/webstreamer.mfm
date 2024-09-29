@@ -3294,8 +3294,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 6
       hint = ' Stop player '
-      bounds_x = 77
-      bounds_y = 40
+      bounds_x = 80
+      bounds_y = 52
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3350,8 +3350,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 8
       hint = ' Pause player '
-      bounds_x = 49
-      bounds_y = 40
+      bounds_x = 52
+      bounds_y = 52
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
@@ -3380,8 +3380,8 @@ object webstreamerfo: twebstreamerfo
       face.localprops = [fal_fadirection]
       face.template = tfacecomp7
       hint = 'Start player '
-      bounds_x = 21
-      bounds_y = 40
+      bounds_x = 24
+      bounds_y = 52
       bounds_cx = 28
       bounds_cy = 28
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3533,8 +3533,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp7
       taborder = 16
       hint = 'Enable/Disable Recording'
-      bounds_x = 25
-      bounds_y = 14
+      bounds_x = 28
+      bounds_y = 26
       bounds_cx = 77
       bounds_cy = 22
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3545,6 +3545,51 @@ object webstreamerfo: twebstreamerfo
       imagenr = 27
       focusrectdist = 0
       onexecute = onrec
+    end
+    object mp3format: tbooleaneditradio
+      color = -2147483645
+      frame.localprops = []
+      frame.localprops1 = []
+      frame.template = tframecomp2
+      face.localprops = []
+      taborder = 17
+      bounds_x = 25
+      bounds_y = 8
+      statfile = tstatfile1
+      value = True
+    end
+    object tlabel2: tlabel
+      color = -2147483645
+      taborder = 18
+      hint = 'The webstream is in MP3 format'
+      bounds_x = 43
+      bounds_y = 7
+      bounds_cx = 25
+      bounds_cy = 15
+      caption = 'MP3'
+      reffontheight = 15
+    end
+    object tlabel3: tlabel
+      color = -2147483645
+      taborder = 19
+      hint = 'The webstream is in MP3 format'
+      bounds_x = 93
+      bounds_y = 7
+      bounds_cx = 24
+      bounds_cy = 15
+      caption = 'AAC'
+      reffontheight = 15
+    end
+    object aacformat: tbooleaneditradio
+      color = -2147483645
+      frame.localprops = []
+      frame.localprops1 = []
+      frame.template = tframecomp2
+      face.localprops = []
+      taborder = 20
+      bounds_x = 75
+      bounds_y = 8
+      statfile = tstatfile1
     end
   end
   object deleteallurl: tstringdisp
@@ -3661,20 +3706,20 @@ object webstreamerfo: twebstreamerfo
     hint = '2x Click to select, Right click to add/delete row.'
     visible = False
     bounds_x = 0
-    bounds_y = 215
-    bounds_cx = 344
+    bounds_y = 216
+    bounds_cx = 346
     bounds_cy = 114
     font.name = 'stf_default'
     font.localprops = []
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
-    datacols.count = 3
+    datacols.count = 4
     datacols.colorselect = 16763002
     datacols.options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
     datacols.optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
     datacols.items = <    
       item
         colorselect = 16763002
-        width = 84
+        width = 70
         options = [co_rowselect, co_savevalue, co_savestate, co_cancopy, co_canpaste, co_mousescrollrow]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
         datalist.data = (
@@ -3690,7 +3735,7 @@ object webstreamerfo: twebstreamerfo
       end    
       item
         colorselect = 16763002
-        width = 59
+        width = 53
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_ycentered, tf_noselect]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
@@ -3707,9 +3752,27 @@ object webstreamerfo: twebstreamerfo
       end    
       item
         colorselect = 16763002
-        width = 186
+        width = 161
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_right, tf_ycentered, tf_noselect]
+        optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
+        datalist.data = (
+          ''
+          ''
+          ''
+          ''
+          ''
+          ''
+        )
+        valuefalse = '0'
+        valuetrue = '1'
+      end    
+      item
+        colorselect = 16763002
+        width = 48
+        options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
+        textflags = [tf_xcentered, tf_ycentered, tf_noselect]
+        textflagsactive = [tf_xcentered, tf_ycentered]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
         datalist.data = (
           ''
@@ -3729,7 +3792,7 @@ object webstreamerfo: twebstreamerfo
         face.template = tfacecomp3
         height = 16
         numstep = 1
-        captions.count = 3
+        captions.count = 4
         captions.items = <        
           item
             caption = 'Name'
@@ -3738,15 +3801,20 @@ object webstreamerfo: twebstreamerfo
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
-            caption = 'Type'
+            caption = 'Genre'
             face.localprops = []
             face.template = tfacecomp3
+            captiondist = 0
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'URL'
             face.localprops = []
             face.template = tfacecomp3
+            options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
+          end        
+          item
+            caption = 'Type'
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end>
       end>
@@ -3773,7 +3841,7 @@ object webstreamerfo: twebstreamerfo
         localprops = [flp_color, flp_colorselect]
       end>
     zebra_start = 1
-    datarowheight = 17
+    datarowheight = 15
     statfile = tstatfile1
     statpriority = 1
     oncellevent = oncellev
