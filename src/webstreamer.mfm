@@ -3553,6 +3553,7 @@ object webstreamerfo: twebstreamerfo
       frame.template = tframecomp2
       face.localprops = []
       taborder = 17
+      hint = 'The webstream is in MP3 format'
       bounds_x = 25
       bounds_y = 8
       statfile = tstatfile1
@@ -3572,7 +3573,7 @@ object webstreamerfo: twebstreamerfo
     object tlabel3: tlabel
       color = -2147483645
       taborder = 19
-      hint = 'The webstream is in MP3 format'
+      hint = 'The webstream is in AAC format'
       bounds_x = 93
       bounds_y = 7
       bounds_cx = 24
@@ -3587,6 +3588,7 @@ object webstreamerfo: twebstreamerfo
       frame.template = tframecomp2
       face.localprops = []
       taborder = 20
+      hint = 'The webstream is in AAC format'
       bounds_x = 75
       bounds_y = 8
       statfile = tstatfile1
@@ -4201,7 +4203,6 @@ object webstreamerfo: twebstreamerfo
             onexecute = showclear
           end>
         caption = '  Config '
-        hint = ' Select the output device to use '
         name = 'config'
         state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
       end    
