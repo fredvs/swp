@@ -679,7 +679,11 @@ begin
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
+var
+statname : string;
 begin
+  statname := msestring(IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'swp.ini');
+  tstatfile1.filename :=statname;
   Height  := 154;
   Visible := False;
 end;
