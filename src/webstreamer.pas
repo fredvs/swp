@@ -730,14 +730,14 @@ begin
       baddrow.top  := panelwave.bottom + round(ratio * 1);
       bdelrow.top  := panelwave.bottom + round(ratio * 1);
       griddisp.top := baddrow.bottom + round(ratio * 1);
-      Height       := (18 * round(fontheight / 12)) + griddisp.bottom + round(ratio * 4);
+      Height       := round(ratio * 18) + griddisp.bottom + round(ratio * 4);
     end
     else
     begin
       griddisp.Visible := False;
       baddrow.Visible  := False;
       bdelrow.Visible  := False;
-      Height           := (18 * round(fontheight / 12)) + panelwave.bottom;
+      Height           := round(ratio * 18) + panelwave.bottom;
     end;
   end
   else
@@ -749,16 +749,16 @@ begin
       baddrow.Visible  := True;
       bdelrow.Visible  := True;
       baddrow.top      := panelwave.top;
-      bdelrow.top      := panelwave.top + (1 * round(fontheight / 12));
-      griddisp.top     := baddrow.bottom + (1 * round(fontheight / 12));
-      Height           := (18 * round(fontheight / 12)) + griddisp.bottom + round(ratio * 4);
+      bdelrow.top      := panelwave.top + round(ratio);
+      griddisp.top     := baddrow.bottom + round(ratio);
+      Height           := round(ratio * 18) + griddisp.bottom + round(ratio * 4);
     end
     else
     begin
       griddisp.Visible := False;
       baddrow.Visible  := False;
       bdelrow.Visible  := False;
-      Height           := (18 * round(fontheight / 12)) + panelcommand.bottom + round(ratio * 4);
+      Height           := round(ratio * 18) + panelcommand.bottom + round(ratio * 4);
     end;
   end;
   application.ProcessMessages;
@@ -923,10 +923,7 @@ begin
           aacformat.Value := True
         else
           mp3format.Value := True;
-         //  griddisp.rowcount := griddisp.rowcount - 1;  
-      end//  if (ss_right in info.mouseeventinfopo^.shiftstate) then griddisp.rowcount := griddisp.rowcount + 1;
-  ;
-
+      end;
 end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
