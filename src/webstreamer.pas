@@ -320,7 +320,7 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
-  infopanel.font.color := $FF8C00;
+  infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
@@ -726,11 +726,10 @@ begin
       griddisp.Visible := True;
       baddrow.Visible  := True;
       bdelrow.Visible  := True;
-
-      baddrow.top  := panelwave.bottom + round(ratio * 1);
-      bdelrow.top  := panelwave.bottom + round(ratio * 1);
-      griddisp.top := baddrow.bottom + round(ratio * 1);
-      Height       := round(ratio * 18) + griddisp.bottom + round(ratio * 4);
+      griddisp.top := panelwave.bottom + round(ratio * 1);
+      baddrow.top  := griddisp.bottom + round(ratio * 1);
+      bdelrow.top  := griddisp.bottom + round(ratio * 1);
+      Height       := round(ratio * 18) + baddrow.bottom + round(ratio * 4);
     end
     else
     begin
@@ -748,17 +747,17 @@ begin
       griddisp.Visible := True;
       baddrow.Visible  := True;
       bdelrow.Visible  := True;
-      baddrow.top      := panelwave.top;
-      bdelrow.top      := panelwave.top + round(ratio);
-      griddisp.top     := baddrow.bottom + round(ratio);
-      Height           := round(ratio * 18) + griddisp.bottom + round(ratio * 4);
+      griddisp.top     := panelwave.top + round(ratio *1);
+      baddrow.top  := griddisp.bottom + round(ratio * 1);
+      bdelrow.top  := griddisp.bottom + round(ratio * 1);     
+      Height           := round(ratio * 18) + baddrow.bottom + round(ratio * 4);
     end
     else
     begin
       griddisp.Visible := False;
       baddrow.Visible  := False;
       bdelrow.Visible  := False;
-      Height           := round(ratio * 18) + panelcommand.bottom + round(ratio * 4);
+      Height           := round(ratio * 18) + panelcommand.bottom + round(ratio * 2);
     end;
   end;
   application.ProcessMessages;
@@ -772,9 +771,6 @@ var
   statname: string;
   i1, childn: integer;
 begin
-
-  Visible := False;
-  application.ProcessMessages;
 
   setlength(boundchildsp, childrencount);
   childn := childrencount;
@@ -976,12 +972,6 @@ var
   ratio: double;
 begin
   ratio        := fontheight / 11;
-  bounds_cxmax := 0;
-  bounds_cxmin := 0;
-  bounds_cymax := 0;
-  bounds_cymin := 0;
-  bounds_cxmax := round(346 * ratio);
-  bounds_cxmin := bounds_cxmax;
   font.Height  := fontheight;
 
   tmainmenu1.menu.font.Height       := fontheight;
@@ -1004,7 +994,7 @@ begin
   griddisp.font.Height        := fontheight;
   griddisp[0].Width           := round(70 * ratio);
   griddisp[1].Width           := round(52 * ratio);
-  griddisp[2].Width           := round(160 * ratio);
+  griddisp[2].Width           := round(158 * ratio);
   griddisp[3].Width           := round(48 * ratio);
   griddisp.fixrows[-1].Height := round(18 * ratio);
   griddisp.frame.sbvert.Width := round(12 * ratio);
@@ -1039,8 +1029,16 @@ begin
         end;
   end;
 
-  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
-  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
+//  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
+//  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
+
+  bounds_cxmax := 0;
+  bounds_cxmin := 0;
+  bounds_cymax := 0;
+  bounds_cymin := 0;
+  bounds_cxmax := round(346 * ratio);
+  bounds_cxmin := bounds_cxmax;
+
 
   onchangeshowwave(nil);
 

@@ -1,25 +1,22 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 455
-  bounds_y = 252
+  bounds_x = 478
+  bounds_y = 232
   bounds_cx = 346
-  bounds_cy = 346
+  bounds_cy = 352
   bounds_cxmin = 346
-  bounds_cymin = 154
+  bounds_cymin = 152
   bounds_cxmax = 346
-  bounds_cymax = 346
-  container.color = 13750737
+  container.color = 11977903
   container.frame.localprops = []
   container.frame.localprops1 = []
   container.frame.sbhorz.options = []
   container.frame.sbvert.options = []
-  container.face.localprops = []
-  container.face.template = tfacecomp3
   container.bounds = (
     0
     19
     346
-    327
+    333
   )
   mainmenu = tmainmenu1
   font.height = 12
@@ -3611,7 +3608,7 @@ object webstreamerfo: twebstreamerfo
       face.localprops = [fal_fadirection]
       face.template = tfacecomp3
       bounds_x = 150
-      bounds_y = 8
+      bounds_y = 10
       bounds_cx = 40
       bounds_cy = 19
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3665,6 +3662,8 @@ object webstreamerfo: twebstreamerfo
     frame.sbvert.face1.localprops = []
     frame.sbvert.facebutton.localprops = []
     frame.sbvert.facebutton.template = tfacecomp3
+    frame.sbvert.faceendbutton.localprops = []
+    frame.sbvert.faceendbutton.template = tfacecomp3
     frame.sbvert.framebutton.localprops = []
     frame.sbvert.framebutton.localprops1 = []
     frame.sbvert.framebutton.template = tframecomp2
@@ -3691,11 +3690,11 @@ object webstreamerfo: twebstreamerfo
     face.fade_direction = gd_down
     face.localprops = []
     taborder = 5
-    hint = '2x Click to select, Right click to add/delete row.'
+    hint = '2x Click to select a URL'
     visible = False
-    bounds_x = 0
-    bounds_y = 232
-    bounds_cx = 346
+    bounds_x = 1
+    bounds_y = 216
+    bounds_cx = 344
     bounds_cy = 98
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
     datacols.count = 4
@@ -3772,27 +3771,37 @@ object webstreamerfo: twebstreamerfo
         valuetrue = '1'
       end>
     fixrows.count = 1
+    fixrows.color = -2147483645
     fixrows.items = <    
       item
+        color = -2147483645
         height = 16
         numstep = 1
         captions.count = 4
         captions.items = <        
           item
             caption = 'Name'
+            face.localprops = []
+            face.template = tfacecomp3
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'Genre'
+            face.localprops = []
+            face.template = tfacecomp3
             captiondist = 0
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'URL'
+            face.localprops = []
+            face.template = tfacecomp3
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'Type'
+            face.localprops = []
+            face.template = tfacecomp3
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end>
       end>
@@ -3818,7 +3827,9 @@ object webstreamerfo: twebstreamerfo
         name = 'stf_default'
         localprops = [flp_color, flp_colorselect]
       end>
+    zebra_color = 16318453
     zebra_start = 1
+    zebra_height = 1
     datarowheight = 18
     statfile = tstatfile1
     statpriority = 1
@@ -3835,8 +3846,8 @@ object webstreamerfo: twebstreamerfo
     face.localprops = [fal_fadirection]
     face.template = tfacecomp3
     taborder = 6
-    bounds_x = 12
-    bounds_y = 216
+    bounds_x = 14
+    bounds_y = 315
     bounds_cx = 150
     bounds_cy = 16
     state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3856,7 +3867,7 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 7
     bounds_x = 181
-    bounds_y = 216
+    bounds_y = 315
     bounds_cx = 150
     bounds_cy = 16
     state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
