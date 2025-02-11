@@ -67,7 +67,6 @@ type
     btnPause: TButton;
     btnStart: TButton;
     edtempo: tslider;
-    tfacecomp2: tfacecomp;
     tfacecomp3: tfacecomp;
     edpitch: tslider;
     lvl: tlabel;
@@ -90,12 +89,10 @@ type
     timagelist3: timagelist;
     griddisp: tstringgrid;
     showgrid: tbooleanedit;
-    tfacecomp5: tfacecomp;
     tfacecomp6: tfacecomp;
     tfacecomp7: tfacecomp;
     tfacecomp8: tfacecomp;
     tfacecomp9: tfacecomp;
-    tfacecomp10: tfacecomp;
     edeviceselected: tintegeredit;
     mp3format: tbooleaneditradio;
     tlabel2: tlabel;
@@ -104,6 +101,8 @@ type
     edrecformat: tintegeredit;
     baddrow: TButton;
     bdelrow: TButton;
+    tfacecomp2: tfacecomp;
+    edstyle: tintegeredit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -135,12 +134,14 @@ type
     procedure onupdevices(const Sender: TObject);
     procedure onaftermenusetrecformat(const Sender: TObject);
     procedure resizesp(fontheight: integer);
+    procedure setstyle(style: integer);
     procedure addrow(const Sender: TObject);
     procedure deleterow(const Sender: TObject);
-  end;
+   procedure onexecswpstyle(const sender: TObject);
+   end;
 
 const
-  version = 240919;
+  version = 250211;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -153,6 +154,7 @@ var
   ordir, arecnp: string;
   pa, mp, aa, st: string;
   boundchildsp: array of boundchild;
+  noaac: Boolean = False;
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
  {$ENDIF}
@@ -246,9 +248,13 @@ begin
 end;
 
 procedure twebstreamerfo.InitDrawLive();
-const
-  transpcolor = $B6C4AF;
+var transpcolor : longint = $B6C4AF;
 begin
+
+if edstyle.value = 0 then transpcolor := $B6C4AF;
+if edstyle.value = 1 then transpcolor := cl_black;
+if edstyle.value = 2 then transpcolor := $E6E6E6;
+
   rectrecform.pos  := nullpoint;
   rectrecform.size := panelwave.size;
 
@@ -337,6 +343,8 @@ begin
   else
     webformat := 2;
 
+  if noaac then
+    webformat := 0;
 
   if brecord.tag = 0 then
     aformat := 0
@@ -457,11 +465,17 @@ begin
     if brecord.tag = 1 then
       brecord.face.template := tfacecomp9;
 
-    infopanel.font.color := cl_black;
+    if edstyle.Value = 0 then
+      infopanel.font.color := cl_black
+    else if edstyle.Value = 1 then
+      infopanel.font.color := cl_white
+    else if edstyle.Value = 2 then
+      infopanel.font.color := cl_black;  
+
     if brecord.tag = 1 then
-      infopanel.Value    := 'Play + Record ' + historyfn.Value
+      infopanel.Value := 'Play + Record ' + historyfn.Value
     else
-      infopanel.Value    := 'Playing ' + historyfn.Value;
+      infopanel.Value := 'Playing ' + historyfn.Value;
 
     if brecord.tag = 1 then
     begin
@@ -532,48 +546,61 @@ begin
   pa := AnsiString(ordir + 'lib/OpenBSD/64bit/LibPortaudio-64.so');
   mp := AnsiString(ordir + 'lib/OpenBSD/64bit/LibMpg123-64.so');
   st := AnsiString(ordir + 'lib/OpenBSD/64bit/LibSoundTouch-64.so');
+  aa := '';
+  noaac := true;
   {$ENDIF}
 
   {$if defined(cpu64) and defined(darwin) }
   pa := AnsiString(ordir + 'lib/Mac/64bit/LibPortaudio-64.dylib');
   mp := AnsiString(ordir + 'lib/Mac/64bit/LibMpg123-64.dylib');
   st := AnsiString(ordir + 'lib/Mac/64bit/libSoundTouchDLL.dylib');
+  noaac := true;
+  aa := '';
   {$ENDIF}
 
   {$if defined(cpu86) and defined(linux)}
   pa := AnsiString(ordir + 'lib/Linux/32bit/LibPortaudio-32.so');
   mp := AnsiString(ordir + 'lib/Linux/32bit/LibMpg123-32.so');
   st := AnsiString(ordir + 'lib/Linux/32bit/LibSoundTouch-32.so');
+  aa := AnsiString(ordir + 'lib/Linux/32bit/libfdk-aac-32.so');
   {$ENDIF}
 
   {$if defined(linux) and defined(cpuarm)}
   pa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libportaudio-arm.so');
   mp := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libmpg123-arm.so');
   st := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libsoundtouch-arm.so');
+  aa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libfdk-aac-32.so');
   {$ENDIF}
 
   {$if defined(linux) and defined(cpuaarch64)}
   pa := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libportaudio_aarch64.so');
   mp := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libmpg123_aarch64.so');
   st := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libsoundtouch_aarch64.so');
+  aa := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libfdk-aac-64.so');
   {$ENDIF}
 
   {$if defined(freebsd) and defined(cpuamd64) }
   pa := AnsiString(ordir + 'lib/FreeBSD/amd64/libportaudio-64.so');
   mp := AnsiString(ordir + 'lib/FreeBSD/amd64/libmpg123-64.so');
   st := AnsiString(ordir + 'lib/FreeBSD/amd64/libsoundtouch-64.so');
+  noaac := true;
+  aa := '';
   {$endif}
 
   {$if defined(freebsd) and defined(cpui386) }
   pa := AnsiString(ordir + 'lib/FreeBSD/i386/libportaudio-32.so');
   mp := AnsiString(ordir + 'lib/FreeBSD/i386/libmpg123-32.so');
   st := '';
+  aa := '';
+  noaac := true;
   {$endif}
 
   {$if defined(freebsd) and defined(cpuamd64) }
   pa := AnsiString(ordir + 'lib/FreeBSD/aarch64/libportaudio-64.so');
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
+  aa := '';
+  noaac := true;
   {$endif}
 
   if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil, nil, PChar(aa)) = -1 then
@@ -599,6 +626,25 @@ begin
     tmainmenu1.menu.itembynames(['config', 'recformat', 'oggformat']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := False;
   end;
+  
+  if edstyle.Value = 0 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;    
+  end  else
+  if edstyle.Value = 1 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := true;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;    
+  end else
+  if edstyle.Value = 2 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := true;    
+  end;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
@@ -610,6 +656,17 @@ begin
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '                  Simple Webstream Player v1.' + IntToStr(version);
+
+  //noaac := true;  
+
+  if noaac then
+  begin
+    tlabel2.Caption   := '    SWP';
+    tlabel3.Visible   := False;
+    mp3format.Visible := False;
+    aacformat.Visible := False;
+    brecord.top       := brecord.top - 10;
+  end;
 
   rect1 := application.screenrect(window);
 
@@ -726,10 +783,10 @@ begin
       griddisp.Visible := True;
       baddrow.Visible  := True;
       bdelrow.Visible  := True;
-      griddisp.top := panelwave.bottom + round(ratio * 1);
-      baddrow.top  := griddisp.bottom + round(ratio * 1);
-      bdelrow.top  := griddisp.bottom + round(ratio * 1);
-      Height       := round(ratio * 18) + baddrow.bottom + round(ratio * 4);
+      griddisp.top     := panelwave.bottom + round(ratio * 1);
+      baddrow.top      := griddisp.bottom + round(ratio * 1);
+      bdelrow.top      := griddisp.bottom + round(ratio * 1);
+      Height           := round(ratio * 18) + baddrow.bottom + round(ratio * 4);
     end
     else
     begin
@@ -747,9 +804,9 @@ begin
       griddisp.Visible := True;
       baddrow.Visible  := True;
       bdelrow.Visible  := True;
-      griddisp.top     := panelwave.top + round(ratio *1);
-      baddrow.top  := griddisp.bottom + round(ratio * 1);
-      bdelrow.top  := griddisp.bottom + round(ratio * 1);     
+      griddisp.top     := panelwave.top + round(ratio * 1);
+      baddrow.top      := griddisp.bottom + round(ratio * 1);
+      bdelrow.top      := griddisp.bottom + round(ratio * 1);
       Height           := round(ratio * 18) + baddrow.bottom + round(ratio * 4);
     end
     else
@@ -848,7 +905,7 @@ begin
   if btempo.tag = 0 then
   begin
     btempo.tag           := 1;
-    btempo.face.template := tfacecomp10;
+    btempo.face.template := tfacecomp8;
   end
   else
   begin
@@ -971,14 +1028,19 @@ var
   i1, i2: integer;
   ratio: double;
 begin
-  ratio        := fontheight / 11;
-  font.Height  := fontheight;
+  ratio       := fontheight / 11;
+  font.Height := fontheight;
 
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
 
   griddisp.font.Height := fontheight;
   griddisp.font.color  := font.color;
+
+  btnStart.font.Height  := round(ratio * 18);
+  btnPause.font.Height  := round(ratio * 12);
+  btnStop.font.Height   := round(ratio * 18);
+  btnResume.font.Height := round(ratio * 14);
 
   for i1 := 0 to childrencount - 1 do
     for i2 := 0 to length(boundchildsp) - 1 do
@@ -994,7 +1056,7 @@ begin
   griddisp.font.Height        := fontheight;
   griddisp[0].Width           := round(70 * ratio);
   griddisp[1].Width           := round(52 * ratio);
-  griddisp[2].Width           := round(158 * ratio);
+  griddisp[2].Width           := round(160 * ratio);
   griddisp[3].Width           := round(48 * ratio);
   griddisp.fixrows[-1].Height := round(18 * ratio);
   griddisp.frame.sbvert.Width := round(12 * ratio);
@@ -1029,8 +1091,8 @@ begin
         end;
   end;
 
-//  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
-//  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
+  //  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
+  //  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
 
   bounds_cxmax := 0;
   bounds_cxmin := 0;
@@ -1042,6 +1104,8 @@ begin
 
   onchangeshowwave(nil);
 
+  setstyle(edstyle.Value);
+
 end;
 
 procedure twebstreamerfo.addrow(const Sender: TObject);
@@ -1051,9 +1115,150 @@ end;
 
 procedure twebstreamerfo.deleterow(const Sender: TObject);
 begin
-  //griddisp.rowcount := griddisp.rowcount - 1;
   if (griddisp.rowcount > 1) and (griddisp.focusedcell.row > -1) then
     griddisp.deleterow(griddisp.focusedcell.row);
+end;
+
+procedure twebstreamerfo.setstyle(style: integer);
+begin
+  if style = 0 then
+  begin
+    color      := cl_default;
+    font.color := cl_black;
+    font.color := cl_black;
+    infopanel.font.color := cl_black;
+    griddisp.font.color := cl_black;
+    btnStart.font.color := cl_black;
+    btnPause.font.color := cl_black;
+    btnStop.font.color := cl_black;
+    btnResume.font.color := cl_black;
+    tmainmenu1.menu.color := cl_default;
+    tmainmenu1.menu.font.color := cl_black;
+    tmainmenu1.menu.fontactive.color := cl_black;
+    tmainmenu1.menu.colorglyph := cl_black;
+    tmainmenu1.menu.colorglyphactive := cl_black;
+    tfacecomp7.template.fade_color.items[0] := $BECCB6;
+    tfacecomp7.template.fade_color.items[1] := $787878;
+    tfacecomp3.template.fade_color.items[0] := $FCFFFA;
+    tfacecomp3.template.fade_color.items[1] := $B6C4AF;
+    tfacecomp4.template.fade_color.items[0] := $FCFFFA;
+    tfacecomp4.template.fade_color.items[1] := $F0E2C9;
+    tfacecomp6.template.fade_color.items[0] := $8A8A8A;
+    tfacecomp6.template.fade_color.items[1] := $5E5E5E;
+    tfacecomp9.template.fade_color.items[0] := $FFBDBD;
+    tfacecomp9.template.fade_color.items[1] := cl_red;
+    tfacecomp8.template.fade_color.items[0] := $FFF8EB;
+    tfacecomp8.template.fade_color.items[1] := $F0BB60;
+    tfacecomp2.template.fade_color.items[0] := $A4B09D;
+    tfacecomp2.template.fade_color.items[1] := $5C5C5C;
+    container.color := $B6C4AF;
+    griddisp[0].color          := $E0E0E0;
+    griddisp[1].color          := $E0E0E0;
+    griddisp[2].color          := $E0E0E0;
+    griddisp[3].color          := $E0E0E0;
+    griddisp.fixrows[-1].color := $BFCCB9;
+    griddisp.zebra_color := $F8FFF5;
+    container.color      := $B6C4AF;
+    infopanel.font.color := cl_black;
+    historyfn.frame.button.colorglyph := cl_black;
+    griddisp.frame.sbvert.colorglyph := cl_black;
+  end;
+
+  if style = 1 then
+  begin
+    color      := $575757;
+    font.color := cl_white;
+    infopanel.font.color := cl_white;
+    griddisp.font.color := cl_white;
+    btnStart.font.color := cl_white;
+    btnPause.font.color := cl_white;
+    btnStop.font.color := cl_white;
+    btnResume.font.color := cl_white;
+    tmainmenu1.menu.color := $575757;
+    tmainmenu1.menu.font.color := cl_white;
+    tmainmenu1.menu.fontactive.color := cl_white;
+    tmainmenu1.menu.colorglyph := cl_white;
+    tmainmenu1.menu.colorglyphactive := cl_white;
+    tfacecomp7.template.fade_color.items[0] := cl_dkgray;
+    tfacecomp7.template.fade_color.items[1] := cl_black;
+    tfacecomp3.template.fade_color.items[0] := cl_dkgray;
+    tfacecomp3.template.fade_color.items[1] := cl_black;
+    tfacecomp4.template.fade_color.items[0] := $F09800;
+    tfacecomp4.template.fade_color.items[1] := $734900;
+    tfacecomp6.template.fade_color.items[0] := $8A8A8A;
+    tfacecomp6.template.fade_color.items[1] := cl_black;
+    tfacecomp9.template.fade_color.items[0] := $FFBDBD;
+    tfacecomp9.template.fade_color.items[1] := cl_dkred;
+    tfacecomp8.template.fade_color.items[0] := $FFF8EB;
+    tfacecomp8.template.fade_color.items[1] := cl_black;
+    tfacecomp2.template.fade_color.items[0] := cl_dkgray;
+    tfacecomp2.template.fade_color.items[1] := cl_black;
+    griddisp[0].color          := cl_black;
+    griddisp[1].color          := cl_black;
+    griddisp[2].color          := cl_black;
+    griddisp[3].color          := cl_black;
+    griddisp.fixrows[-1].color := $5C5C5C;
+    griddisp.zebra_color := $5C5C5C;
+    container.color      := $5C5C5C;
+    infopanel.font.color := cl_white;
+    historyfn.frame.button.colorglyph := cl_white;
+    griddisp.frame.sbvert.colorglyph := cl_white;
+  end;
+
+  if style = 2 then
+  begin
+    color      := cl_default;
+    font.color := cl_black;
+    font.color := cl_black;
+    infopanel.font.color := cl_black;
+    griddisp.font.color := cl_black;
+    btnStart.font.color := cl_black;
+    btnPause.font.color := cl_black;
+    btnStop.font.color := cl_black;
+    btnResume.font.color := cl_black;
+    tmainmenu1.menu.color := cl_default;
+    tmainmenu1.menu.font.color := cl_black;
+    tmainmenu1.menu.fontactive.color := cl_black;
+    tmainmenu1.menu.colorglyph := cl_black;
+    tmainmenu1.menu.colorglyphactive := cl_black;
+    tfacecomp7.template.fade_color.items[0] := $F2F2F2;
+    tfacecomp7.template.fade_color.items[1] := $5C5C5C;
+    tfacecomp3.template.fade_color.items[0] := $FCFFFA;
+    tfacecomp3.template.fade_color.items[1] := $A3A3A3;
+    tfacecomp4.template.fade_color.items[0] := $FCFFFA;
+    tfacecomp4.template.fade_color.items[1] := $F0E2C9;
+    tfacecomp6.template.fade_color.items[0] := $8A8A8A;
+    tfacecomp6.template.fade_color.items[1] := $5E5E5E;
+    tfacecomp9.template.fade_color.items[0] := $FFBDBD;
+    tfacecomp9.template.fade_color.items[1] := cl_red;
+    tfacecomp8.template.fade_color.items[0] := $FFF8EB;
+    tfacecomp8.template.fade_color.items[1] := $F0BB60;
+    tfacecomp2.template.fade_color.items[0] := $F2F2F2;
+    tfacecomp2.template.fade_color.items[1] := $5C5C5C;
+    container.color := $B6C4AF;
+    griddisp[0].color          := $E0E0E0;
+    griddisp[1].color          := $E0E0E0;
+    griddisp[2].color          := $E0E0E0;
+    griddisp[3].color          := $E0E0E0;
+    griddisp.fixrows[-1].color := $D4D4D4;
+    griddisp.zebra_color := $F2F2F2;
+    container.color      := cl_default;
+    infopanel.font.color := cl_black;
+    historyfn.frame.button.colorglyph := cl_black;
+    griddisp.frame.sbvert.colorglyph := cl_black;
+  end;
+end;
+
+procedure twebstreamerfo.onexecswpstyle(const sender: TObject);
+begin
+ if  tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked = True
+ then edstyle.Value := 0 else
+ if tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked = true
+ then edstyle.Value := 1 else
+ if tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked = true
+ then edstyle.Value := 2;   
+setstyle(edstyle.Value);
+InitDrawLive();
 end;
 
 end.

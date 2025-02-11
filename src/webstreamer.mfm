@@ -1,9 +1,9 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 478
-  bounds_y = 232
+  bounds_x = 481
+  bounds_y = 308
   bounds_cx = 346
-  bounds_cy = 352
+  bounds_cy = 152
   bounds_cxmin = 346
   bounds_cymin = 152
   bounds_cxmax = 346
@@ -16,12 +16,12 @@ object webstreamerfo: twebstreamerfo
     0
     19
     346
-    333
+    133
   )
   mainmenu = tmainmenu1
   font.height = 12
   font.name = 'stf_default'
-  font.localprops = [flp_height]
+  font.localprops = [flp_shadow_color, flp_height]
   options = [fo_main, fo_terminateonclose, fo_freeonclose, fo_screencentered, fo_autoreadstat, fo_autowritestat, fo_savepos, fo_savezorder, fo_savestate]
   statfile = tstatfile1
   caption = 'Simple WebStream Player'
@@ -3006,6 +3006,8 @@ object webstreamerfo: twebstreamerfo
         frame.localprops = [frl_optionsskin]
         frame.localprops1 = []
       end>
+    face.localprops = []
+    face.template = tfacecomp3
     taborder = 1
     hint = ' History of Cue URL, Paste here the link wanted.'
     bounds_x = 2
@@ -3143,6 +3145,18 @@ object webstreamerfo: twebstreamerfo
       visible = False
       bounds_x = 32
       bounds_y = -1
+      bounds_cx = 23
+      bounds_cy = 23
+      statfile = tstatfile1
+      reffontheight = 17
+    end
+    object edstyle: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 6
+      visible = False
+      bounds_x = 62
+      bounds_y = 0
       bounds_cx = 23
       bounds_cy = 23
       statfile = tstatfile1
@@ -3309,6 +3323,11 @@ object webstreamerfo: twebstreamerfo
       caption = #9633
       textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
+      font.shadow_color = -1610612730
+      font.height = 22
+      font.style = [fs_bold]
+      font.name = 'stf_default'
+      font.localprops = [flp_shadow_color, flp_style, flp_height]
       imagenr = 1
       focusrectdist = 0
       onexecute = onstop
@@ -3359,8 +3378,13 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
       caption = '||'
-      textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
+      textflags = [tf_left, tf_xcentered, tf_ycentered, tf_rotate180]
       captiondist = 0
+      font.shadow_color = -1610612730
+      font.height = 13
+      font.style = [fs_bold]
+      font.name = 'stf_default'
+      font.localprops = [flp_shadow_color, flp_style, flp_height]
       imagenr = 1
       imagenrdisabled = -1
       focusrectdist = 0
@@ -3386,6 +3410,11 @@ object webstreamerfo: twebstreamerfo
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '>'
       captiondist = 0
+      font.shadow_color = -1610612730
+      font.height = 22
+      font.style = [fs_bold]
+      font.name = 'stf_default'
+      font.localprops = [flp_shadow_color, flp_style, flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onplay
@@ -3535,19 +3564,6 @@ object webstreamerfo: twebstreamerfo
       focusrectdist = 0
       onexecute = onrec
     end
-    object mp3format: tbooleaneditradio
-      color = -2147483645
-      frame.localprops = []
-      frame.localprops1 = []
-      frame.template = tframecomp2
-      face.localprops = []
-      taborder = 17
-      hint = 'The webstream is in MP3 format'
-      bounds_x = 25
-      bounds_y = 8
-      statfile = tstatfile1
-      value = True
-    end
     object tlabel2: tlabel
       color = -2147483645
       taborder = 18
@@ -3570,6 +3586,20 @@ object webstreamerfo: twebstreamerfo
       caption = 'AAC'
       reffontheight = 17
     end
+    object mp3format: tbooleaneditradio
+      color = -2147483645
+      frame.localprops = []
+      frame.localprops1 = []
+      frame.template = tframecomp2
+      face.localprops = []
+      taborder = 17
+      hint = 'The webstream is in MP3 format'
+      bounds_x = 25
+      bounds_y = 7
+      statfile = tstatfile1
+      colorglyph = -1610612734
+      value = True
+    end
     object aacformat: tbooleaneditradio
       color = -2147483645
       frame.localprops = []
@@ -3579,8 +3609,9 @@ object webstreamerfo: twebstreamerfo
       taborder = 20
       hint = 'The webstream is in AAC format'
       bounds_x = 75
-      bounds_y = 8
+      bounds_y = 7
       statfile = tstatfile1
+      colorglyph = -1610612734
     end
   end
   object deleteallurl: tstringdisp
@@ -3591,8 +3622,8 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 54
-    bounds_y = 0
+    bounds_x = 91
+    bounds_y = 8
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
@@ -3657,6 +3688,8 @@ object webstreamerfo: twebstreamerfo
     optionsskin = [osk_noalignx, osk_noaligny]
     color = -2147483645
     frame.levelo = 0
+    frame.colorframe = -2147483645
+    frame.colorclient = -2147483645
     frame.sbvert.width = 10
     frame.sbvert.face.localprops = []
     frame.sbvert.face1.localprops = []
@@ -3675,9 +3708,10 @@ object webstreamerfo: twebstreamerfo
     frame.sbvert.frameendbutton2.colorclient = -2147483645
     frame.sbvert.frameendbutton2.localprops = [frl_optionsskin]
     frame.sbvert.frameendbutton2.localprops1 = []
+    frame.sbvert.color = -2147483645
     frame.sbhorz.options = []
     frame.sbhorz.width = 0
-    frame.localprops = [frl_levelo, frl_fileft, frl_fitop, frl_firight, frl_fibottom]
+    frame.localprops = [frl_levelo, frl_colorframe, frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_colorclient]
     frame.localprops1 = []
     face.fade_pos.count = 1
     face.fade_pos.items = (
@@ -3880,21 +3914,6 @@ object webstreamerfo: twebstreamerfo
     left = 13
     top = 188
   end
-  object tfacecomp2: tfacecomp
-    template.fade_pos.count = 2
-    template.fade_pos.items = (
-      0
-      1
-    )
-    template.fade_color.count = 2
-    template.fade_color.items = (
-      10793117
-      6052956
-    )
-    template.fade_direction = gd_down
-    left = 18
-    top = 161
-  end
   object tfacecomp3: tfacecomp
     template.fade_pos.count = 2
     template.fade_pos.items = (
@@ -3953,7 +3972,6 @@ object webstreamerfo: twebstreamerfo
     top = 151
   end
   object tmainmenu1: tmainmenu
-    facetemplate = tfacecomp5
     menu.submenu.count = 5
     menu.submenu.items = <    
       item
@@ -3973,7 +3991,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 5
+        submenu.count = 6
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4244,6 +4262,34 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localonafterexecute]
           end        
           item
+            submenu.count = 3
+            submenu.items = <            
+              item
+                caption = 'SWP'
+                name = 'swpstyle'
+                state = [as_checked, as_localchecked, as_localcaption, as_localonexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onexecute = onexecswpstyle
+              end            
+              item
+                caption = 'Carbon'
+                name = 'carbonstyle'
+                state = [as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onexecswpstyle
+              end            
+              item
+                caption = 'Silver'
+                name = 'silverstyle'
+                state = [as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onexecswpstyle
+              end>
+            caption = ' Set Style'
+            name = 'style'
+            state = [as_localcaption]
+          end        
+          item
             caption = ' Clear history of URL'
             hint = ' Clear list of URL in history '
             name = 'clearhistory'
@@ -4253,6 +4299,7 @@ object webstreamerfo: twebstreamerfo
         caption = '  Config '
         name = 'config'
         state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
+        onafterexecute = onexecswpstyle
       end    
       item
         submenu.count = 8
@@ -4260,26 +4307,26 @@ object webstreamerfo: twebstreamerfo
           item
             caption = 'Simple Webstream Player'
             name = 'title'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption]
           end        
           item
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
             caption = 'Compiler: Free Pascal Compiler: https://www.freepascal.org/'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption]
           end        
           item
             caption = 'Widgetset: MSEgui: https://github.com/mse-org/mseide-msegui/'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_disabled, as_invisible, as_localdisabled, as_localinvisible, as_localcaption]
           end        
           item
             caption = 'Audio: uos: https://github.com/fredvs/uos/'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption]
           end        
           item
             caption = 'Plugin: SoundTouch: http://www.surina.net/soundtouch/'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption]
           end        
           item
             state = [as_localinvisible, as_localcaption]
@@ -4287,7 +4334,7 @@ object webstreamerfo: twebstreamerfo
           end        
           item
             caption = '               Fred van Stappen 2024 <fiens@hotmail.com>'
-            state = [as_disabled, as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption]
           end>
         caption = ' &About  '
         name = 'about'
@@ -4321,21 +4368,6 @@ object webstreamerfo: twebstreamerfo
     left = 13
     top = 139
   end
-  object tfacecomp5: tfacecomp
-    template.fade_pos.count = 2
-    template.fade_pos.items = (
-      0
-      1
-    )
-    template.fade_color.count = 2
-    template.fade_color.items = (
-      14342874
-      12632256
-    )
-    template.fade_direction = gd_down
-    left = 219
-    top = 143
-  end
   object tfacecomp6: tfacecomp
     template.fade_pos.count = 2
     template.fade_pos.items = (
@@ -4348,8 +4380,8 @@ object webstreamerfo: twebstreamerfo
       6184542
     )
     template.fade_direction = gd_down
-    left = 176
-    top = 71
+    left = 204
+    top = 138
   end
   object tfacecomp7: tfacecomp
     template.fade_pos.count = 2
@@ -4363,8 +4395,8 @@ object webstreamerfo: twebstreamerfo
       7895160
     )
     template.fade_direction = gd_down
-    left = 192
-    top = 81
+    left = 54
+    top = 156
   end
   object tfacecomp8: tfacecomp
     template.fade_pos.count = 2
@@ -4378,8 +4410,8 @@ object webstreamerfo: twebstreamerfo
       15776608
     )
     template.fade_direction = gd_down
-    left = 131
-    top = 250
+    left = 85
+    top = 145
   end
   object tfacecomp9: tfacecomp
     template.fade_pos.count = 2
@@ -4393,10 +4425,10 @@ object webstreamerfo: twebstreamerfo
       -1610612729
     )
     template.fade_direction = gd_down
-    left = 133
-    top = 274
+    left = 138
+    top = 154
   end
-  object tfacecomp10: tfacecomp
+  object tfacecomp2: tfacecomp
     template.fade_pos.count = 2
     template.fade_pos.items = (
       0
@@ -4404,11 +4436,11 @@ object webstreamerfo: twebstreamerfo
     )
     template.fade_color.count = 2
     template.fade_color.items = (
-      12910532
-      56064
+      10793117
+      6052956
     )
     template.fade_direction = gd_down
-    left = 158
-    top = 290
+    left = 211
+    top = 156
   end
 end
