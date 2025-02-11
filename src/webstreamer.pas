@@ -43,6 +43,15 @@ uses
   msegridsglob;
 
 type
+  boundchild = record
+    left: integer;
+    top: integer;
+    Width: integer;
+    Height: integer;
+    Name: string;
+  end;
+
+type
   twebstreamerfo = class(tdockform)
     historyfn: thistoryedit;
     infopanel: tstringdisp;
@@ -93,6 +102,8 @@ type
     tlabel3: tlabel;
     aacformat: tbooleaneditradio;
     edrecformat: tintegeredit;
+    baddrow: TButton;
+    bdelrow: TButton;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -123,6 +134,9 @@ type
     procedure onexit(const Sender: TObject);
     procedure onupdevices(const Sender: TObject);
     procedure onaftermenusetrecformat(const Sender: TObject);
+    procedure resizesp(fontheight: integer);
+    procedure addrow(const Sender: TObject);
+    procedure deleterow(const Sender: TObject);
   end;
 
 const
@@ -130,7 +144,7 @@ const
 
 var
   webstreamerfo: twebstreamerfo;
-  webindex, webinindex, weboutindex, webPlugIndex: integer;
+  webindex, webinindex, weboutindex, webPlugIndex, fontheight: integer;
   rectrecform: rectty;
   xreclive, devcount, incview, deviceselected: integer;
   plugsoundtouch: Boolean = False;
@@ -138,6 +152,7 @@ var
   isexit: Boolean = False;
   ordir, arecnp: string;
   pa, mp, aa, st: string;
+  boundchildsp: array of boundchild;
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
  {$ENDIF}
@@ -305,7 +320,7 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
-  infopanel.font.color := cl_blue;
+  infopanel.font.color := $FF8C00;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
@@ -482,6 +497,8 @@ begin
 end;
 
 procedure twebstreamerfo.oneventstart(const Sender: TObject);
+var
+  rect1: rectty;
 begin
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
@@ -583,7 +600,6 @@ begin
     tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := False;
   end;
 
-
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
   tmainmenu1.menu.itembynames(['config', 'playaf']).Checked := runselect.Value;
@@ -594,6 +610,12 @@ begin
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '                  Simple Webstream Player v1.' + IntToStr(version);
+
+  rect1 := application.screenrect(window);
+
+  fontheight := round(rect1.cy / 800 * 12);
+
+  resizesp(fontheight);
 
   oncheckdevices();
 
@@ -688,9 +710,13 @@ begin
 end;
 
 procedure twebstreamerfo.onchangeshowwave(const Sender: TObject);
+var
+  ratio: double;
 begin
   bounds_cymax := 0;
   bounds_cymin := 0;
+
+  ratio := fontheight / 12;
 
   if showwave.Value then
   begin
@@ -698,13 +724,20 @@ begin
     if showgrid.Value then
     begin
       griddisp.Visible := True;
-      griddisp.top     := panelwave.bottom + 1;
-      Height           := 18 + panelwave.bottom + griddisp.Height;
+      baddrow.Visible  := True;
+      bdelrow.Visible  := True;
+
+      baddrow.top  := panelwave.bottom + round(ratio * 1);
+      bdelrow.top  := panelwave.bottom + round(ratio * 1);
+      griddisp.top := baddrow.bottom + round(ratio * 1);
+      Height       := (18 * round(fontheight / 12)) + griddisp.bottom + round(ratio * 4);
     end
     else
     begin
       griddisp.Visible := False;
-      Height           := 18 + panelwave.bottom;
+      baddrow.Visible  := False;
+      bdelrow.Visible  := False;
+      Height           := (18 * round(fontheight / 12)) + panelwave.bottom;
     end;
   end
   else
@@ -713,13 +746,19 @@ begin
     if showgrid.Value then
     begin
       griddisp.Visible := True;
-      griddisp.top     := panelwave.top;
-      Height           := 18 + griddisp.bottom;
+      baddrow.Visible  := True;
+      bdelrow.Visible  := True;
+      baddrow.top      := panelwave.top;
+      bdelrow.top      := panelwave.top + (1 * round(fontheight / 12));
+      griddisp.top     := baddrow.bottom + (1 * round(fontheight / 12));
+      Height           := (18 * round(fontheight / 12)) + griddisp.bottom + round(ratio * 4);
     end
     else
     begin
       griddisp.Visible := False;
-      Height           := 18 + panelcommand.bottom;
+      baddrow.Visible  := False;
+      bdelrow.Visible  := False;
+      Height           := (18 * round(fontheight / 12)) + panelcommand.bottom + round(ratio * 4);
     end;
   end;
   application.ProcessMessages;
@@ -731,11 +770,57 @@ end;
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 var
   statname: string;
+  i1, childn: integer;
 begin
+
+  Visible := False;
+  application.ProcessMessages;
+
+  setlength(boundchildsp, childrencount);
+  childn := childrencount;
+
+  for i1 := 0 to childrencount - 1 do
+  begin
+    boundchildsp[i1].left   := children[i1].left;
+    boundchildsp[i1].top    := children[i1].top;
+    boundchildsp[i1].Width  := children[i1].Width;
+    boundchildsp[i1].Height := children[i1].Height;
+    boundchildsp[i1].Name   := children[i1].Name;
+  end;
+
+  with deleteallurl do
+  begin
+    setlength(boundchildsp, length(boundchildsp) + deleteallurl.childrencount);
+
+    for i1 := 0 to deleteallurl.childrencount - 1 do
+    begin
+      boundchildsp[i1 + childn].left   := children[i1].left;
+      boundchildsp[i1 + childn].top    := children[i1].top;
+      boundchildsp[i1 + childn].Width  := children[i1].Width;
+      boundchildsp[i1 + childn].Height := children[i1].Height;
+      boundchildsp[i1 + childn].Name   := children[i1].Name;
+    end;
+  end;
+
+  childn := childn + deleteallurl.childrencount;
+
+  with panelcommand do
+  begin
+    setlength(boundchildsp, length(boundchildsp) + panelcommand.childrencount);
+
+    for i1 := 0 to panelcommand.childrencount - 1 do
+    begin
+      boundchildsp[i1 + childn].left   := children[i1].left;
+      boundchildsp[i1 + childn].top    := children[i1].top;
+      boundchildsp[i1 + childn].Width  := children[i1].Width;
+      boundchildsp[i1 + childn].Height := children[i1].Height;
+      boundchildsp[i1 + childn].Name   := children[i1].Name;
+    end;
+  end;
+
   statname := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'swp.ini';
   tstatfile1.filename := statname;
-  Height   := 154;
-  Visible  := False;
+
 end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
@@ -838,7 +923,10 @@ begin
           aacformat.Value := True
         else
           mp3format.Value := True;
-      end;
+         //  griddisp.rowcount := griddisp.rowcount - 1;  
+      end//  if (ss_right in info.mouseeventinfopo^.shiftstate) then griddisp.rowcount := griddisp.rowcount + 1;
+  ;
+
 end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
@@ -885,4 +973,93 @@ begin
     edrecformat.Value := 2;
 end;
 
+procedure twebstreamerfo.resizesp(fontheight: integer);
+var
+  i1, i2: integer;
+  ratio: double;
+begin
+  ratio        := fontheight / 11;
+  bounds_cxmax := 0;
+  bounds_cxmin := 0;
+  bounds_cymax := 0;
+  bounds_cymin := 0;
+  bounds_cxmax := round(346 * ratio);
+  bounds_cxmin := bounds_cxmax;
+  font.Height  := fontheight;
+
+  tmainmenu1.menu.font.Height       := fontheight;
+  tmainmenu1.menu.fontactive.Height := fontheight;
+
+  griddisp.font.Height := fontheight;
+  griddisp.font.color  := font.color;
+
+  for i1 := 0 to childrencount - 1 do
+    for i2 := 0 to length(boundchildsp) - 1 do
+      if children[i1].Name = boundchildsp[i2].Name then
+      begin
+        children[i1].left   := round(boundchildsp[i2].left * ratio);
+        children[i1].top    := round(boundchildsp[i2].top * ratio);
+        children[i1].Width  := round(boundchildsp[i2].Width * ratio);
+        children[i1].Height := round(boundchildsp[i2].Height * ratio);
+      end;
+
+  griddisp.datarowheight      := round(15 * ratio);
+  griddisp.font.Height        := fontheight;
+  griddisp[0].Width           := round(70 * ratio);
+  griddisp[1].Width           := round(52 * ratio);
+  griddisp[2].Width           := round(160 * ratio);
+  griddisp[3].Width           := round(48 * ratio);
+  griddisp.fixrows[-1].Height := round(18 * ratio);
+  griddisp.frame.sbvert.Width := round(12 * ratio);
+
+  infopanel.font.Height := fontheight;
+
+  with panelcommand do
+  begin
+    font.Height := fontheight;
+    for i1      := 0 to childrencount - 1 do
+      for i2 := 0 to length(boundchildsp) - 1 do
+        if panelcommand.children[i1].Name = boundchildsp[i2].Name then
+        begin
+          panelcommand.children[i1].left   := round(boundchildsp[i2].left * ratio);
+          panelcommand.children[i1].top    := round(boundchildsp[i2].top * ratio);
+          panelcommand.children[i1].Width  := round(boundchildsp[i2].Width * ratio);
+          panelcommand.children[i1].Height := round(boundchildsp[i2].Height * ratio);
+        end;
+  end;
+
+  with deleteallurl do
+  begin
+    font.Height := fontheight;
+    for i1      := 0 to childrencount - 1 do
+      for i2 := 0 to length(boundchildsp) - 1 do
+        if deleteallurl.children[i1].Name = boundchildsp[i2].Name then
+        begin
+          deleteallurl.children[i1].left   := round(boundchildsp[i2].left * ratio);
+          deleteallurl.children[i1].top    := round(boundchildsp[i2].top * ratio);
+          deleteallurl.children[i1].Width  := round(boundchildsp[i2].Width * ratio);
+          deleteallurl.children[i1].Height := round(boundchildsp[i2].Height * ratio);
+        end;
+  end;
+
+  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
+  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
+
+  onchangeshowwave(nil);
+
+end;
+
+procedure twebstreamerfo.addrow(const Sender: TObject);
+begin
+  griddisp.rowcount := griddisp.rowcount + 1;
+end;
+
+procedure twebstreamerfo.deleterow(const Sender: TObject);
+begin
+  //griddisp.rowcount := griddisp.rowcount - 1;
+  if (griddisp.rowcount > 1) and (griddisp.focusedcell.row > -1) then
+    griddisp.deleterow(griddisp.focusedcell.row);
+end;
+
 end.
+

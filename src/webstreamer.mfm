@@ -1,7 +1,7 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 326
-  bounds_y = 229
+  bounds_x = 455
+  bounds_y = 252
   bounds_cx = 346
   bounds_cy = 346
   bounds_cxmin = 346
@@ -22,6 +22,9 @@ object webstreamerfo: twebstreamerfo
     327
   )
   mainmenu = tmainmenu1
+  font.height = 12
+  font.name = 'stf_default'
+  font.localprops = [flp_height]
   options = [fo_main, fo_terminateonclose, fo_freeonclose, fo_screencentered, fo_autoreadstat, fo_autowritestat, fo_savepos, fo_savezorder, fo_savestate]
   statfile = tstatfile1
   caption = 'Simple WebStream Player'
@@ -3015,8 +3018,6 @@ object webstreamerfo: twebstreamerfo
     statfile = tstatfile1
     optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
     optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_shiftreturn, oe_eatreturn, oe_resetselectonexit, oe_exitoncursor, oe_endonenter, oe_autoselect, oe_autoselectonfirstclick]
-    font.name = 'stf_default'
-    font.localprops = []
     onchange = onafterdropdown
     value = 'http://stream-uk1.radioparadise.com/mp3-128'
     dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
@@ -3040,9 +3041,9 @@ object webstreamerfo: twebstreamerfo
     bounds_y = 23
     bounds_cx = 346
     bounds_cy = 26
-    font.color = -1610612729
+    font.height = 12
     font.name = 'stf_default'
-    font.localprops = [flp_color]
+    font.localprops = []
     textflags = [tf_xcentered, tf_ycentered]
     reffontheight = 17
     object runselect: tbooleanedit
@@ -3179,9 +3180,6 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 18
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '=1'
-      font.height = 10
-      font.name = 'stf_default'
-      font.localprops = [flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onreset
@@ -3314,10 +3312,6 @@ object webstreamerfo: twebstreamerfo
       caption = #9633
       textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
-      font.color = 15071196
-      font.height = 13
-      font.name = 'stf_default'
-      font.localprops = [flp_color, flp_height]
       imagenr = 1
       focusrectdist = 0
       onexecute = onstop
@@ -3370,10 +3364,6 @@ object webstreamerfo: twebstreamerfo
       caption = '||'
       textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
-      font.color = 15071196
-      font.height = 11
-      font.name = 'stf_default'
-      font.localprops = [flp_color, flp_height]
       imagenr = 1
       imagenrdisabled = -1
       focusrectdist = 0
@@ -3399,11 +3389,6 @@ object webstreamerfo: twebstreamerfo
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '>'
       captiondist = 0
-      font.color = 15071196
-      font.height = 13
-      font.style = [fs_bold]
-      font.name = 'stf_default'
-      font.localprops = [flp_color, flp_shadow_color, flp_style, flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onplay
@@ -3528,9 +3513,6 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 18
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'T / P'
-      font.height = 10
-      font.name = 'stf_default'
-      font.localprops = [flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = ontempo
@@ -3552,9 +3534,6 @@ object webstreamerfo: twebstreamerfo
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Record'
       captiondist = 0
-      font.height = 10
-      font.name = 'stf_default'
-      font.localprops = [flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onrec
@@ -3631,15 +3610,12 @@ object webstreamerfo: twebstreamerfo
       face.fade_direction = gd_down
       face.localprops = [fal_fadirection]
       face.template = tfacecomp3
-      bounds_x = 160
-      bounds_y = 7
-      bounds_cx = 30
+      bounds_x = 150
+      bounds_y = 8
+      bounds_cx = 40
       bounds_cy = 19
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Yes'
-      font.height = 10
-      font.name = 'stf_default'
-      font.localprops = [flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onclearhist
@@ -3655,14 +3631,11 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp3
       taborder = 1
       bounds_x = 195
-      bounds_y = 7
-      bounds_cx = 30
+      bounds_y = 10
+      bounds_cx = 35
       bounds_cy = 19
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'No'
-      font.height = 10
-      font.name = 'stf_default'
-      font.localprops = [flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = cancelclear
@@ -3678,9 +3651,9 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp2
     taborder = 4
     bounds_x = 0
-    bounds_y = 134
+    bounds_y = 133
     bounds_cx = 346
-    bounds_cy = 82
+    bounds_cy = 81
   end
   object griddisp: tstringgrid
     optionswidget1 = [ow1_fontglyphheight, ow1_noclampinview]
@@ -3721,12 +3694,10 @@ object webstreamerfo: twebstreamerfo
     hint = '2x Click to select, Right click to add/delete row.'
     visible = False
     bounds_x = 0
-    bounds_y = 216
+    bounds_y = 232
     bounds_cx = 346
-    bounds_cy = 114
-    font.name = 'stf_default'
-    font.localprops = []
-    optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
+    bounds_cy = 98
+    optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
     datacols.count = 4
     datacols.colorselect = 16763002
     datacols.options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
@@ -3803,29 +3774,21 @@ object webstreamerfo: twebstreamerfo
     fixrows.count = 1
     fixrows.items = <    
       item
-        face.localprops = []
-        face.template = tfacecomp3
         height = 16
         numstep = 1
         captions.count = 4
         captions.items = <        
           item
             caption = 'Name'
-            face.localprops = []
-            face.template = tfacecomp3
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'Genre'
-            face.localprops = []
-            face.template = tfacecomp3
             captiondist = 0
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
             caption = 'URL'
-            face.localprops = []
-            face.template = tfacecomp3
             options = [dco_colsort, dco_wholecellsortclick, dco_hintclippedtext]
           end        
           item
@@ -3856,11 +3819,51 @@ object webstreamerfo: twebstreamerfo
         localprops = [flp_color, flp_colorselect]
       end>
     zebra_start = 1
-    datarowheight = 15
+    datarowheight = 18
     statfile = tstatfile1
     statpriority = 1
     oncellevent = oncellev
     reffontheight = 17
+  end
+  object baddrow: tbutton
+    Tag = 1
+    color = -2147483645
+    frame.localprops = [frl_optionsskin]
+    frame.localprops1 = []
+    frame.template = tframecomp2
+    face.fade_direction = gd_down
+    face.localprops = [fal_fadirection]
+    face.template = tfacecomp3
+    taborder = 6
+    bounds_x = 12
+    bounds_y = 216
+    bounds_cx = 150
+    bounds_cy = 16
+    state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
+    caption = 'Add row'
+    imagenr = 27
+    focusrectdist = 0
+    onexecute = addrow
+  end
+  object bdelrow: tbutton
+    Tag = 1
+    color = -2147483645
+    frame.localprops = [frl_optionsskin]
+    frame.localprops1 = []
+    frame.template = tframecomp2
+    face.fade_direction = gd_down
+    face.localprops = [fal_fadirection]
+    face.template = tfacecomp3
+    taborder = 7
+    bounds_x = 181
+    bounds_y = 216
+    bounds_cx = 150
+    bounds_cy = 16
+    state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
+    caption = 'Delete selected row'
+    imagenr = 27
+    focusrectdist = 0
+    onexecute = deleterow
   end
   object sliderimage: tbitmapcomp
     left = 13
@@ -4285,6 +4288,10 @@ object webstreamerfo: twebstreamerfo
         onexecute = onexit
       end>
     menu.state = [as_localcaption]
+    menu.font.name = 'stf_menu'
+    menu.font.localprops = []
+    menu.fontactive.name = 'stf_menu'
+    menu.fontactive.localprops = []
     left = 123
     top = 151
   end
@@ -4330,8 +4337,8 @@ object webstreamerfo: twebstreamerfo
       6184542
     )
     template.fade_direction = gd_down
-    left = 217
-    top = 204
+    left = 176
+    top = 71
   end
   object tfacecomp7: tfacecomp
     template.fade_pos.count = 2
@@ -4345,8 +4352,8 @@ object webstreamerfo: twebstreamerfo
       7895160
     )
     template.fade_direction = gd_down
-    left = 212
-    top = 234
+    left = 192
+    top = 81
   end
   object tfacecomp8: tfacecomp
     template.fade_pos.count = 2
