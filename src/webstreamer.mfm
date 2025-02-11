@@ -1,7 +1,7 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 440
-  bounds_y = 218
+  bounds_x = 326
+  bounds_y = 229
   bounds_cx = 346
   bounds_cy = 346
   bounds_cxmin = 346
@@ -17,9 +17,9 @@ object webstreamerfo: twebstreamerfo
   container.face.template = tfacecomp3
   container.bounds = (
     0
-    17
+    19
     346
-    329
+    327
   )
   mainmenu = tmainmenu1
   options = [fo_main, fo_terminateonclose, fo_freeonclose, fo_screencentered, fo_autoreadstat, fo_autowritestat, fo_savepos, fo_savezorder, fo_savestate]
@@ -3029,7 +3029,7 @@ object webstreamerfo: twebstreamerfo
         colorselect = 16764303
       end>
     dropdown.historymaxcount = 50
-    reffontheight = 15
+    reffontheight = 17
   end
   object infopanel: tstringdisp
     optionswidget1 = [ow1_fontglyphheight]
@@ -3044,7 +3044,7 @@ object webstreamerfo: twebstreamerfo
     font.name = 'stf_default'
     font.localprops = [flp_color]
     textflags = [tf_xcentered, tf_ycentered]
-    reffontheight = 15
+    reffontheight = 17
     object runselect: tbooleanedit
       color = -2147483645
       bounds_x = 158
@@ -3111,7 +3111,7 @@ object webstreamerfo: twebstreamerfo
           colorselect = 16764303
         end>
       dropdown.historymaxcount = 50
-      reffontheight = 15
+      reffontheight = 17
     end
     object showgrid: tbooleanedit
       color = -2147483645
@@ -3132,11 +3132,23 @@ object webstreamerfo: twebstreamerfo
       bounds_x = 6
       bounds_y = 0
       bounds_cx = 23
-      bounds_cy = 21
+      bounds_cy = 23
       statfile = tstatfile1
       value = -1
       valuemin = -1
-      reffontheight = 15
+      reffontheight = 17
+    end
+    object edrecformat: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 5
+      visible = False
+      bounds_x = 32
+      bounds_y = -1
+      bounds_cx = 23
+      bounds_cy = 23
+      statfile = tstatfile1
+      reffontheight = 17
     end
   end
   object panelcommand: tpaintbox
@@ -3465,40 +3477,40 @@ object webstreamerfo: twebstreamerfo
       taborder = 11
       bounds_x = 150
       bounds_y = 4
-      bounds_cx = 24
-      bounds_cy = 15
+      bounds_cx = 21
+      bounds_cy = 17
       caption = '100'
-      reffontheight = 15
+      reffontheight = 17
     end
     object lvr: tlabel
       color = -2147483645
       taborder = 12
       bounds_x = 180
       bounds_y = 4
-      bounds_cx = 24
-      bounds_cy = 15
+      bounds_cx = 21
+      bounds_cy = 17
       caption = '100'
-      reffontheight = 15
+      reffontheight = 17
     end
     object lte: tlabel
       color = -2147483645
       taborder = 13
       bounds_x = 258
       bounds_y = 4
-      bounds_cx = 41
-      bounds_cy = 15
+      bounds_cx = 39
+      bounds_cy = 17
       caption = 'Tempo'
-      reffontheight = 15
+      reffontheight = 17
     end
     object lpi: tlabel
       color = -2147483645
       taborder = 14
       bounds_x = 307
       bounds_y = 4
-      bounds_cx = 30
-      bounds_cy = 15
+      bounds_cx = 27
+      bounds_cy = 17
       caption = 'Pitch'
-      reffontheight = 15
+      reffontheight = 17
     end
     object btempo: tbutton
       Tag = 1
@@ -3533,12 +3545,13 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp7
       taborder = 16
       hint = 'Enable/Disable Recording'
-      bounds_x = 28
-      bounds_y = 26
-      bounds_cx = 77
+      bounds_x = 24
+      bounds_y = 25
+      bounds_cx = 84
       bounds_cy = 22
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Record'
+      captiondist = 0
       font.height = 10
       font.name = 'stf_default'
       font.localprops = [flp_height]
@@ -3563,23 +3576,23 @@ object webstreamerfo: twebstreamerfo
       color = -2147483645
       taborder = 18
       hint = 'The webstream is in MP3 format'
-      bounds_x = 43
-      bounds_y = 7
+      bounds_x = 42
+      bounds_y = 5
       bounds_cx = 25
-      bounds_cy = 15
+      bounds_cy = 17
       caption = 'MP3'
-      reffontheight = 15
+      reffontheight = 17
     end
     object tlabel3: tlabel
       color = -2147483645
       taborder = 19
       hint = 'The webstream is in AAC format'
       bounds_x = 93
-      bounds_y = 7
+      bounds_y = 5
       bounds_cx = 24
-      bounds_cy = 15
+      bounds_cy = 17
       caption = 'AAC'
-      reffontheight = 15
+      reffontheight = 17
     end
     object aacformat: tbooleaneditradio
       color = -2147483645
@@ -3605,10 +3618,10 @@ object webstreamerfo: twebstreamerfo
     bounds_x = 54
     bounds_y = 0
     bounds_cx = 237
-    bounds_cy = 36
+    bounds_cy = 38
     text = '  Delete all URL history ?'
     textflags = [tf_left, tf_ycentered]
-    reffontheight = 15
+    reffontheight = 17
     object byes: tbutton
       Tag = 1
       color = -2147483645
@@ -3847,7 +3860,7 @@ object webstreamerfo: twebstreamerfo
     statfile = tstatfile1
     statpriority = 1
     oncellevent = oncellev
-    reffontheight = 15
+    reffontheight = 17
   end
   object sliderimage: tbitmapcomp
     left = 13
@@ -3885,8 +3898,8 @@ object webstreamerfo: twebstreamerfo
   end
   object tstatfile1: tstatfile
     filename = 'swp.ini'
-    left = 309
-    top = 166
+    left = 249
+    top = 172
   end
   object timagelist3: timagelist
     width = 4
@@ -3922,8 +3935,8 @@ object webstreamerfo: twebstreamerfo
     template.frameimage_top = -4
     template.frameimage_right = -4
     template.frameimage_bottom = -4
-    left = 229
-    top = 168
+    left = 171
+    top = 151
   end
   object tmainmenu1: tmainmenu
     facetemplate = tfacecomp5
@@ -3946,7 +3959,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 4
+        submenu.count = 5
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4194,6 +4207,27 @@ object webstreamerfo: twebstreamerfo
             name = 'refresh'
             state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
             onafterexecute = onupdevices
+          end        
+          item
+            submenu.count = 2
+            submenu.items = <            
+              item
+                caption = ' WAV output record format'
+                name = 'wavformat'
+                state = [as_checked, as_localchecked, as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onaftermenusetrecformat
+              end            
+              item
+                caption = ' OGG output record format'
+                name = 'oggformat'
+                state = [as_localcaption, as_localonafterexecute]
+                options = [mao_radiobutton, mao_shortcutcaption]
+                onafterexecute = onaftermenusetrecformat
+              end>
+            caption = ' Set output record format'
+            name = 'recformat'
+            state = [as_localcaption, as_localonafterexecute]
           end        
           item
             caption = ' Clear history of URL'

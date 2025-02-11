@@ -4,12 +4,43 @@ unit webstreamer;
 interface
 
 uses
- uos_flat,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,ctypes,
- msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,
- msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,
- msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,
- msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
- msedragglob,msegrids,msegridsglob;
+  uos_flat,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  ctypes,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob;
 
 type
   twebstreamerfo = class(tdockform)
@@ -57,10 +88,11 @@ type
     tfacecomp9: tfacecomp;
     tfacecomp10: tfacecomp;
     edeviceselected: tintegeredit;
-   mp3format: tbooleaneditradio;
-   tlabel2: tlabel;
-   tlabel3: tlabel;
-   aacformat: tbooleaneditradio;
+    mp3format: tbooleaneditradio;
+    tlabel2: tlabel;
+    tlabel3: tlabel;
+    aacformat: tbooleaneditradio;
+    edrecformat: tintegeredit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -90,6 +122,7 @@ type
     procedure onafterdevice(const Sender: TObject);
     procedure onexit(const Sender: TObject);
     procedure onupdevices(const Sender: TObject);
+    procedure onaftermenusetrecformat(const Sender: TObject);
   end;
 
 const
@@ -118,8 +151,7 @@ uses
 procedure twebstreamerfo.oncheckdevices();
 var
   x: integer;
-  prestr, typ : string;
-  
+  prestr, typ: string;
 begin
   if isinit = False then
     UOS_GetInfoDevice()
@@ -143,22 +175,22 @@ begin
       prestr := ' '
     else
       prestr := '';
-  
+
     if UOSDeviceInfos[x].DefaultDevOut = True then
       tmainmenu1.menu.itembynames(['config', 'devices', '-1']).Caption :=
         '-1 = Default = Out = ' + msestring(UOSDeviceInfos[x].DeviceName);
-    
+
     if UOSDeviceInfos[x].DeviceType = 'In' then
     begin
-    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).enabled := false;
-    typ := ' = In ' ;
+      tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Enabled := False;
+      typ := ' = In ';
     end
     else
     begin
-    tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).enabled := true;
-    typ := ' = Out ' ;
+      tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Enabled := True;
+      typ := ' = Out ';
     end;
-    
+
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Visible := True;
 
     tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Caption :=
@@ -255,7 +287,7 @@ begin
 
   if (rightlev >= 0) and (rightlev <= 1) then
     vuRight.Value := rightlev;
- 
+
   if panelwave.Visible = True then
   begin
 
@@ -269,7 +301,7 @@ end;
 procedure twebstreamerfo.onplay(const Sender: TObject);
 var
   abool: Boolean;
-  arec: string;
+  arec, outputstr: string;
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
@@ -278,17 +310,18 @@ begin
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
-  incview := 0;
+  incview    := 0;
 
   uos_CreatePlayer(webindex);
   // Create the player.
   // PlayerIndex : from 0 to what your computer can do !
   // If PlayerIndex exists already, it will be overwriten...
-  
-   if mp3format.value = true then
+
+  if mp3format.Value = True then
     webformat := 0
   else
     webformat := 2;
+
 
   if brecord.tag = 0 then
     aformat := 0
@@ -297,16 +330,17 @@ begin
 
   if webformat = 2 then
   begin
-  sizebuf := 16384;
-  latency := 0.5;
-  end else
+    sizebuf := 16384;
+    latency := 0.5;
+  end
+  else
   begin
-  sizebuf := 8192;
-  latency := -1;
+    sizebuf := 8192;
+    latency := -1;
   end;
-  
+
   application.ProcessMessages;
-  
+
   // 'https://radiorecord.hostingradio.ru/ps96.aacp';
 
   webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, webformat, False);
@@ -327,11 +361,17 @@ begin
 
     if brecord.tag = 1 then
     begin
+
+      if edrecformat.Value = 0 then
+        outputstr := '.wav'
+      else
+        outputstr := '.ogg';
+
       arecnp := 'records' + directoryseparator + 'rec_' +
-        msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + '.wav';
+        msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
 
       arec := ordir + arecnp;
-      uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, 0);
+      uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
 
       btempo.Enabled        := False;
       edtempo.Enabled       := False;
@@ -518,10 +558,10 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   {$endif}
-  
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil, nil, pchar(aa)) = -1 then
-  if uos_LoadLib('system', nil, 'system', nil, nil, nil, nil, 'system') = -1 then
-    application.terminate;
+
+  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil, nil, PChar(aa)) = -1 then
+    if uos_LoadLib('system', nil, 'system', nil, nil, nil, nil, 'system') = -1 then
+      application.terminate;
 
   if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
     plugsoundtouch := True
@@ -531,6 +571,18 @@ begin
   brecord.tag := 0;
 
   btempo.tag := 0;
+
+  if edrecformat.Value = 0 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'recformat', 'oggformat']).Checked := False;
+  end
+  else
+  begin
+    tmainmenu1.menu.itembynames(['config', 'recformat', 'oggformat']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := False;
+  end;
+
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
 
@@ -579,7 +631,6 @@ begin
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
-
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
@@ -675,17 +726,16 @@ begin
 
   bounds_cymax := bounds_cy;
   bounds_cymin := bounds_cy;
-
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
 var
-statname : string;
+  statname: string;
 begin
   statname := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'swp.ini';
-  tstatfile1.filename :=statname;
-  Height  := 154;
-  Visible := False;
+  tstatfile1.filename := statname;
+  Height   := 154;
+  Visible  := False;
 end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
@@ -724,7 +774,7 @@ begin
     btempo.face.template := tfacecomp7;
     btempo.tag           := 0;
   end;
-    ChangePlugSetSoundTouch(nil);
+  ChangePlugSetSoundTouch(nil);
 end;
 
 procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
@@ -785,7 +835,9 @@ begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
         if lowercase(griddisp[3][griddisp.focusedcell.row]) = 'aac' then
-        aacformat.value := true else mp3format.value := true; 
+          aacformat.Value := True
+        else
+          mp3format.Value := True;
       end;
 end;
 
@@ -825,5 +877,12 @@ begin
     oncheckdevices();
 end;
 
-end.
+procedure twebstreamerfo.onaftermenusetrecformat(const Sender: TObject);
+begin
+  if tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked = True then
+    edrecformat.Value := 0
+  else
+    edrecformat.Value := 2;
+end;
 
+end.
