@@ -251,9 +251,9 @@ procedure twebstreamerfo.InitDrawLive();
 var transpcolor : longint = $B6C4AF;
 begin
 
-if edstyle.value = 0 then transpcolor := $B6C4AF;
+if edstyle.value = 0 then transpcolor := $5F605F;
 if edstyle.value = 1 then transpcolor := cl_black;
-if edstyle.value = 2 then transpcolor := $E6E6E6;
+if edstyle.value = 2 then transpcolor := $636363;
 
   rectrecform.pos  := nullpoint;
   rectrecform.size := panelwave.size;
@@ -280,10 +280,10 @@ begin
   poswavrec2.x := poswavrec.x;
   poswavrec.y  := (panelwave.Height div 2) - 2;
   poswavrec2.y := ((panelwave.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
-  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC99D6);
+  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $FFC1B2);
   poswavrec.y  := (panelwave.Height div 2);
   poswavrec2.y := poswavrec.y + (round((rv) * ((panelwave.Height div 2) - 3)));
-  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $AC79D6);
+  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $94ABFF);
   panelwave.invalidate();
   xreclive     := xreclive + 1;
 end;
@@ -1124,6 +1124,8 @@ begin
     color      := cl_default;
     font.color := cl_black;
     font.color := cl_black;
+    vuRight.bar_face.fade_color[1] := $616261;
+    vuleft.bar_face.fade_color[1] := $616261;
     infopanel.font.color := cl_black;
     griddisp.font.color := cl_black;
     btnStart.font.color := cl_black;
@@ -1172,6 +1174,8 @@ begin
     btnPause.font.color := cl_white;
     btnStop.font.color := cl_white;
     btnResume.font.color := cl_white;
+    vuRight.bar_face.fade_color[1] := $0E0E0E;
+    vuleft.bar_face.fade_color[1] := $0E0E0E;
     tmainmenu1.menu.color := $575757;
     tmainmenu1.menu.font.color := cl_white;
     tmainmenu1.menu.fontactive.color := cl_white;
@@ -1183,7 +1187,7 @@ begin
     tfacecomp3.template.fade_color.items[1] := cl_black;
     tfacecomp4.template.fade_color.items[0] := $F09800;
     tfacecomp4.template.fade_color.items[1] := $734900;
-    tfacecomp6.template.fade_color.items[0] := $8A8A8A;
+    tfacecomp6.template.fade_color.items[0] := $4C4C4C;
     tfacecomp6.template.fade_color.items[1] := cl_black;
     tfacecomp9.template.fade_color.items[0] := $FFBDBD;
     tfacecomp9.template.fade_color.items[1] := cl_dkred;
@@ -1208,6 +1212,8 @@ begin
     color      := cl_default;
     font.color := cl_black;
     font.color := cl_black;
+    vuRight.bar_face.fade_color[1] := $666666;
+    vuleft.bar_face.fade_color[1] := $666666;
     infopanel.font.color := cl_black;
     griddisp.font.color := cl_black;
     btnStart.font.color := cl_black;

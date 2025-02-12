@@ -3238,15 +3238,17 @@ object webstreamerfo: twebstreamerfo
       bounds_cx = 14
       bounds_cy = 74
       direction = gd_up
-      bar_face.fade_pos.count = 1
+      bar_face.fade_pos.count = 2
       bar_face.fade_pos.items = (
         0
+        1
       )
-      bar_face.fade_color.count = 1
+      bar_face.fade_color.count = 2
       bar_face.fade_color.items = (
-        -1610612715
+        11912703
+        -1610612734
       )
-      bar_face.fade_direction = gd_up
+      bar_face.fade_direction = gd_down
       bar_face.localprops = [fal_fadirection]
       bar_frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom]
       bar_frame.localprops1 = [frl1_foleft, frl1_fotop, frl1_foright, frl1_fobottom]
@@ -3261,15 +3263,17 @@ object webstreamerfo: twebstreamerfo
       bounds_cx = 14
       bounds_cy = 74
       direction = gd_up
-      bar_face.fade_pos.count = 1
+      bar_face.fade_pos.count = 2
       bar_face.fade_pos.items = (
         0
+        1
       )
-      bar_face.fade_color.count = 1
+      bar_face.fade_color.count = 2
       bar_face.fade_color.items = (
-        -1610612715
+        16757426
+        -1610612734
       )
-      bar_face.fade_direction = gd_up
+      bar_face.fade_direction = gd_down
       bar_face.localprops = [fal_fadirection]
       bar_frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom]
       bar_frame.localprops1 = [frl1_foleft, frl1_fotop, frl1_foright, frl1_fobottom]
@@ -3326,11 +3330,12 @@ object webstreamerfo: twebstreamerfo
       caption = #9633
       textflags = [tf_left, tf_xcentered, tf_top, tf_ycentered, tf_rotate180]
       captiondist = 0
-      font.shadow_color = -1610612730
+      font.shadow_shiftx = 0
+      font.shadow_shifty = 0
       font.height = 22
       font.style = [fs_bold]
       font.name = 'stf_default'
-      font.localprops = [flp_shadow_color, flp_style, flp_height]
+      font.localprops = [flp_shadow_color, flp_shadow_shiftx, flp_shadow_shifty, flp_style, flp_height]
       imagenr = 1
       focusrectdist = 0
       onexecute = onstop
@@ -3383,11 +3388,12 @@ object webstreamerfo: twebstreamerfo
       caption = '||'
       textflags = [tf_left, tf_xcentered, tf_ycentered, tf_rotate180]
       captiondist = 0
-      font.shadow_color = -1610612730
+      font.shadow_shiftx = 0
+      font.shadow_shifty = 0
       font.height = 13
       font.style = [fs_bold]
       font.name = 'stf_default'
-      font.localprops = [flp_shadow_color, flp_style, flp_height]
+      font.localprops = [flp_shadow_color, flp_shadow_shiftx, flp_shadow_shifty, flp_style, flp_height]
       imagenr = 1
       imagenrdisabled = -1
       focusrectdist = 0
@@ -3413,11 +3419,12 @@ object webstreamerfo: twebstreamerfo
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = '>'
       captiondist = 0
-      font.shadow_color = -1610612730
+      font.shadow_shiftx = 0
+      font.shadow_shifty = 0
       font.height = 22
       font.style = [fs_bold]
       font.name = 'stf_default'
-      font.localprops = [flp_shadow_color, flp_style, flp_height]
+      font.localprops = [flp_shadow_color, flp_shadow_shiftx, flp_shadow_shifty, flp_style, flp_height]
       imagenr = 27
       focusrectdist = 0
       onexecute = onplay
