@@ -1,12 +1,13 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 481
-  bounds_y = 308
-  bounds_cx = 346
-  bounds_cy = 152
-  bounds_cxmin = 346
-  bounds_cymin = 152
-  bounds_cxmax = 346
+  bounds_x = 548
+  bounds_y = 280
+  bounds_cx = 348
+  bounds_cy = 148
+  bounds_cxmin = 348
+  bounds_cymin = 148
+  bounds_cxmax = 348
+  bounds_cymax = 148
   container.color = 11977903
   container.frame.localprops = []
   container.frame.localprops1 = []
@@ -15,8 +16,8 @@ object webstreamerfo: twebstreamerfo
   container.bounds = (
     0
     19
-    346
-    133
+    348
+    129
   )
   mainmenu = tmainmenu1
   font.height = 12
@@ -3023,10 +3024,12 @@ object webstreamerfo: twebstreamerfo
     dropdown.dropdownrowcount = 100
     dropdown.cols.count = 1
     dropdown.cols.colorselect = 16764303
+    dropdown.cols.font.localprops = []
     dropdown.cols.items = <    
       item
         textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
         colorselect = 16764303
+        font.localprops = []
       end>
     dropdown.historymaxcount = 50
     reffontheight = 17

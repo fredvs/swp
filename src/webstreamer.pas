@@ -1033,6 +1033,8 @@ begin
 
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
+  
+  historyfn.dropdown.cols[0].font.Height := fontheight;
 
   griddisp.font.Height := fontheight;
   griddisp.font.color  := font.color;
@@ -1091,16 +1093,12 @@ begin
         end;
   end;
 
-  //  bounds_cymax := (18 * round(fontheight / 12)) + panelcommand.bottom;
-  //  bounds_cymin := (18 * round(fontheight / 12)) + panelcommand.bottom;
-
   bounds_cxmax := 0;
   bounds_cxmin := 0;
   bounds_cymax := 0;
   bounds_cymin := 0;
   bounds_cxmax := round(346 * ratio);
   bounds_cxmin := bounds_cxmax;
-
 
   onchangeshowwave(nil);
 
