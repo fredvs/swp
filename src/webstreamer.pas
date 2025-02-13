@@ -242,6 +242,7 @@ begin
       lpi.Caption := 'Pitch'
     else
       lpi.Caption := 'P' + IntToStr(round(edpitch.Value * 200));
+    if ( edtempo.Value > 0.1 ) and ( edpitch.Value > 0.1) then
     uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
   end;
 
@@ -1193,8 +1194,8 @@ begin
     tfacecomp6.template.fade_color.items[1] := cl_black;
     tfacecomp9.template.fade_color.items[0] := $FFBDBD;
     tfacecomp9.template.fade_color.items[1] := cl_dkred;
-    tfacecomp8.template.fade_color.items[0] := $FFF8EB;
-    tfacecomp8.template.fade_color.items[1] := cl_black;
+    tfacecomp8.template.fade_color.items[0] := $FF9900;
+    tfacecomp8.template.fade_color.items[1] := $633C00;
     tfacecomp2.template.fade_color.items[0] := cl_dkgray;
     tfacecomp2.template.fade_color.items[1] := cl_black;
     griddisp[0].color          := cl_black;
