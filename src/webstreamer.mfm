@@ -4358,8 +4358,9 @@ object webstreamerfo: twebstreamerfo
     menu.state = [as_localcaption]
     menu.font.name = 'stf_menu'
     menu.font.localprops = []
+    menu.fontactive.color = 15579786
     menu.fontactive.name = 'stf_menu'
-    menu.fontactive.localprops = []
+    menu.fontactive.localprops = [flp_color]
     left = 123
     top = 151
   end

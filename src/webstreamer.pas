@@ -280,10 +280,10 @@ begin
   poswavrec2.x := poswavrec.x;
   poswavrec.y  := (panelwave.Height div 2) - 2;
   poswavrec2.y := ((panelwave.Height div 2) - 1) - round((lv) * ((rectrecform.cy div 2) - 3));
-  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $FFC1B2);
+  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $D69696);
   poswavrec.y  := (panelwave.Height div 2);
   poswavrec2.y := poswavrec.y + (round((rv) * ((panelwave.Height div 2) - 3)));
-  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $94ABFF);
+  sliderimage.bitmap.Canvas.drawline(poswavrec, poswavrec2, $859AE6);
   panelwave.invalidate();
   xreclive     := xreclive + 1;
 end;
@@ -1030,7 +1030,9 @@ var
 begin
   ratio       := fontheight / 11;
   font.Height := fontheight;
-
+  
+  messagefontheight := fontheight;
+  
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
   
@@ -1134,7 +1136,7 @@ begin
     btnResume.font.color := cl_black;
     tmainmenu1.menu.color := cl_default;
     tmainmenu1.menu.font.color := cl_black;
-    tmainmenu1.menu.fontactive.color := cl_black;
+    tmainmenu1.menu.fontactive.color := $DE6B00;
     tmainmenu1.menu.colorglyph := cl_black;
     tmainmenu1.menu.colorglyphactive := cl_black;
     tfacecomp7.template.fade_color.items[0] := $BECCB6;
@@ -1178,7 +1180,7 @@ begin
     vuleft.bar_face.fade_color[1] := $0E0E0E;
     tmainmenu1.menu.color := $575757;
     tmainmenu1.menu.font.color := cl_white;
-    tmainmenu1.menu.fontactive.color := cl_white;
+    tmainmenu1.menu.fontactive.color := $EDBA8A;
     tmainmenu1.menu.colorglyph := cl_white;
     tmainmenu1.menu.colorglyphactive := cl_white;
     tfacecomp7.template.fade_color.items[0] := cl_dkgray;
@@ -1222,7 +1224,7 @@ begin
     btnResume.font.color := cl_black;
     tmainmenu1.menu.color := cl_default;
     tmainmenu1.menu.font.color := cl_black;
-    tmainmenu1.menu.fontactive.color := cl_black;
+    tmainmenu1.menu.fontactive.color := $DE6B00;
     tmainmenu1.menu.colorglyph := cl_black;
     tmainmenu1.menu.colorglyphactive := cl_black;
     tfacecomp7.template.fade_color.items[0] := $F2F2F2;
