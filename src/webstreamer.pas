@@ -141,7 +141,7 @@ type
    end;
 
 const
-  version = 250211;
+  version = 250214;
 
 var
   webstreamerfo: twebstreamerfo;
