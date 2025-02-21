@@ -3,11 +3,10 @@ object webstreamerfo: twebstreamerfo
   bounds_x = 548
   bounds_y = 280
   bounds_cx = 348
-  bounds_cy = 148
+  bounds_cy = 320
   bounds_cxmin = 348
   bounds_cymin = 148
   bounds_cxmax = 348
-  bounds_cymax = 148
   container.color = 11977903
   container.frame.localprops = []
   container.frame.localprops1 = []
@@ -17,7 +16,7 @@ object webstreamerfo: twebstreamerfo
     0
     19
     348
-    129
+    301
   )
   mainmenu = tmainmenu1
   font.height = 12
@@ -2980,192 +2979,6 @@ object webstreamerfo: twebstreamerfo
   oneventloopstart = oneventstart
   onclose = onclosed
   moduleclassname = 'tdockform'
-  object historyfn: thistoryedit
-    optionswidget1 = [ow1_fontglyphheight]
-    optionswidget = [ow_mousefocus, ow_arrowfocus, ow_destroywidgets]
-    color = -2147483645
-    frame.levelo = 0
-    frame.framei_left = 0
-    frame.framei_top = 0
-    frame.framei_right = 0
-    frame.framei_bottom = 0
-    frame.captionpos = cp_lefttop
-    frame.captiondist = 0
-    frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
-    frame.localprops1 = [frl1_captiondist]
-    frame.button.face.localprops = []
-    frame.button.face.template = tfacecomp3
-    frame.button.frame.optionsskin = [fso_flat]
-    frame.button.frame.localprops = [frl_optionsskin]
-    frame.button.frame.localprops1 = []
-    frame.buttons.count = 1
-    frame.buttons.items = <    
-      item
-        face.localprops = []
-        face.template = tfacecomp3
-        frame.optionsskin = [fso_flat]
-        frame.localprops = [frl_optionsskin]
-        frame.localprops1 = []
-      end>
-    face.localprops = []
-    face.template = tfacecomp3
-    taborder = 1
-    hint = ' History of Cue URL, Paste here the link wanted.'
-    bounds_x = 2
-    bounds_y = 0
-    bounds_cx = 342
-    bounds_cy = 22
-    statfile = tstatfile1
-    optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
-    optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_shiftreturn, oe_eatreturn, oe_resetselectonexit, oe_exitoncursor, oe_endonenter, oe_autoselect, oe_autoselectonfirstclick]
-    onchange = onafterdropdown
-    value = 'http://stream-uk1.radioparadise.com/mp3-128'
-    dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
-    dropdown.dropdownrowcount = 100
-    dropdown.cols.count = 1
-    dropdown.cols.colorselect = 16764303
-    dropdown.cols.font.localprops = []
-    dropdown.cols.items = <    
-      item
-        textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
-        colorselect = 16764303
-        font.localprops = []
-      end>
-    dropdown.historymaxcount = 50
-    reffontheight = 17
-  end
-  object infopanel: tstringdisp
-    optionswidget1 = [ow1_fontglyphheight]
-    color = 14408667
-    face.localprops = []
-    face.template = tfacecomp3
-    bounds_x = 0
-    bounds_y = 23
-    bounds_cx = 346
-    bounds_cy = 26
-    font.height = 12
-    font.name = 'stf_default'
-    font.localprops = []
-    textflags = [tf_xcentered, tf_ycentered]
-    reffontheight = 17
-    object runselect: tbooleanedit
-      color = -2147483645
-      bounds_x = 158
-      bounds_y = 3
-      bounds_cx = 31
-      bounds_cy = 17
-      statfile = tstatfile1
-      visible = False
-    end
-    object showwave: tbooleanedit
-      color = -2147483645
-      taborder = 1
-      hint = 'Show/Hide wave image'
-      bounds_x = 223
-      bounds_y = 3
-      bounds_cx = 27
-      bounds_cy = 17
-      statfile = tstatfile1
-      visible = False
-    end
-    object thistoryedit2: thistoryedit
-      optionswidget1 = [ow1_fontglyphheight]
-      color = -2147483645
-      frame.levelo = 0
-      frame.framei_left = 0
-      frame.framei_top = 0
-      frame.framei_right = 0
-      frame.framei_bottom = 0
-      frame.captionpos = cp_lefttop
-      frame.captiondist = 0
-      frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
-      frame.localprops1 = [frl1_captiondist]
-      frame.button.face.fade_direction = gd_down
-      frame.button.face.localprops = []
-      frame.button.frame.optionsskin = [fso_flat]
-      frame.button.frame.localprops = [frl_optionsskin]
-      frame.button.frame.localprops1 = []
-      frame.buttons.count = 1
-      frame.buttons.items = <      
-        item
-          face.fade_direction = gd_down
-          face.localprops = []
-          frame.optionsskin = [fso_flat]
-          frame.localprops = [frl_optionsskin]
-          frame.localprops1 = []
-        end>
-      taborder = 2
-      visible = False
-      bounds_x = 200
-      bounds_y = 0
-      bounds_cx = 12
-      bounds_cy = 22
-      optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
-      optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
-      font.name = 'stf_default'
-      font.localprops = []
-      dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
-      dropdown.dropdownrowcount = 100
-      dropdown.cols.count = 1
-      dropdown.cols.colorselect = 16764303
-      dropdown.cols.items = <      
-        item
-          textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
-          colorselect = 16764303
-        end>
-      dropdown.historymaxcount = 50
-      reffontheight = 17
-    end
-    object showgrid: tbooleanedit
-      color = -2147483645
-      taborder = 3
-      hint = 'Show/Hide wave image'
-      bounds_x = 252
-      bounds_y = 0
-      bounds_cx = 27
-      bounds_cy = 17
-      statfile = tstatfile1
-      visible = False
-    end
-    object edeviceselected: tintegeredit
-      frame.localprops = []
-      frame.localprops1 = []
-      taborder = 4
-      visible = False
-      bounds_x = 6
-      bounds_y = 0
-      bounds_cx = 23
-      bounds_cy = 23
-      statfile = tstatfile1
-      value = -1
-      valuemin = -1
-      reffontheight = 17
-    end
-    object edrecformat: tintegeredit
-      frame.localprops = []
-      frame.localprops1 = []
-      taborder = 5
-      visible = False
-      bounds_x = 32
-      bounds_y = -1
-      bounds_cx = 23
-      bounds_cy = 23
-      statfile = tstatfile1
-      reffontheight = 17
-    end
-    object edstyle: tintegeredit
-      frame.localprops = []
-      frame.localprops1 = []
-      taborder = 6
-      visible = False
-      bounds_x = 62
-      bounds_y = 0
-      bounds_cx = 23
-      bounds_cy = 23
-      statfile = tstatfile1
-      reffontheight = 17
-    end
-  end
   object panelcommand: tpaintbox
     optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
     frame.localprops = []
@@ -3175,7 +2988,7 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp2
     taborder = 2
     bounds_x = 0
-    bounds_y = 48
+    bounds_y = 69
     bounds_cx = 346
     bounds_cy = 86
     object breset: tbutton
@@ -3624,6 +3437,192 @@ object webstreamerfo: twebstreamerfo
       colorglyph = -1610612734
     end
   end
+  object historyfn: thistoryedit
+    optionswidget1 = [ow1_fontglyphheight]
+    optionswidget = [ow_mousefocus, ow_arrowfocus, ow_destroywidgets]
+    color = -2147483645
+    frame.levelo = 0
+    frame.framei_left = 0
+    frame.framei_top = 0
+    frame.framei_right = 0
+    frame.framei_bottom = 0
+    frame.captionpos = cp_lefttop
+    frame.captiondist = 0
+    frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
+    frame.localprops1 = [frl1_captiondist]
+    frame.button.face.localprops = []
+    frame.button.face.template = tfacecomp3
+    frame.button.frame.optionsskin = [fso_flat]
+    frame.button.frame.localprops = [frl_optionsskin]
+    frame.button.frame.localprops1 = []
+    frame.buttons.count = 1
+    frame.buttons.items = <    
+      item
+        face.localprops = []
+        face.template = tfacecomp3
+        frame.optionsskin = [fso_flat]
+        frame.localprops = [frl_optionsskin]
+        frame.localprops1 = []
+      end>
+    face.localprops = []
+    face.template = tfacecomp3
+    taborder = 1
+    hint = ' History of Cue URL, Paste here the link wanted.'
+    bounds_x = 2
+    bounds_y = 0
+    bounds_cx = 342
+    bounds_cy = 22
+    statfile = tstatfile1
+    optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
+    optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_shiftreturn, oe_eatreturn, oe_resetselectonexit, oe_exitoncursor, oe_endonenter, oe_autoselect, oe_autoselectonfirstclick]
+    onchange = onafterdropdown
+    value = 'http://stream-uk1.radioparadise.com/mp3-128'
+    dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
+    dropdown.dropdownrowcount = 100
+    dropdown.cols.count = 1
+    dropdown.cols.colorselect = 16764303
+    dropdown.cols.font.localprops = []
+    dropdown.cols.items = <    
+      item
+        textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
+        colorselect = 16764303
+        font.localprops = []
+      end>
+    dropdown.historymaxcount = 50
+    reffontheight = 17
+  end
+  object infopanel: tstringdisp
+    optionswidget1 = [ow1_fontglyphheight]
+    color = 14408667
+    face.localprops = []
+    face.template = tfacecomp3
+    bounds_x = 0
+    bounds_y = 23
+    bounds_cx = 346
+    bounds_cy = 47
+    font.height = 12
+    font.name = 'stf_default'
+    font.localprops = []
+    textflags = [tf_xcentered, tf_ycentered]
+    reffontheight = 17
+    object runselect: tbooleanedit
+      color = -2147483645
+      bounds_x = 158
+      bounds_y = 3
+      bounds_cx = 31
+      bounds_cy = 17
+      statfile = tstatfile1
+      visible = False
+    end
+    object showwave: tbooleanedit
+      color = -2147483645
+      taborder = 1
+      hint = 'Show/Hide wave image'
+      bounds_x = 223
+      bounds_y = 3
+      bounds_cx = 27
+      bounds_cy = 17
+      statfile = tstatfile1
+      visible = False
+    end
+    object thistoryedit2: thistoryedit
+      optionswidget1 = [ow1_fontglyphheight]
+      color = -2147483645
+      frame.levelo = 0
+      frame.framei_left = 0
+      frame.framei_top = 0
+      frame.framei_right = 0
+      frame.framei_bottom = 0
+      frame.captionpos = cp_lefttop
+      frame.captiondist = 0
+      frame.localprops = [frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_frameimagelist, frl_frameimageleft, frl_frameimagetop, frl_frameimageright, frl_frameimagebottom]
+      frame.localprops1 = [frl1_captiondist]
+      frame.button.face.fade_direction = gd_down
+      frame.button.face.localprops = []
+      frame.button.frame.optionsskin = [fso_flat]
+      frame.button.frame.localprops = [frl_optionsskin]
+      frame.button.frame.localprops1 = []
+      frame.buttons.count = 1
+      frame.buttons.items = <      
+        item
+          face.fade_direction = gd_down
+          face.localprops = []
+          frame.optionsskin = [fso_flat]
+          frame.localprops = [frl_optionsskin]
+          frame.localprops1 = []
+        end>
+      taborder = 2
+      visible = False
+      bounds_x = 200
+      bounds_y = 0
+      bounds_cx = 12
+      bounds_cy = 22
+      optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
+      optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_resetselectonexit, oe_exitoncursor, oe_autoselect, oe_autoselectonfirstclick]
+      font.name = 'stf_default'
+      font.localprops = []
+      dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
+      dropdown.dropdownrowcount = 100
+      dropdown.cols.count = 1
+      dropdown.cols.colorselect = 16764303
+      dropdown.cols.items = <      
+        item
+          textflags = [tf_ycentered, tf_noselect, tf_ellipseleft]
+          colorselect = 16764303
+        end>
+      dropdown.historymaxcount = 50
+      reffontheight = 17
+    end
+    object showgrid: tbooleanedit
+      color = -2147483645
+      taborder = 3
+      hint = 'Show/Hide wave image'
+      bounds_x = 252
+      bounds_y = 0
+      bounds_cx = 27
+      bounds_cy = 17
+      statfile = tstatfile1
+      visible = False
+    end
+    object edeviceselected: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 4
+      visible = False
+      bounds_x = 6
+      bounds_y = 0
+      bounds_cx = 23
+      bounds_cy = 23
+      statfile = tstatfile1
+      value = -1
+      valuemin = -1
+      reffontheight = 17
+    end
+    object edrecformat: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 5
+      visible = False
+      bounds_x = 32
+      bounds_y = -1
+      bounds_cx = 23
+      bounds_cy = 23
+      statfile = tstatfile1
+      reffontheight = 17
+    end
+    object edstyle: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 6
+      visible = False
+      bounds_x = 62
+      bounds_y = 0
+      bounds_cx = 23
+      bounds_cy = 23
+      statfile = tstatfile1
+      reffontheight = 17
+    end
+  end
   object deleteallurl: tstringdisp
     frame.localprops = []
     frame.localprops1 = []
@@ -3632,8 +3631,8 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 91
-    bounds_y = 8
+    bounds_x = 51
+    bounds_y = 3
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
@@ -3688,8 +3687,8 @@ object webstreamerfo: twebstreamerfo
     face.localprops = [fal_image]
     face.template = tfacecomp2
     taborder = 4
-    bounds_x = 0
-    bounds_y = 133
+    bounds_x = 1
+    bounds_y = 154
     bounds_cx = 346
     bounds_cy = 81
   end
@@ -3736,8 +3735,8 @@ object webstreamerfo: twebstreamerfo
     taborder = 5
     hint = '2x Click to select a URL'
     visible = False
-    bounds_x = 1
-    bounds_y = 216
+    bounds_x = 2
+    bounds_y = 237
     bounds_cx = 344
     bounds_cy = 98
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
@@ -3890,8 +3889,8 @@ object webstreamerfo: twebstreamerfo
     face.localprops = [fal_fadirection]
     face.template = tfacecomp3
     taborder = 6
-    bounds_x = 14
-    bounds_y = 315
+    bounds_x = 15
+    bounds_y = 368
     bounds_cx = 150
     bounds_cy = 16
     state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3910,8 +3909,8 @@ object webstreamerfo: twebstreamerfo
     face.localprops = [fal_fadirection]
     face.template = tfacecomp3
     taborder = 7
-    bounds_x = 181
-    bounds_y = 315
+    bounds_x = 182
+    bounds_y = 368
     bounds_cx = 150
     bounds_cy = 16
     state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3919,6 +3918,20 @@ object webstreamerfo: twebstreamerfo
     imagenr = 27
     focusrectdist = 0
     onexecute = deleterow
+  end
+  object PimgPreview: tpaintbox
+    optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
+    color = -2147483645
+    frame.localprops = []
+    frame.localprops1 = []
+    taborder = 8
+    hint = 'Click the image to enlarge/reduce'
+    onpaint = onpaintimg
+    bounds_x = 0
+    bounds_y = 23
+    bounds_cx = 47
+    bounds_cy = 47
+    onmouseevent = onclickimage
   end
   object sliderimage: tbitmapcomp
     left = 13
@@ -4263,13 +4276,13 @@ object webstreamerfo: twebstreamerfo
               item
                 caption = ' OGG output record format'
                 name = 'oggformat'
-                state = [as_localcaption, as_localonafterexecute]
+                state = [as_localdisabled, as_localcaption, as_localonafterexecute]
                 options = [mao_radiobutton, mao_shortcutcaption]
                 onafterexecute = onaftermenusetrecformat
               end>
             caption = ' Set output record format'
             name = 'recformat'
-            state = [as_localcaption, as_localonafterexecute]
+            state = [as_invisible, as_localinvisible, as_localcaption, as_localonafterexecute]
           end        
           item
             submenu.count = 3
@@ -4453,5 +4466,11 @@ object webstreamerfo: twebstreamerfo
     template.fade_direction = gd_down
     left = 211
     top = 156
+  end
+  object ttimer1: ttimer
+    interval = 2000000
+    ontimer = ontimericy
+    left = 72
+    top = 55
   end
 end

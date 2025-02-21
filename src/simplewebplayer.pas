@@ -9,7 +9,7 @@ program simplewebplayer;
 {$endif}
 
 uses
- {$ifdef FPC} {$ifdef unix} cthreads, {$endif} {$endif}
+ {$ifdef FPC} {$ifdef unix}cthreads, {$endif} {$endif}
   msegui,
   webstreamer,
   SysUtils;

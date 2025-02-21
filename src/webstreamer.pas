@@ -5,6 +5,7 @@ interface
 
 uses
   uos_flat,
+  Math,
   msetypes,
   mseglob,
   mseguiglob,
@@ -40,7 +41,12 @@ uses
   msebitmap,
   msedragglob,
   msegrids,
-  msegridsglob;
+  msegridsglob,
+  msetimer,
+  BGRABitmap,
+  BGRAAnimatedGif,
+  BGRABitmapTypes,
+  mseimage;
 
 type
   boundchild = record
@@ -103,6 +109,8 @@ type
     bdelrow: TButton;
     tfacecomp2: tfacecomp;
     edstyle: tintegeredit;
+    ttimer1: ttimer;
+    PimgPreview: tpaintbox;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -137,8 +145,13 @@ type
     procedure setstyle(style: integer);
     procedure addrow(const Sender: TObject);
     procedure deleterow(const Sender: TObject);
-   procedure onexecswpstyle(const sender: TObject);
-   end;
+    procedure onexecswpstyle(const Sender: TObject);
+    procedure ontimericy(const Sender: TObject);
+    procedure onpaintimg(const Sender: twidget; const acanvas: tcanvas);
+    procedure getpicture(aurl: string);
+
+    procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
+  end;
 
 const
   version = 250214;
@@ -149,10 +162,13 @@ var
   rectrecform: rectty;
   xreclive, devcount, incview, deviceselected: integer;
   plugsoundtouch: Boolean = False;
+  aboolicy: Boolean = False;
+  aimage: TBGRAbitmap;
   isinit: Boolean = False;
   isexit: Boolean = False;
-  ordir, arecnp: string;
-  pa, mp, aa, st: string;
+  hasbitmap: Boolean = False;
+  ordir, arecnp, icystr, theplaying: string;
+  pa, sf, mp, aa, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
  {$if defined(darwin) and defined(macapp)}
@@ -163,6 +179,9 @@ var
 implementation
 
 uses
+  fphttpclient,
+  openssl, { This implements the procedure InitSSLInterface }
+  opensslsockets,
   webstreamer_mfm;
 
 procedure twebstreamerfo.oncheckdevices();
@@ -242,19 +261,23 @@ begin
       lpi.Caption := 'Pitch'
     else
       lpi.Caption := 'P' + IntToStr(round(edpitch.Value * 200));
-    if ( edtempo.Value > 0.1 ) and ( edpitch.Value > 0.1) then
-    uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+    if (edtempo.Value > 0.1) and (edpitch.Value > 0.1) then
+      uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
   end;
 
 end;
 
 procedure twebstreamerfo.InitDrawLive();
-var transpcolor : longint = $B6C4AF;
+var
+  transpcolor: longint = $B6C4AF;
 begin
 
-if edstyle.value = 0 then transpcolor := $5F605F;
-if edstyle.value = 1 then transpcolor := cl_black;
-if edstyle.value = 2 then transpcolor := $636363;
+  if edstyle.Value = 0 then
+    transpcolor := $5F605F;
+  if edstyle.Value = 1 then
+    transpcolor := cl_black;
+  if edstyle.Value = 2 then
+    transpcolor := $636363;
 
   rectrecform.pos  := nullpoint;
   rectrecform.size := panelwave.size;
@@ -291,7 +314,8 @@ end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
-  ShowLevel;
+  if PimgPreview.tag = 0 then
+    ShowLevel;
 end;
 
 procedure twebstreamerfo.ShowLevel();
@@ -327,12 +351,16 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
+  hasbitmap           := False;
+  PimgPreview.Visible := False;
+
   infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
   webindex   := 0;
   webinindex := -1;
   incview    := 0;
+  icystr     := '';
 
   uos_CreatePlayer(webindex);
   // Create the player.
@@ -340,9 +368,15 @@ begin
   // If PlayerIndex exists already, it will be overwriten...
 
   if mp3format.Value = True then
-    webformat := 0
+  begin
+    webformat := 0;
+    aboolicy  := True;
+  end
   else
+  begin
     webformat := 2;
+    aboolicy  := False;
+  end;
 
   if noaac then
     webformat := 0;
@@ -363,11 +397,19 @@ begin
     latency := -1;
   end;
 
+  if brecord.tag = 0 then
+    aformat := 0
+  else if edrecformat.Value = 0 then
+    aformat := 2
+  else
+    aformat := 0;
+
   application.ProcessMessages;
 
   // 'https://radiorecord.hostingradio.ru/ps96.aacp';
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, webformat, aboolicy);
 
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, webformat, False);
+  theplaying := historyfn.Value;
 
   // Add a Input from Audio URL with custom parameters
   // URL : URL of audio file (like  'http://someserver/somesound.mp3')
@@ -383,13 +425,17 @@ begin
     weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
+    //edrecformat.Value := 0;
+    //outputstr := '.wav';
     if brecord.tag = 1 then
     begin
-
       if edrecformat.Value = 0 then
         outputstr := '.wav'
       else
-        outputstr := '.ogg';
+      begin
+        sizebuf   := sizebuf div 8;
+        outputstr := '.ogg';  // needs sndfile library
+      end;
 
       arecnp := 'records' + directoryseparator + 'rec_' +
         msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
@@ -471,7 +517,7 @@ begin
     else if edstyle.Value = 1 then
       infopanel.font.color := cl_white
     else if edstyle.Value = 2 then
-      infopanel.font.color := cl_black;  
+      infopanel.font.color := cl_black;
 
     if brecord.tag = 1 then
       infopanel.Value := 'Play + Record ' + historyfn.Value
@@ -500,6 +546,9 @@ begin
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
+
+    if aboolicy then
+      ttimer1.Enabled := True;
 
     //uos_InputUpdateICY(webindex, webplugindex, icy_data);
     //caption := icy_data;
@@ -540,6 +589,7 @@ begin
   pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
   mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
   aa := ordir + 'lib/Linux/64bit/libfdk-aac-64.so';
+  sf := ordir + 'lib/Linux/64bit/LibSndFile-64.so';
   st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
   {$ENDIF}
 
@@ -604,8 +654,13 @@ begin
   noaac := true;
   {$endif}
 
-  if uos_LoadLib(PChar(pa), nil, PChar(mp), nil, nil, nil, nil, PChar(aa)) = -1 then
-    if uos_LoadLib('system', nil, 'system', nil, nil, nil, nil, 'system') = -1 then
+  {$if defined(CPUAMD64) and defined(linux) }      
+   if (sf <> 'system') and (sf <> '') then     
+      if uos_TestLoadLibrary(PChar(sf)) = false then sf := sf + '.2';
+  {$endif}
+
+  if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, nil, nil, PChar(aa)) = -1 then
+    if uos_LoadLib('system', 'system', 'system', nil, nil, nil, nil, 'system') = -1 then
       application.terminate;
 
   if (uos_LoadPlugin('soundtouch', PChar(st)) = 0) then
@@ -617,6 +672,9 @@ begin
 
   btempo.tag := 0;
 
+  if PChar(sf) <> '' then
+    tmainmenu1.menu.itembynames(['config', 'recformat']).Visible := True;
+
   if edrecformat.Value = 0 then
   begin
     tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := True;
@@ -627,24 +685,24 @@ begin
     tmainmenu1.menu.itembynames(['config', 'recformat', 'oggformat']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked := False;
   end;
-  
+
   if edstyle.Value = 0 then
   begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;    
-  end  else
-  if edstyle.Value = 1 then
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
+  end
+  else if edstyle.Value = 1 then
   begin
-    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := false;
-    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := true;
-    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;    
-  end else
-  if edstyle.Value = 2 then
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
+  end
+  else if edstyle.Value = 2 then
   begin
-    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := true;    
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := True;
   end;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
@@ -685,6 +743,7 @@ end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
+  ttimer1.Enabled         := False;
   uos_Stop(webindex);
   btnStart.Enabled        := True;
   btnStart.face.template  := tfacecomp7;
@@ -705,12 +764,15 @@ begin
   if brecord.tag = 1 then
     infopanel.Value := 'Rec saved: ' + arecnp
   else
-    infopanel.Value     := historyfn.Value + ' stopped...';
-  brecord.tag           := 0;
-  brecord.Caption       := 'Record';
+    infopanel.Value   := historyfn.Value + ' stopped...';
+  brecord.tag         := 0;
+  brecord.Caption     := 'Record';
   brecord.face.template := tfacecomp7;
   infopanel.face.template := tfacecomp3;
   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
+  hasbitmap           := False;
+  PimgPreview.Visible := False;
+
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
@@ -722,12 +784,14 @@ begin
     application.ProcessMessages;
     uos_free();
     sleep(300);
+    aimage.Free;
   end;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
+  ttimer1.Enabled         := False;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := True;
@@ -745,6 +809,8 @@ end;
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
+  if aboolicy then
+    ttimer1.Enabled       := True;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := False;
@@ -829,6 +895,9 @@ var
   statname: string;
   i1, childn: integer;
 begin
+
+  SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
+    [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
   setlength(boundchildsp, childrencount);
   childn := childrencount;
@@ -920,9 +989,10 @@ procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
 begin
   if (isinit) and (runselect.Value) then
   begin
+    writeln('onafterdropdown');
     onstop(nil);
-    sleep(100);
     application.ProcessMessages;
+    sleep(2000);
     onplay(nil);
   end;
 end;
@@ -961,7 +1031,6 @@ begin
     griddisp.Visible := False
   else
     griddisp.Visible := True;
-
   onchangeshowwave(nil);
 end;
 
@@ -971,12 +1040,14 @@ begin
     if (info.eventkind = cek_buttonrelease) then
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
-        historyfn.Value := griddisp[2][griddisp.focusedcell.row];
-        historyfn.savehistoryvalue;
         if lowercase(griddisp[3][griddisp.focusedcell.row]) = 'aac' then
           aacformat.Value := True
         else
           mp3format.Value := True;
+
+        historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+        historyfn.savehistoryvalue;
+
       end;
 end;
 
@@ -1021,7 +1092,7 @@ begin
   if tmainmenu1.menu.itembynames(['config', 'recformat', 'wavformat']).Checked = True then
     edrecformat.Value := 0
   else
-    edrecformat.Value := 2;
+    edrecformat.Value := 3;
 end;
 
 procedure twebstreamerfo.resizesp(fontheight: integer);
@@ -1031,12 +1102,12 @@ var
 begin
   ratio       := fontheight / 11;
   font.Height := fontheight;
-  
+
   messagefontheight := fontheight;
-  
+
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
-  
+
   historyfn.dropdown.cols[0].font.Height := fontheight;
 
   griddisp.font.Height := fontheight;
@@ -1067,6 +1138,8 @@ begin
   griddisp.frame.sbvert.Width := round(12 * ratio);
 
   infopanel.font.Height := fontheight;
+  PimgPreview.Height    := infopanel.Height;
+  PimgPreview.Width     := infopanel.Height;
 
   with panelcommand do
   begin
@@ -1124,9 +1197,9 @@ procedure twebstreamerfo.setstyle(style: integer);
 begin
   if style = 0 then
   begin
-    color      := cl_default;
-    font.color := cl_black;
-    font.color := cl_black;
+    color           := cl_default;
+    font.color      := cl_black;
+    font.color      := cl_black;
     vuRight.bar_face.fade_color[1] := $616261;
     vuleft.bar_face.fade_color[1] := $616261;
     infopanel.font.color := cl_black;
@@ -1155,13 +1228,13 @@ begin
     tfacecomp2.template.fade_color.items[0] := $A4B09D;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
-    griddisp[0].color          := $E0E0E0;
-    griddisp[1].color          := $E0E0E0;
-    griddisp[2].color          := $E0E0E0;
-    griddisp[3].color          := $E0E0E0;
+    griddisp[0].color := $E0E0E0;
+    griddisp[1].color := $E0E0E0;
+    griddisp[2].color := $E0E0E0;
+    griddisp[3].color := $E0E0E0;
     griddisp.fixrows[-1].color := $BFCCB9;
     griddisp.zebra_color := $F8FFF5;
-    container.color      := $B6C4AF;
+    container.color := $B6C4AF;
     infopanel.font.color := cl_black;
     historyfn.frame.button.colorglyph := cl_black;
     griddisp.frame.sbvert.colorglyph := cl_black;
@@ -1169,8 +1242,8 @@ begin
 
   if style = 1 then
   begin
-    color      := $575757;
-    font.color := cl_white;
+    color           := $575757;
+    font.color      := cl_white;
     infopanel.font.color := cl_white;
     griddisp.font.color := cl_white;
     btnStart.font.color := cl_white;
@@ -1198,13 +1271,13 @@ begin
     tfacecomp8.template.fade_color.items[1] := $633C00;
     tfacecomp2.template.fade_color.items[0] := cl_dkgray;
     tfacecomp2.template.fade_color.items[1] := cl_black;
-    griddisp[0].color          := cl_black;
-    griddisp[1].color          := cl_black;
-    griddisp[2].color          := cl_black;
-    griddisp[3].color          := cl_black;
+    griddisp[0].color := cl_black;
+    griddisp[1].color := cl_black;
+    griddisp[2].color := cl_black;
+    griddisp[3].color := cl_black;
     griddisp.fixrows[-1].color := $5C5C5C;
     griddisp.zebra_color := $5C5C5C;
-    container.color      := $5C5C5C;
+    container.color := $5C5C5C;
     infopanel.font.color := cl_white;
     historyfn.frame.button.colorglyph := cl_white;
     griddisp.frame.sbvert.colorglyph := cl_white;
@@ -1212,9 +1285,9 @@ begin
 
   if style = 2 then
   begin
-    color      := cl_default;
-    font.color := cl_black;
-    font.color := cl_black;
+    color           := cl_default;
+    font.color      := cl_black;
+    font.color      := cl_black;
     vuRight.bar_face.fade_color[1] := $666666;
     vuleft.bar_face.fade_color[1] := $666666;
     infopanel.font.color := cl_black;
@@ -1243,29 +1316,126 @@ begin
     tfacecomp2.template.fade_color.items[0] := $F2F2F2;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
-    griddisp[0].color          := $E0E0E0;
-    griddisp[1].color          := $E0E0E0;
-    griddisp[2].color          := $E0E0E0;
-    griddisp[3].color          := $E0E0E0;
+    griddisp[0].color := $E0E0E0;
+    griddisp[1].color := $E0E0E0;
+    griddisp[2].color := $E0E0E0;
+    griddisp[3].color := $E0E0E0;
     griddisp.fixrows[-1].color := $D4D4D4;
     griddisp.zebra_color := $F2F2F2;
-    container.color      := cl_default;
+    container.color := cl_default;
     infopanel.font.color := cl_black;
     historyfn.frame.button.colorglyph := cl_black;
     griddisp.frame.sbvert.colorglyph := cl_black;
   end;
 end;
 
-procedure twebstreamerfo.onexecswpstyle(const sender: TObject);
+procedure twebstreamerfo.onexecswpstyle(const Sender: TObject);
 begin
- if  tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked = True
- then edstyle.Value := 0 else
- if tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked = true
- then edstyle.Value := 1 else
- if tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked = true
- then edstyle.Value := 2;   
-setstyle(edstyle.Value);
-InitDrawLive();
+  if tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked = True then
+    edstyle.Value := 0
+  else if tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked = True then
+    edstyle.Value := 1
+  else if tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked = True then
+    edstyle.Value := 2;
+  setstyle(edstyle.Value);
+  InitDrawLive();
+end;
+
+procedure twebstreamerfo.getpicture(aurl: string);
+var
+  Http: TFPHTTPClient;
+  amem: Tmemorystream;
+begin
+  try
+    InitSSLInterface;
+    amem           := Tmemorystream.Create;
+    Http           := TFPHTTPClient.Create(nil);
+    http.AllowRedirect := True;
+    http.IOTimeout := 2000;
+    Http.Get(aurl, amem);
+    Http.Free;
+
+    amem.Position := 0;
+
+    if Assigned(aimage) then
+      aimage.Free;
+    aimage := TBGRAbitmap.Create(amem);
+
+    hasbitmap           := True;
+    PimgPreview.Visible := True;
+    PimgPreview.invalidate;
+    amem.Free;
+
+  except
+  end;
+end;
+
+procedure twebstreamerfo.ontimericy(const Sender: TObject);
+var
+  ticy: ppchar;
+  sicy, aname, apicture, prefix: msestring;
+  ares: integer;
+begin
+  prefix := '';
+  CheckSynchronize(uos_InputUpdateICY(0, 0, ticy));
+  if ticy <> nil then
+  begin
+    sicy := ticy^;
+    if icystr <> sicy then
+    begin
+      if system.Pos('StreamTitle=', sicy) > 0 then
+      begin
+        aname := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
+        aname := Copy(aname, 1, system.Pos(';', aname) - 1);
+      end;
+
+      if system.Pos('StreamUrl=', sicy) > 0 then
+      begin
+        apicture := Copy(sicy, system.pos('StreamUrl=', sicy) + 10, Length(sicy));
+        apicture := Copy(apicture, 2, system.Pos(';', apicture) - 1);
+        apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
+        getpicture(apicture);
+        prefix   := '       ';
+      end;
+      infopanel.Value := prefix + theplaying + #10 + prefix + aname;
+      icystr := sicy;
+    end;
+  end;
+end;
+
+procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
+var
+  theMemBitmap: TBGRABitmap;
+begin
+  if hasbitmap then
+  begin
+    theMemBitmap := aimage.Resample(PimgPreview.Width, PimgPreview.Height, rmFineResample) as TBGRABitmap;
+    theMemBitmap.Rectangle(0, 0, PimgPreview.Width, PimgPreview.Height,
+      BGRA(255, 192, 0), BGRA(80, 80, 80, 255), dmDrawWithTransparency, 8192);
+    theMemBitmap.draw(acanvas, 0, 0, True);
+    theMemBitmap.Free;
+  end;
+end;
+
+procedure twebstreamerfo.onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
+begin
+
+  if isinit then
+    if (ainfo.eventkind = ek_buttonrelease) then
+      if PimgPreview.tag = 0 then
+      begin
+        PimgPreview.top    := 0;
+        PimgPreview.Height := Height;
+        PimgPreview.Width  := Width;
+        PimgPreview.tag    := 1;
+      end
+      else
+      begin
+        PimgPreview.top    := infopanel.top;
+        PimgPreview.Height := infopanel.Height;
+        PimgPreview.Width  := infopanel.Height;
+        PimgPreview.tag    := 0;
+      end;
 end;
 
 end.
