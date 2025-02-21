@@ -989,7 +989,6 @@ procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
 begin
   if (isinit) and (runselect.Value) then
   begin
-    writeln('onafterdropdown');
     onstop(nil);
     application.ProcessMessages;
     sleep(2000);
