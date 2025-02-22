@@ -4,49 +4,13 @@ unit webstreamer;
 interface
 
 uses
-  uos_flat,
-  Math,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  ctypes,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob,
-  msetimer,
-  BGRABitmap,
-  BGRAAnimatedGif,
-  BGRABitmapTypes,
-  mseimage;
+ uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
+ ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
+ mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
+ mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
+ mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
+ msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
+ BGRABitmapTypes,mseimage;
 
 type
   boundchild = record
@@ -158,6 +122,7 @@ const
 
 var
   webstreamerfo: twebstreamerfo;
+  loopok: boolean = true;
   webindex, webinindex, weboutindex, webPlugIndex, fontheight: integer;
   rectrecform: rectty;
   xreclive, devcount, incview, deviceselected: integer;
@@ -314,8 +279,10 @@ end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
-  if PimgPreview.tag = 0 then
-    ShowLevel;
+if loopok then
+begin
+  if PimgPreview.tag = 0 then ShowLevel;
+end;  
 end;
 
 procedure twebstreamerfo.ShowLevel();
@@ -589,7 +556,7 @@ begin
   pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
   mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
   aa := ordir + 'lib/Linux/64bit/libfdk-aac-64.so';
-  sf := ordir + 'lib/Linux/64bit/LibSndFile-64.so';
+  //sf := ordir + 'lib/Linux/64bit/LibSndFile-64.so';
   st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
   {$ENDIF}
 
@@ -734,6 +701,8 @@ begin
   resizesp(fontheight);
 
   oncheckdevices();
+  
+  edrecformat.Value := 0;
 
   Visible := True;
 
@@ -784,7 +753,6 @@ begin
     application.ProcessMessages;
     uos_free();
     sleep(300);
-    aimage.Free;
   end;
 end;
 
@@ -1074,6 +1042,7 @@ begin
   onstop(nil);
   sleep(300);
   application.ProcessMessages;
+  aimage.Free;
   uos_free();
   sleep(300);
   application.ProcessMessages;
@@ -1358,8 +1327,8 @@ begin
 
     if Assigned(aimage) then
       aimage.Free;
-    aimage := TBGRAbitmap.Create(amem);
-
+    aimage := TBGRAbitmap.Create(amem); 
+   
     hasbitmap           := True;
     PimgPreview.Visible := True;
     PimgPreview.invalidate;
@@ -1372,11 +1341,14 @@ end;
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
 var
   ticy: ppchar;
-  sicy, aname, apicture, prefix: msestring;
+  aname, apicture, prefix: msestring;
   ares: integer;
+  sicy: pchar;
 begin
+  loopok := false;
   prefix := '';
-  CheckSynchronize(uos_InputUpdateICY(0, 0, ticy));
+  //ticy := ppchar(sicy);
+  uos_InputUpdateICY(0, 0, ticy);
   if ticy <> nil then
   begin
     sicy := ticy^;
@@ -1400,6 +1372,7 @@ begin
       icystr := sicy;
     end;
   end;
+   loopok := true;  
 end;
 
 procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
@@ -1435,7 +1408,7 @@ begin
         PimgPreview.Width  := infopanel.Height;
         PimgPreview.tag    := 0;
       end;
-end;
+   end;
 
 end.
 

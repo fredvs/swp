@@ -1,7 +1,7 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 548
-  bounds_y = 280
+  bounds_x = 598
+  bounds_y = 249
   bounds_cx = 348
   bounds_cy = 320
   bounds_cxmin = 348
