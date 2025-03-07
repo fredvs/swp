@@ -4341,7 +4341,7 @@ object webstreamerfo: twebstreamerfo
           end        
           item
             caption = 'Widgetset: MSEgui: https://github.com/mse-org/mseide-msegui/'
-            state = [as_disabled, as_invisible, as_localdisabled, as_localinvisible, as_localcaption]
+            state = [as_localcaption]
           end        
           item
             caption = 'Audio: uos: https://github.com/fredvs/uos/'
@@ -4356,7 +4356,7 @@ object webstreamerfo: twebstreamerfo
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
-            caption = '               Fred van Stappen 2024 <fiens@hotmail.com>'
+            caption = '               Fred van Stappen 2025 <fiens@hotmail.com>'
             state = [as_localdisabled, as_localcaption]
           end>
         caption = ' &About  '

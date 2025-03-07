@@ -856,6 +856,13 @@ begin
 
   bounds_cymax := bounds_cy;
   bounds_cymin := bounds_cy;
+  
+    if (PimgPreview.tag = 1) and (PimgPreview.visible) then
+      begin
+        PimgPreview.top    := 0;
+        PimgPreview.Height := Height - round(18 * (fontheight / 12));
+        PimgPreview.Width  := Width;
+      end;
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
@@ -1397,14 +1404,14 @@ begin
       if PimgPreview.tag = 0 then
       begin
         PimgPreview.top    := 0;
-        PimgPreview.Height := Height;
+        PimgPreview.Height := Height - round(18 * (fontheight / 12));
         PimgPreview.Width  := Width;
         PimgPreview.tag    := 1;
       end
       else
       begin
         PimgPreview.top    := infopanel.top;
-        PimgPreview.Height := infopanel.Height;
+        PimgPreview.Height := infopanel.Height ;
         PimgPreview.Width  := infopanel.Height;
         PimgPreview.tag    := 0;
       end;
