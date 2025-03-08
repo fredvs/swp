@@ -741,6 +741,7 @@ begin
   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
   hasbitmap           := False;
   PimgPreview.Visible := False;
+  tmainmenu1.menu.visible := true;
 
 end;
 
@@ -859,8 +860,9 @@ begin
   
     if (PimgPreview.tag = 1) and (PimgPreview.visible) then
       begin
+        tmainmenu1.menu.visible := false;
         PimgPreview.top    := 0;
-        PimgPreview.Height := Height - round(18 * (fontheight / 12));
+        PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
       end;
 end;
@@ -1403,13 +1405,15 @@ begin
     if (ainfo.eventkind = ek_buttonrelease) then
       if PimgPreview.tag = 0 then
       begin
+        tmainmenu1.menu.visible := false;
         PimgPreview.top    := 0;
-        PimgPreview.Height := Height - round(18 * (fontheight / 12));
+        PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
         PimgPreview.tag    := 1;
       end
       else
       begin
+        tmainmenu1.menu.visible := true;
         PimgPreview.top    := infopanel.top;
         PimgPreview.Height := infopanel.Height ;
         PimgPreview.Width  := infopanel.Height;
