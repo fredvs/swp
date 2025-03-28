@@ -742,19 +742,14 @@ begin
   hasbitmap           := False;
   PimgPreview.Visible := False;
   tmainmenu1.menu.visible := true;
-
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
-  if isexit = False then
-  begin
-    onstop(nil);
-    sleep(300);
-    application.ProcessMessages;
-    uos_free();
-    sleep(300);
-  end;
+  ttimer1.Enabled         := False;
+  uos_Stop(webindex);
+  sleep(200);
+ if assigned(aimage) then aimage.Free;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
@@ -864,6 +859,7 @@ begin
         PimgPreview.top    := 0;
         PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
+        PimgPreview.invalidatewidget;
       end;
 end;
 
@@ -1047,15 +1043,7 @@ end;
 
 procedure twebstreamerfo.onexit(const Sender: TObject);
 begin
-  isexit := True;
-  onstop(nil);
-  sleep(300);
-  application.ProcessMessages;
-  aimage.Free;
-  uos_free();
-  sleep(300);
-  application.ProcessMessages;
-  application.terminate;
+close;
 end;
 
 procedure twebstreamerfo.onupdevices(const Sender: TObject);
@@ -1340,7 +1328,6 @@ begin
    
     hasbitmap           := True;
     PimgPreview.Visible := True;
-    PimgPreview.invalidate;
     amem.Free;
 
   except
@@ -1403,6 +1390,7 @@ begin
 
   if isinit then
     if (ainfo.eventkind = ek_buttonrelease) then
+     begin
       if PimgPreview.tag = 0 then
       begin
         tmainmenu1.menu.visible := false;
@@ -1419,6 +1407,8 @@ begin
         PimgPreview.Width  := infopanel.Height;
         PimgPreview.tag    := 0;
       end;
+    PimgPreview.invalidatewidget; 
+    end;  
    end;
 
 end.
