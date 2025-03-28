@@ -1328,6 +1328,7 @@ begin
    
     hasbitmap           := True;
     PimgPreview.Visible := True;
+    PimgPreview.invalidatewidget;
     amem.Free;
 
   except
