@@ -113,7 +113,6 @@ type
     procedure ontimericy(const Sender: TObject);
     procedure onpaintimg(const Sender: twidget; const acanvas: tcanvas);
     procedure getpicture(aurl: string);
-
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
   end;
 
@@ -320,7 +319,6 @@ var
 begin
   hasbitmap           := False;
   PimgPreview.Visible := False;
-
   infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -1311,6 +1309,8 @@ var
   Http: TFPHTTPClient;
   amem: Tmemorystream;
 begin
+  PimgPreview.Visible := false;
+  PimgPreview.invalidatewidget;
   try
     InitSSLInterface;
     amem           := Tmemorystream.Create;
@@ -1325,7 +1325,7 @@ begin
     if Assigned(aimage) then
       aimage.Free;
     aimage := TBGRAbitmap.Create(amem); 
-   
+    sleep(100);
     hasbitmap           := True;
     PimgPreview.Visible := True;
     PimgPreview.invalidatewidget;

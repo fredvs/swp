@@ -9,6 +9,7 @@ program simplewebplayer;
 {$endif}
 
 uses
+  cmem,
  {$ifdef FPC} {$ifdef unix}cthreads, {$endif} {$endif}
   msegui,
   uos_flat,
