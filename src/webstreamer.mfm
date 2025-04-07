@@ -3482,7 +3482,7 @@ object webstreamerfo: twebstreamerfo
     statfile = tstatfile1
     optionsedit1 = [oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate]
     optionsedit = [oe_undoonesc, oe_closequery, oe_checkmrcancel, oe_shiftreturn, oe_eatreturn, oe_resetselectonexit, oe_exitoncursor, oe_endonenter, oe_autoselect, oe_autoselectonfirstclick]
-    onchange = onafterdropdown
+    onchange = onchangehistory
     value = 'http://stream-uk1.radioparadise.com/mp3-128'
     dropdown.options = [deo_keydropdown, deo_autosavehistory, deo_cliphint]
     dropdown.dropdownrowcount = 100
@@ -3496,6 +3496,7 @@ object webstreamerfo: twebstreamerfo
         font.localprops = []
       end>
     dropdown.historymaxcount = 50
+    onafterclosedropdown = afterdropdown
     reffontheight = 17
   end
   object infopanel: tstringdisp
@@ -3627,6 +3628,18 @@ object webstreamerfo: twebstreamerfo
       bounds_cx = 23
       bounds_cy = 23
       statfile = tstatfile1
+      reffontheight = 17
+    end
+    object eurlname: tedit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 7
+      visible = False
+      bounds_x = 196
+      bounds_y = 18
+      bounds_cy = 23
+      statfile = tstatfile1
+      text = 'Simple Webstream Player'
       reffontheight = 17
     end
   end

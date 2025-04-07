@@ -76,6 +76,7 @@ type
     ttimer1: ttimer;
     PimgPreview: tpaintbox;
    timagelist1: timagelist;
+   eurlname: tedit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -93,7 +94,7 @@ type
     procedure onreset(const Sender: TObject);
     procedure onrec(const Sender: TObject);
     procedure ontempo(const Sender: TObject);
-    procedure onafterdropdown(const Sender: TObject);
+    procedure onchangehistory(const Sender: TObject);
     procedure onaftermenushowwav(const Sender: TObject);
     procedure onafterplayafter(const Sender: TObject);
     procedure onclearhist(const Sender: TObject);
@@ -116,6 +117,7 @@ type
     procedure getpicture(aurl: string);
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
     procedure onurl(const Sender: TObject);
+   procedure afterdropdown(const sender: TObject);
   end;
 
 const
@@ -138,6 +140,7 @@ var
   pa, sf, mp, aa, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
+  urlname: string = 'Simple Webstream Player';
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
  {$ENDIF}
@@ -364,6 +367,8 @@ var
 begin
   hasbitmap  := False;
   PimgPreview.Visible := False;
+  btnStart.Enabled        := False;
+  btnStart.face.template  := tfacecomp6;
   infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -371,7 +376,6 @@ begin
   webinindex := -1;
   incview    := 0;
   icystr     := '';
-
   uos_CreatePlayer(webindex);
   // Create the player.
   // PlayerIndex : from 0 to what your computer can do !
@@ -428,11 +432,11 @@ begin
   // FramesCount : default : -1 (1024)
   // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
   // ICY data on/off
-
+   
   if webinindex <> -1 then
   begin
-
-    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
+     caption := urlname;
+     weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
     //edrecformat.Value := 0;
@@ -556,17 +560,17 @@ begin
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
-
+    
     if aboolicy then
       ttimer1.Enabled := True;
 
-    //uos_InputUpdateICY(webindex, webplugindex, icy_data);
-    //caption := icy_data;
   end
   else
   begin
     infopanel.font.color := cl_red;
     infopanel.Value      := 'URL did not accessed';
+    btnStart.Enabled        := true;
+    btnStart.face.template  := tfacecomp7;
   end;
 end;
 
@@ -726,9 +730,6 @@ begin
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '            Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
 
-  //  caption := 'Simple Web Player v1.' + inttostr(versionnum);
-  //noaac := true;  
-
   if noaac then
   begin
     tlabel2.Caption   := '    SWP';
@@ -747,6 +748,8 @@ begin
   oncheckdevices();
 
   edrecformat.Value := 0;
+  
+  urlname := eurlname.text;
 
   Visible := True;
 
@@ -758,6 +761,7 @@ procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   ttimer1.Enabled         := False;
   uos_Stop(webindex);
+  caption := 'Simple Webstream Player';
   btnStart.Enabled        := True;
   btnStart.face.template  := tfacecomp7;
   btnResume.Enabled       := False;
@@ -790,6 +794,7 @@ end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
+  eurlname.text := urlname;
   ttimer1.Enabled := False;
   uos_Stop(webindex);
   sleep(200);
@@ -968,8 +973,6 @@ procedure twebstreamerfo.onreset(const Sender: TObject);
 begin
   edtempo.Value := 0.5;
   edpitch.Value := 0.5;
-  //uos_InputUpdateICY(webindex, webplugindex, icy_data);
-  //caption := icy_data;
 end;
 
 procedure twebstreamerfo.onrec(const Sender: TObject);
@@ -1003,7 +1006,7 @@ begin
   ChangePlugSetSoundTouch(nil);
 end;
 
-procedure twebstreamerfo.onafterdropdown(const Sender: TObject);
+procedure twebstreamerfo.onchangehistory(const Sender: TObject);
 begin
   if (isinit) and (runselect.Value) then
   begin
@@ -1055,6 +1058,9 @@ procedure twebstreamerfo.oncellev(const Sender: TObject; var info: celleventinfo
 begin
   if isinit and griddisp.Visible then
     if (info.eventkind = cek_buttonrelease) then
+    begin
+     urlname := griddisp[0][griddisp.focusedcell.row];
+       
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
         if lowercase(griddisp[3][griddisp.focusedcell.row]) = 'aac' then
@@ -1064,8 +1070,9 @@ begin
 
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
-
       end;
+      
+    end;  
 end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
@@ -1083,7 +1090,6 @@ begin
       Inc(x);
     end;
   edeviceselected.Value := deviceselected; // for stat file 
-  // if btnStart.enabled = false then onafterdropdown(nil);
 end;
 
 procedure twebstreamerfo.onexit(const Sender: TObject);
@@ -1122,11 +1128,6 @@ begin
 
   griddisp.font.Height := fontheight;
   griddisp.font.color  := font.color;
-
-  btnStart.font.Height  := round(ratio * 18);
-  btnPause.font.Height  := round(ratio * 12);
-  btnStop.font.Height   := round(ratio * 18);
-  btnResume.font.Height := round(ratio * 14);
 
   for i1 := 0 to childrencount - 1 do
     for i2 := 0 to length(boundchildsp) - 1 do
@@ -1214,10 +1215,6 @@ begin
     vuleft.bar_face.fade_color[1] := $616261;
     infopanel.font.color := cl_black;
     griddisp.font.color := cl_black;
-    btnStart.font.color := cl_black;
-    btnPause.font.color := cl_black;
-    btnStop.font.color := cl_black;
-    btnResume.font.color := cl_black;
     tmainmenu1.menu.color := cl_default;
     tmainmenu1.menu.font.color := cl_black;
     tmainmenu1.menu.fontactive.color := $DE6B00;
@@ -1257,10 +1254,6 @@ begin
     font.color      := cl_white;
     infopanel.font.color := cl_white;
     griddisp.font.color := cl_white;
-    btnStart.font.color := cl_white;
-    btnPause.font.color := cl_white;
-    btnStop.font.color := cl_white;
-    btnResume.font.color := cl_white;
     vuRight.bar_face.fade_color[1] := $0E0E0E;
     vuleft.bar_face.fade_color[1] := $0E0E0E;
     tmainmenu1.menu.color := $575757;
@@ -1304,10 +1297,6 @@ begin
     vuleft.bar_face.fade_color[1] := $666666;
     infopanel.font.color := cl_black;
     griddisp.font.color := cl_black;
-    btnStart.font.color := cl_black;
-    btnPause.font.color := cl_black;
-    btnStop.font.color := cl_black;
-    btnResume.font.color := cl_black;
     tmainmenu1.menu.color := cl_default;
     tmainmenu1.menu.font.color := cl_black;
     tmainmenu1.menu.fontactive.color := $DE6B00;
@@ -1469,6 +1458,12 @@ begin
     4: openurl('https://github.com/fredvs/swp/');
     5: openurl('https://github.com/bgrabitmap/bgrabitmap/');    
   end;
+end;
+
+procedure twebstreamerfo.afterdropdown(const sender: TObject);
+begin
+caption := 'Simple Webstream Player';
+urlname := caption; 
 end;
 
 end.
