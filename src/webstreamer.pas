@@ -917,11 +917,23 @@ procedure twebstreamerfo.oncreate(const Sender: TObject);
 var
   statname: string;
   i1, childn: integer;
+  {$if defined(linux)}
+  sessiontyp: string;
+  {$ENDIF}   
 begin
 
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
-
+    
+   {$if defined(linux) }
+   sessiontyp := LowerCase(GetEnvironmentVariable('XDG_SESSION_TYPE'));
+   if sessiontyp <> 'x11' then timagelist1.options := [bmo_masked] ;
+   {$ENDIF} 
+   
+   {$if defined(netbsd) or defined(darwin)}
+   timagelist1.options := [bmo_masked] ;
+   {$endif}
+    
   setlength(boundchildsp, childrencount);
   childn := childrencount;
 
