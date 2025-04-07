@@ -4,13 +4,50 @@ unit webstreamer;
 interface
 
 uses
- uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
- ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
- mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
- mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
- mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
- msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
- BGRABitmapTypes,mseimage;
+ {$ifdef unix}Unix,{$else}Windows,{$endif}
+  uos_flat,
+  Math,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  ctypes,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob,
+  msetimer,
+  BGRABitmap,
+  BGRAAnimatedGif,
+  BGRABitmapTypes,
+  mseimage;
 
 type
   boundchild = record
@@ -114,14 +151,15 @@ type
     procedure onpaintimg(const Sender: twidget; const acanvas: tcanvas);
     procedure getpicture(aurl: string);
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
+    procedure onurl(const Sender: TObject);
   end;
 
 const
-  version = 250214;
+  versionnum = 250408;
 
 var
   webstreamerfo: twebstreamerfo;
-  loopok: boolean = true;
+  loopok: Boolean = True;
   webindex, webinindex, weboutindex, webPlugIndex, fontheight: integer;
   rectrecform: rectty;
   xreclive, devcount, incview, deviceselected: integer;
@@ -147,6 +185,49 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
+
+{$IFDEF windows}
+procedure OpenURL(const aURL: String);
+begin
+  try
+    {$IFNDEF wince}
+    ShellExecute(0, 'open', PChar(aURL), nil, nil, 1 {SW_SHOWNORMAL});
+    {$ENDIF}
+  except
+    // do nothing
+  end;
+end;
+{$ELSE}
+
+procedure OpenURL(const aURL: string);
+var
+  Helper: string;
+begin
+  Helper   := '';
+  if fpsystem('which xdg-open') = 0 then
+    Helper := 'xdg-open'
+  else if FileExists('/usr/bin/sensible-browser') then
+    Helper := '/usr/bin/sensible-browser'
+  else if FileExists('/etc/alternatives/x-www-browser') then
+    Helper := '/etc/alternatives/x-www-browser'
+  else if fpsystem('which firefox') = 0 then
+    Helper := 'firefox'
+  else if fpsystem('which konqueror') = 0 then
+    Helper := 'konqueror'
+  else if fpsystem('which opera') = 0 then
+    Helper := 'opera'
+  else if fpsystem('which mozilla') = 0 then
+    Helper := 'mozilla'
+  else if fpsystem('which chrome') = 0 then
+    Helper := 'chrome'
+  else if fpsystem('which chromium') = 0 then
+    Helper := 'chromium';
+
+  if Helper <> '' then
+    fpSystem(Helper + ' ' + aURL + '&');
+end;
+
+{$ENDIF}
 
 procedure twebstreamerfo.oncheckdevices();
 var
@@ -278,10 +359,9 @@ end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
-if loopok then
-begin
-  if PimgPreview.tag = 0 then ShowLevel;
-end;  
+  if loopok then
+    if PimgPreview.tag = 0 then
+      ShowLevel;
 end;
 
 procedure twebstreamerfo.ShowLevel();
@@ -317,7 +397,7 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
-  hasbitmap           := False;
+  hasbitmap  := False;
   PimgPreview.Visible := False;
   infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
@@ -679,8 +759,9 @@ begin
   onchangeshowwave(nil);
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
-    '                  Simple Webstream Player v1.' + IntToStr(version);
+    '            Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
 
+  //  caption := 'Simple Web Player v1.' + inttostr(versionnum);
   //noaac := true;  
 
   if noaac then
@@ -699,7 +780,7 @@ begin
   resizesp(fontheight);
 
   oncheckdevices();
-  
+
   edrecformat.Value := 0;
 
   Visible := True;
@@ -739,15 +820,16 @@ begin
   tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := True;
   hasbitmap           := False;
   PimgPreview.Visible := False;
-  tmainmenu1.menu.visible := true;
+  tmainmenu1.menu.Visible := True;
 end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
-  ttimer1.Enabled         := False;
+  ttimer1.Enabled := False;
   uos_Stop(webindex);
   sleep(200);
- if assigned(aimage) then aimage.Free;
+  if Assigned(aimage) then
+    aimage.Free;
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
@@ -850,15 +932,15 @@ begin
 
   bounds_cymax := bounds_cy;
   bounds_cymin := bounds_cy;
-  
-    if (PimgPreview.tag = 1) and (PimgPreview.visible) then
-      begin
-        tmainmenu1.menu.visible := false;
-        PimgPreview.top    := 0;
-        PimgPreview.Height := Height + round(2 * fontheight / 12);
-        PimgPreview.Width  := Width;
-        PimgPreview.invalidatewidget;
-      end;
+
+  if (PimgPreview.tag = 1) and (PimgPreview.Visible) then
+  begin
+    tmainmenu1.menu.Visible := False;
+    PimgPreview.top         := 0;
+    PimgPreview.Height      := Height + round(2 * fontheight / 12);
+    PimgPreview.Width       := Width;
+    PimgPreview.invalidatewidget;
+  end;
 end;
 
 procedure twebstreamerfo.oncreate(const Sender: TObject);
@@ -1041,7 +1123,7 @@ end;
 
 procedure twebstreamerfo.onexit(const Sender: TObject);
 begin
-close;
+  Close;
 end;
 
 procedure twebstreamerfo.onupdevices(const Sender: TObject);
@@ -1309,7 +1391,7 @@ var
   Http: TFPHTTPClient;
   amem: Tmemorystream;
 begin
-  PimgPreview.Visible := false;
+  PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
   try
     InitSSLInterface;
@@ -1324,9 +1406,9 @@ begin
 
     if Assigned(aimage) then
       aimage.Free;
-    aimage := TBGRAbitmap.Create(amem); 
+    aimage    := TBGRAbitmap.Create(amem);
     sleep(100);
-    hasbitmap           := True;
+    hasbitmap := True;
     PimgPreview.Visible := True;
     PimgPreview.invalidatewidget;
     amem.Free;
@@ -1340,9 +1422,9 @@ var
   ticy: ppchar;
   aname, apicture, prefix: msestring;
   ares: integer;
-  sicy: pchar;
+  sicy: PChar;
 begin
-  loopok := false;
+  loopok := False;
   prefix := '';
   //ticy := ppchar(sicy);
   uos_InputUpdateICY(0, 0, ticy);
@@ -1369,7 +1451,7 @@ begin
       icystr := sicy;
     end;
   end;
-   loopok := true;  
+  loopok := True;
 end;
 
 procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
@@ -1391,26 +1473,37 @@ begin
 
   if isinit then
     if (ainfo.eventkind = ek_buttonrelease) then
-     begin
+    begin
       if PimgPreview.tag = 0 then
       begin
-        tmainmenu1.menu.visible := false;
-        PimgPreview.top    := 0;
-        PimgPreview.Height := Height + round(2 * fontheight / 12);
-        PimgPreview.Width  := Width;
-        PimgPreview.tag    := 1;
+        tmainmenu1.menu.Visible := False;
+        PimgPreview.top         := 0;
+        PimgPreview.Height      := Height + round(2 * fontheight / 12);
+        PimgPreview.Width       := Width;
+        PimgPreview.tag         := 1;
       end
       else
       begin
-        tmainmenu1.menu.visible := true;
-        PimgPreview.top    := infopanel.top;
-        PimgPreview.Height := infopanel.Height ;
-        PimgPreview.Width  := infopanel.Height;
-        PimgPreview.tag    := 0;
+        tmainmenu1.menu.Visible := True;
+        PimgPreview.top         := infopanel.top;
+        PimgPreview.Height      := infopanel.Height;
+        PimgPreview.Width       := infopanel.Height;
+        PimgPreview.tag         := 0;
       end;
-    PimgPreview.invalidatewidget; 
-    end;  
-   end;
+      PimgPreview.invalidatewidget;
+    end;
+end;
+
+procedure twebstreamerfo.onurl(const Sender: TObject);
+begin
+  case tmenuitem(Sender).tag of
+    0: openurl('https://www.freepascal.org/');
+    1: openurl('https://github.com/mse-org/mseide-msegui/');
+    2: openurl('https://github.com/fredvs/uos/');
+    3: openurl('http://www.surina.net/soundtouch/');
+    4: openurl('https://github.com/fredvs/swp/');
+  end;
+end;
 
 end.
 

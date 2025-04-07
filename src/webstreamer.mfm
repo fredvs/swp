@@ -4330,26 +4330,35 @@ object webstreamerfo: twebstreamerfo
           item
             caption = 'Simple Webstream Player'
             name = 'title'
-            state = [as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption, as_localtag, as_localonexecute]
+            tag = 4
+            onexecute = onurl
           end        
           item
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
             caption = 'Compiler: Free Pascal Compiler: https://www.freepascal.org/'
-            state = [as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption, as_localonexecute]
+            onexecute = onurl
           end        
           item
             caption = 'Widgetset: MSEgui: https://github.com/mse-org/mseide-msegui/'
-            state = [as_localcaption]
+            state = [as_localcaption, as_localtag, as_localonexecute]
+            tag = 1
+            onexecute = onurl
           end        
           item
             caption = 'Audio: uos: https://github.com/fredvs/uos/'
-            state = [as_localdisabled, as_localcaption]
+            state = [as_localdisabled, as_localcaption, as_localtag, as_localonexecute]
+            tag = 2
+            onexecute = onurl
           end        
           item
-            caption = 'Plugin: SoundTouch: http://www.surina.net/soundtouch/'
-            state = [as_localdisabled, as_localcaption]
+            caption = 'Tempo/Pitch: SoundTouch: http://www.surina.net/soundtouch/'
+            state = [as_localdisabled, as_localcaption, as_localtag, as_localonexecute]
+            tag = 3
+            onexecute = onurl
           end        
           item
             state = [as_localinvisible, as_localcaption]
