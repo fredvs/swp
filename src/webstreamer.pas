@@ -817,7 +817,7 @@ begin
   btnPause.Visible        := False;
   btnPause.face.template  := tfacecomp6;
   brecord.Caption         := 'Paused...';
-  infopanel.Value         := historyfn.Value + ' paused...';
+  //infopanel.Value         := historyfn.Value + ' paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
@@ -836,7 +836,7 @@ begin
   btnpause.Visible        := True;
   btnPause.face.template  := tfacecomp7;
   brecord.Caption         := 'Resumed...';
-  infopanel.Value         := historyfn.Value + ' resumed...';
+  //infopanel.Value         := historyfn.Value + ' resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -1411,7 +1411,7 @@ begin
         apicture := Copy(apicture, 2, system.Pos(';', apicture) - 1);
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
         getpicture(apicture);
-        prefix   := '       ';
+        prefix   := '          ';
       end;
       infopanel.Value := prefix + theplaying + #10 + prefix + aname;
       icystr := sicy;
