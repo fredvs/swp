@@ -4,50 +4,13 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,{$else}Windows,{$endif}
-  uos_flat,
-  Math,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  ctypes,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob,
-  msetimer,
-  BGRABitmap,
-  BGRAAnimatedGif,
-  BGRABitmapTypes,
-  mseimage;
+ {$ifdef unix}Unix,{$else}Windows,{$endif}uos_flat,Math,msetypes,mseglob,
+ mseguiglob,mseguiintf,mseapplication,msestat,ctypes,msemenus,msegui,
+ msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,msedock,
+ msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,msedataedits,
+ msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,msestatfile,
+ msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,
+ msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage;
 
 type
   boundchild = record
@@ -112,6 +75,7 @@ type
     edstyle: tintegeredit;
     ttimer1: ttimer;
     PimgPreview: tpaintbox;
+   timagelist1: timagelist;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
