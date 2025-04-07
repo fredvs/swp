@@ -4325,7 +4325,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onexecswpstyle
       end    
       item
-        submenu.count = 8
+        submenu.count = 9
         submenu.items = <        
           item
             caption = 'Simple Webstream Player'
@@ -4352,6 +4352,12 @@ object webstreamerfo: twebstreamerfo
             caption = 'Audio: uos: https://github.com/fredvs/uos/'
             state = [as_localdisabled, as_localcaption, as_localtag, as_localonexecute]
             tag = 2
+            onexecute = onurl
+          end        
+          item
+            caption = 'Graphic: BGRABitmap: https://github.com/bgrabitmap/bgrabitmap/'
+            state = [as_localcaption, as_localtag, as_localonexecute]
+            tag = 5
             onexecute = onurl
           end        
           item

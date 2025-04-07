@@ -1502,6 +1502,7 @@ begin
     2: openurl('https://github.com/fredvs/uos/');
     3: openurl('http://www.surina.net/soundtouch/');
     4: openurl('https://github.com/fredvs/swp/');
+    5: openurl('https://github.com/bgrabitmap/bgrabitmap/');    
   end;
 end;
 
