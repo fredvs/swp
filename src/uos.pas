@@ -1238,7 +1238,7 @@ type
       inline;
 
 {$IF DEFINED (webstream) and DEFINED (mpg123)}
-      function InputUpdateICY (InputIndex: cint32; icy_data : ppchar): integer;
+      function InputUpdateICY (InputIndex: cint32; var icy_data : pchar): integer;
       inline;
 {$endif}
 
@@ -2872,7 +2872,7 @@ end;
 
 {$IF DEFINED (webstream)}
 // for mp3 files only
-function Tuos_Player.InputUpdateICY (InputIndex: cint32; icy_data : ppchar): integer;
+function Tuos_Player.InputUpdateICY (InputIndex: cint32; var icy_data : pchar): integer;
 begin
   Result := -1;
   if (isAssigned = True) then

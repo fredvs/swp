@@ -1419,18 +1419,15 @@ end;
 
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
 var
-  ticy: ppchar;
   aname, apicture, prefix: msestring;
   ares: integer;
   sicy: PChar;
 begin
   loopok := False;
   prefix := '';
-  //ticy := ppchar(sicy);
-  uos_InputUpdateICY(0, 0, ticy);
-  if ticy <> nil then
+  uos_InputUpdateICY(0, 0, sicy);
+  if sicy <> nil then
   begin
-    sicy := ticy^;
     if icystr <> sicy then
     begin
       if system.Pos('StreamTitle=', sicy) > 0 then
