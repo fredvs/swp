@@ -167,6 +167,7 @@ var
   aboolicy: Boolean = False;
   aimage: TBGRAbitmap;
   isinit: Boolean = False;
+  isbusy: Boolean = False;
   isexit: Boolean = False;
   hasbitmap: Boolean = False;
   ordir, arecnp, icystr, theplaying: string;
@@ -360,7 +361,7 @@ end;
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
   if loopok then
-    if PimgPreview.tag = 0 then
+    if (PimgPreview.tag = 0) then
       ShowLevel;
 end;
 
@@ -1044,7 +1045,7 @@ begin
   begin
     onstop(nil);
     application.ProcessMessages;
-    sleep(2000);
+    sleep(3000);
     onplay(nil);
   end;
 end;
@@ -1273,6 +1274,7 @@ begin
     tfacecomp2.template.fade_color.items[0] := $A4B09D;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
+    griddisp.datacols.colorfocused := $FFDBA8; 
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;
@@ -1316,6 +1318,7 @@ begin
     tfacecomp8.template.fade_color.items[1] := $633C00;
     tfacecomp2.template.fade_color.items[0] := cl_dkgray;
     tfacecomp2.template.fade_color.items[1] := cl_black;
+    griddisp.datacols.colorfocused := $B86B00; 
     griddisp[0].color := cl_black;
     griddisp[1].color := cl_black;
     griddisp[2].color := cl_black;
@@ -1361,6 +1364,7 @@ begin
     tfacecomp2.template.fade_color.items[0] := $F2F2F2;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
+    griddisp.datacols.colorfocused := $FFDBA8; 
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;

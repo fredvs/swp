@@ -3741,12 +3741,12 @@ object webstreamerfo: twebstreamerfo
     bounds_cy = 98
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
     datacols.count = 4
-    datacols.colorselect = 16763002
+    datacols.colorfocused = 16767912
     datacols.options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
     datacols.optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
     datacols.items = <    
       item
-        colorselect = 16763002
+        colorfocused = 16767912
         width = 70
         options = [co_rowselect, co_savevalue, co_savestate, co_cancopy, co_canpaste, co_mousescrollrow]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
@@ -3762,7 +3762,7 @@ object webstreamerfo: twebstreamerfo
         valuetrue = '1'
       end    
       item
-        colorselect = 16763002
+        colorfocused = 16767912
         width = 53
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_ycentered, tf_noselect]
@@ -3779,7 +3779,7 @@ object webstreamerfo: twebstreamerfo
         valuetrue = '1'
       end    
       item
-        colorselect = 16763002
+        colorfocused = 16767912
         width = 161
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_right, tf_ycentered, tf_noselect]
@@ -3796,7 +3796,7 @@ object webstreamerfo: twebstreamerfo
         valuetrue = '1'
       end    
       item
-        colorselect = 16763002
+        colorfocused = 16767912
         width = 48
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_ycentered, tf_noselect]
