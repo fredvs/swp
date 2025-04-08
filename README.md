@@ -1,30 +1,46 @@
 # swp
 Simple Webstream Player, to listen and record web radios and other web streams from mp3 and aac format.
 Change live the tempo and pitch.
-Record in wav or ogg format.
+Record in wav format.
 
-Simple Webstream Player was compiled with: FPC 3.2.2: http://www.freepascal.org
+Simple Webstream Player release was compiled with: FPC 3.2.2: http://www.freepascal.org
 
-Graphic widgetset: MSEgui 5.10.4: https://github.com/mse-org/mseide-msegui
+Graphic widgetset: MSEgui: https://github.com/mse-org/mseide-msegui
 
-Audio library: uos 1.8.0: https://github.com/fredvs/uos
+Audio library: uos: https://github.com/fredvs/uos
 
-Plugin: SoundTouch http://www.surina.net/soundtouch/
+Graphic library: BGRABitmap: https://github.com/bgrabitmap/bgrabitmap
+
+Tempo/Pitch: SoundTouch http://www.surina.net/soundtouch/
 
 
-![swp_swp](https://github.com/user-attachments/assets/3c808999-9825-4310-bf6c-dc907129d105)
+
+![swp_all](https://github.com/user-attachments/assets/4500adc3-da29-4098-a585-27a3166a5c54)
+
+
+
+ICY Image tag:
+
+![swp_icyimage](https://github.com/user-attachments/assets/84cae38d-39f9-4c90-b5b3-6eb16e212a7a)
+
+
 
 Recording:
 
-![swp_swprecord](https://github.com/user-attachments/assets/ac622685-0885-4c9c-b257-459b2f6fa40e)
+![swp_swprecord2](https://github.com/user-attachments/assets/08634942-9fc4-412c-9bfc-6a948153a99b)
+
 
 Carbon style:
 
-![swp_carbon](https://github.com/user-attachments/assets/adb9ffb8-fef8-48d2-a54f-b22ab254ffc7)
+![swp_carbon2](https://github.com/user-attachments/assets/2e80947a-f3be-4e9d-813d-10253243adec)
+
+![swp_carbon](https://github.com/user-attachments/assets/52b0a3a8-e2bb-4b75-99bc-f65e30d67805)
+
+
 
 Silver style:
 
-![swp_silver](https://github.com/user-attachments/assets/6a55c3f5-45c7-4a26-88a4-c296b1cffbe5)
+![swp_silver2](https://github.com/user-attachments/assets/e22dba79-9ad4-4c30-9f33-1e9ac51aac80)
 
 
 
