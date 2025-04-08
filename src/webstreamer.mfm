@@ -3383,65 +3383,16 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp7
       taborder = 16
       hint = 'Enable/Disable Recording'
-      bounds_x = 24
-      bounds_y = 25
-      bounds_cx = 84
-      bounds_cy = 22
+      bounds_x = 22
+      bounds_y = 15
+      bounds_cx = 87
+      bounds_cy = 27
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Record'
       captiondist = 0
       imagenr = 27
       focusrectdist = 0
       onexecute = onrec
-    end
-    object tlabel2: tlabel
-      color = -2147483645
-      taborder = 18
-      hint = 'The webstream is in MP3 format'
-      bounds_x = 42
-      bounds_y = 5
-      bounds_cx = 25
-      bounds_cy = 17
-      caption = 'MP3'
-      reffontheight = 17
-    end
-    object tlabel3: tlabel
-      color = -2147483645
-      taborder = 19
-      hint = 'The webstream is in AAC format'
-      bounds_x = 93
-      bounds_y = 5
-      bounds_cx = 24
-      bounds_cy = 17
-      caption = 'AAC'
-      reffontheight = 17
-    end
-    object mp3format: tbooleaneditradio
-      color = -2147483645
-      frame.localprops = []
-      frame.localprops1 = []
-      frame.template = tframecomp2
-      face.localprops = []
-      taborder = 17
-      hint = 'The webstream is in MP3 format'
-      bounds_x = 25
-      bounds_y = 7
-      statfile = tstatfile1
-      colorglyph = -1610612734
-      value = True
-    end
-    object aacformat: tbooleaneditradio
-      color = -2147483645
-      frame.localprops = []
-      frame.localprops1 = []
-      frame.template = tframecomp2
-      face.localprops = []
-      taborder = 20
-      hint = 'The webstream is in AAC format'
-      bounds_x = 75
-      bounds_y = 7
-      statfile = tstatfile1
-      colorglyph = -1610612734
     end
   end
   object historyfn: thistoryedit

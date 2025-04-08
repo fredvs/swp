@@ -64,10 +64,6 @@ type
     tfacecomp8: tfacecomp;
     tfacecomp9: tfacecomp;
     edeviceselected: tintegeredit;
-    mp3format: tbooleaneditradio;
-    tlabel2: tlabel;
-    tlabel3: tlabel;
-    aacformat: tbooleaneditradio;
     edrecformat: tintegeredit;
     baddrow: TButton;
     bdelrow: TButton;
@@ -166,7 +162,6 @@ begin
   end;
 end;
 {$ELSE}
-
 procedure OpenURL(const aURL: string);
 var
   Helper: string;
@@ -194,7 +189,6 @@ begin
   if Helper <> '' then
     fpSystem(Helper + ' ' + aURL + '&');
 end;
-
 {$ENDIF}
 
 procedure twebstreamerfo.oncheckdevices();
@@ -365,6 +359,7 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
+ // DetectStreamFormat(ansistring(historyfn.Value));
   hasbitmap  := False;
   PimgPreview.Visible := False;
   btnStart.Enabled        := False;
@@ -381,25 +376,9 @@ begin
   // PlayerIndex : from 0 to what your computer can do !
   // If PlayerIndex exists already, it will be overwriten...
 
-  if mp3format.Value = True then
-  begin
-    webformat := 0;
     aboolicy  := True;
-  end
-  else
-  begin
-    webformat := 2;
-    aboolicy  := False;
-  end;
-
-  if noaac then
-    webformat := 0;
-
-  if brecord.tag = 0 then
-    aformat := 0
-  else
-    aformat := 2;
-
+ 
+ {
   if webformat = 2 then
   begin
     sizebuf := 16384;
@@ -410,6 +389,9 @@ begin
     sizebuf := 8192;
     latency := -1;
   end;
+ } 
+  latency := -1;
+  sizebuf := 16384;
 
   if brecord.tag = 0 then
     aformat := 0
@@ -419,9 +401,9 @@ begin
     aformat := 0;
 
   application.ProcessMessages;
-
+  
   // 'https://radiorecord.hostingradio.ru/ps96.aacp';
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, webformat, aboolicy);
+  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
 
   theplaying := historyfn.Value;
 
@@ -732,11 +714,7 @@ begin
 
   if noaac then
   begin
-    tlabel2.Caption   := '    SWP';
-    tlabel3.Visible   := False;
-    mp3format.Visible := False;
-    aacformat.Visible := False;
-    brecord.top       := brecord.top - 10;
+   //  brecord.top       := brecord.top - 10;
   end;
 
   rect1 := application.screenrect(window);
@@ -1072,18 +1050,13 @@ begin
     if (info.eventkind = cek_buttonrelease) then
     begin
      urlname := griddisp[0][griddisp.focusedcell.row];
-       
+        
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
-        if lowercase(griddisp[3][griddisp.focusedcell.row]) = 'aac' then
-          aacformat.Value := True
-        else
-          mp3format.Value := True;
-
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
       end;
-      
+   
     end;  
 end;
 
