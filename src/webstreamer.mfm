@@ -3137,8 +3137,8 @@ object webstreamerfo: twebstreamerfo
       face.template = tfacecomp6
       taborder = 6
       hint = ' Stop player '
-      bounds_x = 80
-      bounds_y = 52
+      bounds_x = 82
+      bounds_y = 43
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3166,7 +3166,7 @@ object webstreamerfo: twebstreamerfo
       taborder = 7
       hint = ' Resume player '
       bounds_x = 52
-      bounds_y = 52
+      bounds_y = 43
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_invisible, as_localdisabled, as_localinvisible, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
@@ -3199,7 +3199,7 @@ object webstreamerfo: twebstreamerfo
       taborder = 8
       hint = ' Pause player '
       bounds_x = 52
-      bounds_y = 52
+      bounds_y = 43
       bounds_cx = 28
       bounds_cy = 28
       state = [as_disabled, as_localdisabled, as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localshortcut, as_localshortcut1, as_localonexecute]
@@ -3232,8 +3232,8 @@ object webstreamerfo: twebstreamerfo
       face.localprops = [fal_fadirection, fal_image]
       face.template = tfacecomp7
       hint = 'Start player '
-      bounds_x = 24
-      bounds_y = 52
+      bounds_x = 22
+      bounds_y = 43
       bounds_cx = 28
       bounds_cy = 28
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
@@ -3384,9 +3384,9 @@ object webstreamerfo: twebstreamerfo
       taborder = 16
       hint = 'Enable/Disable Recording'
       bounds_x = 22
-      bounds_y = 15
-      bounds_cx = 87
-      bounds_cy = 27
+      bounds_y = 10
+      bounds_cx = 88
+      bounds_cy = 28
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Record'
       captiondist = 0
@@ -3460,7 +3460,7 @@ object webstreamerfo: twebstreamerfo
     bounds_cx = 346
     bounds_cy = 47
     font.height = 12
-    font.name = 'stf_default'
+    font.name = 'unifont'
     font.localprops = []
     textflags = [tf_xcentered, tf_ycentered]
     reffontheight = 17

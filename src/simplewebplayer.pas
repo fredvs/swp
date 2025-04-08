@@ -17,7 +17,7 @@ uses
   SysUtils;
 
 begin
-  application.createform(twebstreamerfo, webstreamerfo);
+   application.createform(twebstreamerfo, webstreamerfo);
   application.run;
   uos_free();
 end.
