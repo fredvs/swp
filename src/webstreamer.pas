@@ -4,13 +4,49 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,{$else}Windows,{$endif}uos_flat,Math,msetypes,mseglob,
- mseguiglob,mseguiintf,mseapplication,msestat,ctypes,msemenus,msegui,
- msegraphics,msegraphutils,mseevent,Classes,mseclasses,mseforms,msedock,
- msesimplewidgets,msewidgets,msedispwidgets,mserichstring,mseact,msedataedits,
- msedropdownlist,mseedit,mseificomp,mseificompglob,mseifiglob,msestatfile,
- msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,
- msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage;
+ {$ifdef unix}Unix,{$else}Windows,{$endif}uos_flat,
+  Math,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  ctypes,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob,
+  msetimer,
+  BGRABitmap,
+  BGRAAnimatedGif,
+  BGRABitmapTypes,
+  mseimage;
 
 type
   boundchild = record
@@ -71,8 +107,8 @@ type
     edstyle: tintegeredit;
     ttimer1: ttimer;
     PimgPreview: tpaintbox;
-   timagelist1: timagelist;
-   eurlname: tedit;
+    timagelist1: timagelist;
+    eurlname: tedit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -113,7 +149,7 @@ type
     procedure getpicture(aurl: string);
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
     procedure onurl(const Sender: TObject);
-   procedure afterdropdown(const sender: TObject);
+    procedure afterdropdown(const Sender: TObject);
   end;
 
 const
@@ -140,7 +176,6 @@ var
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
  {$ENDIF}
-// icy_data: pchar;
 
 implementation
 
@@ -162,6 +197,7 @@ begin
   end;
 end;
 {$ELSE}
+
 procedure OpenURL(const aURL: string);
 var
   Helper: string;
@@ -189,6 +225,7 @@ begin
   if Helper <> '' then
     fpSystem(Helper + ' ' + aURL + '&');
 end;
+
 {$ENDIF}
 
 procedure twebstreamerfo.oncheckdevices();
@@ -359,11 +396,10 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
- // DetectStreamFormat(ansistring(historyfn.Value));
   hasbitmap  := False;
   PimgPreview.Visible := False;
-  btnStart.Enabled        := False;
-  btnStart.face.template  := tfacecomp6;
+  btnStart.Enabled := False;
+  btnStart.face.template := tfacecomp6;
   infopanel.font.color := cl_red;
   infopanel.Value := 'Trying to get ' + historyfn.Value;
   application.ProcessMessages;
@@ -376,20 +412,8 @@ begin
   // PlayerIndex : from 0 to what your computer can do !
   // If PlayerIndex exists already, it will be overwriten...
 
-    aboolicy  := True;
- 
- {
-  if webformat = 2 then
-  begin
-    sizebuf := 16384;
-    latency := 0.5;
-  end
-  else
-  begin
-    sizebuf := 8192;
-    latency := -1;
-  end;
- } 
+  aboolicy := True;
+
   latency := -1;
   sizebuf := 16384;
 
@@ -401,7 +425,7 @@ begin
     aformat := 0;
 
   application.ProcessMessages;
-  
+
   // 'https://radiorecord.hostingradio.ru/ps96.aacp';
   webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
 
@@ -414,15 +438,13 @@ begin
   // FramesCount : default : -1 (1024)
   // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
   // ICY data on/off
-   
+
   if webinindex <> -1 then
   begin
-     caption := urlname;
-     weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
+    Caption     := urlname;
+    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
       uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
 
-    //edrecformat.Value := 0;
-    //outputstr := '.wav';
     if brecord.tag = 1 then
     begin
       if edrecformat.Value = 0 then
@@ -542,17 +564,17 @@ begin
     application.ProcessMessages;
 
     uos_Play(webindex);  // everything is ready, here we are, lets play it...
-    
+
     if aboolicy then
       ttimer1.Enabled := True;
 
   end
   else
   begin
-    infopanel.font.color := cl_red;
-    infopanel.Value      := 'URL did not accessed';
-    btnStart.Enabled        := true;
-    btnStart.face.template  := tfacecomp7;
+    infopanel.font.color   := cl_red;
+    infopanel.Value        := 'URL did not accessed';
+    btnStart.Enabled       := True;
+    btnStart.face.template := tfacecomp7;
   end;
 end;
 
@@ -712,11 +734,6 @@ begin
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '            Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
 
-  if noaac then
-  begin
-   //  brecord.top       := brecord.top - 10;
-  end;
-
   rect1 := application.screenrect(window);
 
   fontheight := round(rect1.cy / 800 * 12);
@@ -726,8 +743,8 @@ begin
   oncheckdevices();
 
   edrecformat.Value := 0;
-  
-  urlname := eurlname.text;
+
+  urlname := eurlname.Text;
 
   Visible := True;
 
@@ -737,29 +754,29 @@ end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
-  ttimer1.Enabled         := False;
+  ttimer1.Enabled   := False;
   uos_Stop(webindex);
-  caption := 'Simple Webstream Player';
-  btnStart.Enabled        := True;
-  btnStart.face.template  := tfacecomp7;
-  btnResume.Enabled       := False;
-  btnResume.Visible       := False;
+  Caption           := 'Simple Webstream Player';
+  btnStart.Enabled  := True;
+  btnStart.face.template := tfacecomp7;
+  btnResume.Enabled := False;
+  btnResume.Visible := False;
   btnResume.face.template := tfacecomp6;
-  btnStop.Enabled         := False;
-  btnStop.face.template   := tfacecomp6;
-  btnPause.Enabled        := False;
-  btnpause.Visible        := True;
-  btnPause.face.template  := tfacecomp6;
-  brecord.Enabled         := True;
-  brecord.face.template   := tfacecomp7;
-  btempo.Enabled          := True;
-  breset.Enabled          := True;
-  edtempo.Enabled         := True;
-  edpitch.Enabled         := True;
+  btnStop.Enabled   := False;
+  btnStop.face.template := tfacecomp6;
+  btnPause.Enabled  := False;
+  btnpause.Visible  := True;
+  btnPause.face.template := tfacecomp6;
+  brecord.Enabled   := True;
+  brecord.face.template := tfacecomp7;
+  btempo.Enabled    := True;
+  breset.Enabled    := True;
+  edtempo.Enabled   := True;
+  edpitch.Enabled   := True;
   if brecord.tag = 1 then
     infopanel.Value := 'Rec saved: ' + arecnp
   else
-    infopanel.Value   := historyfn.Value + ' stopped...';
+    infopanel.Value   := 'Stopped...';
   brecord.tag         := 0;
   brecord.Caption     := 'Record';
   brecord.face.template := tfacecomp7;
@@ -772,7 +789,7 @@ end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
-  eurlname.text := urlname;
+  eurlname.Text   := urlname;
   ttimer1.Enabled := False;
   uos_Stop(webindex);
   sleep(200);
@@ -795,7 +812,6 @@ begin
   btnPause.Visible        := False;
   btnPause.face.template  := tfacecomp6;
   brecord.Caption         := 'Paused...';
-  //infopanel.Value         := historyfn.Value + ' paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
@@ -814,7 +830,6 @@ begin
   btnpause.Visible        := True;
   btnPause.face.template  := tfacecomp7;
   brecord.Caption         := 'Resumed...';
-  //infopanel.Value         := historyfn.Value + ' resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -897,21 +912,22 @@ var
   i1, childn: integer;
   {$if defined(linux)}
   sessiontyp: string;
-  {$ENDIF}   
+  {$ENDIF}
 begin
 
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
-    
+
    {$if defined(linux) }
-   sessiontyp := LowerCase(GetEnvironmentVariable('XDG_SESSION_TYPE'));
-   if sessiontyp <> 'x11' then timagelist1.options := [bmo_masked] ;
-   {$ENDIF} 
-   
+  sessiontyp := LowerCase(GetEnvironmentVariable('XDG_SESSION_TYPE'));
+  if sessiontyp <> 'x11' then
+    timagelist1.options := [bmo_masked];
+   {$ENDIF}
+
    {$if defined(netbsd) or defined(darwin)}
    timagelist1.options := [bmo_masked] ;
    {$endif}
-    
+
   setlength(boundchildsp, childrencount);
   childn := childrencount;
 
@@ -1049,15 +1065,15 @@ begin
   if isinit and griddisp.Visible then
     if (info.eventkind = cek_buttonrelease) then
     begin
-     urlname := griddisp[0][griddisp.focusedcell.row];
-        
+      urlname := griddisp[0][griddisp.focusedcell.row];
+
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
       end;
-   
-    end;  
+
+    end;
 end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
@@ -1220,7 +1236,7 @@ begin
     tfacecomp2.template.fade_color.items[0] := $A4B09D;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
-    griddisp.datacols.colorfocused := $FFDBA8; 
+    griddisp.datacols.colorfocused := $FFDBA8;
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;
@@ -1260,7 +1276,7 @@ begin
     tfacecomp8.template.fade_color.items[1] := $633C00;
     tfacecomp2.template.fade_color.items[0] := cl_dkgray;
     tfacecomp2.template.fade_color.items[1] := cl_black;
-    griddisp.datacols.colorfocused := $B86B00; 
+    griddisp.datacols.colorfocused := $B86B00;
     griddisp[0].color := cl_black;
     griddisp[1].color := cl_black;
     griddisp[2].color := cl_black;
@@ -1302,7 +1318,7 @@ begin
     tfacecomp2.template.fade_color.items[0] := $F2F2F2;
     tfacecomp2.template.fade_color.items[1] := $5C5C5C;
     container.color := $B6C4AF;
-    griddisp.datacols.colorfocused := $FFDBA8; 
+    griddisp.datacols.colorfocused := $FFDBA8;
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;
@@ -1369,7 +1385,6 @@ begin
   prefix := '';
   uos_InputUpdateICY(0, 0, sicy);
   if sicy <> nil then
-  begin
     if icystr <> sicy then
     begin
       if system.Pos('StreamTitle=', sicy) > 0 then
@@ -1389,8 +1404,7 @@ begin
       infopanel.Value := prefix + theplaying + #10 + prefix + aname;
       icystr := sicy;
     end;
-  end;
-  loopok := True;
+  loopok     := True;
 end;
 
 procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
@@ -1441,14 +1455,14 @@ begin
     2: openurl('https://github.com/fredvs/uos/');
     3: openurl('http://www.surina.net/soundtouch/');
     4: openurl('https://github.com/fredvs/swp/');
-    5: openurl('https://github.com/bgrabitmap/bgrabitmap/');    
+    5: openurl('https://github.com/bgrabitmap/bgrabitmap/');
   end;
 end;
 
-procedure twebstreamerfo.afterdropdown(const sender: TObject);
+procedure twebstreamerfo.afterdropdown(const Sender: TObject);
 begin
-caption := 'Simple Webstream Player';
-urlname := caption; 
+  Caption := 'Simple Webstream Player';
+  urlname := Caption;
 end;
 
 end.
