@@ -4,7 +4,10 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,{$else}Windows,{$endif}uos_flat,
+  {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}
+  Sockets,
+  Types,
+  uos_flat,
   Math,
   msetypes,
   mseglob,
@@ -87,7 +90,7 @@ type
     runselect: tbooleanedit;
     showwave: tbooleanedit;
     thistoryedit2: thistoryedit;
-    deleteallurl: tstringdisp;
+    messagedlg: tstringdisp;
     byes: TButton;
     bno: TButton;
     tfacecomp4: tfacecomp;
@@ -150,6 +153,7 @@ type
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
     procedure onurl(const Sender: TObject);
     procedure afterdropdown(const Sender: TObject);
+    function checkconnection(): boolean;
   end;
 
 const
@@ -184,7 +188,62 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
-
+  
+  function checkConnect (const hostAddress: string; portNumber: integer; timeout: integer = 3): Boolean;
+    var
+      sock:    LongInt;
+      addr:    TSockAddr;
+      timeset: TTimeVal;
+    begin
+      sock := fpsocket(AF_INET, SOCK_STREAM, 0);
+      if sock = -1 then begin
+        result := false;
+        Exit;
+      end;
+     
+      timeset.tv_sec  := timeout;
+      timeset.tv_usec := 0;
+      fpsetsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, @timeset, SizeOf(timeset));
+     
+      addr.sin_family := AF_INET;
+      addr.sin_port   := htons(portNumber);
+      addr.sin_addr   := TInAddr(StrToNetAddr(hostAddress));
+     
+      result := 0 = fpconnect(sock, @addr, SizeOf(addr));
+     
+      CloseSocket(Sock);
+    end;
+     
+    function checkAnyConnect (const hosts: TStringDynArray; const port: integer = 53): boolean;
+    var
+      host: string;
+    begin
+      for host in hosts do if checkConnect(host, port) then exit(true);
+      result := false;
+     end;  
+ 
+function twebstreamerfo.checkconnection() : boolean;
+begin    
+ result := checkAnyConnect([
+    '4.2.2.1',
+    '4.2.2.2',
+    '4.2.2.3',
+    '4.2.2.4',
+    '4.2.2.5',
+    '4.2.2.6']);
+   
+ if result = false then
+ begin
+  messagedlg.top := infopanel.top + 5;
+  messagedlg.text := '       No Internet connection...';
+  messagedlg.font.color := cl_red;
+  bno.font.color := font.color;
+  byes.visible := false;
+  bno.caption := 'OK';
+  messagedlg.Visible := True;  
+ end;  
+ end;   
+ 
 {$IFDEF windows}
 procedure OpenURL(const aURL: String);
 begin
@@ -197,7 +256,6 @@ begin
   end;
 end;
 {$ELSE}
-
 procedure OpenURL(const aURL: string);
 var
   Helper: string;
@@ -396,6 +454,8 @@ var
   aformat, webformat, sizebuf: integer;
   latency: cfloat;
 begin
+  if checkconnection() then
+  begin
   hasbitmap  := False;
   PimgPreview.Visible := False;
   btnStart.Enabled := False;
@@ -576,6 +636,7 @@ begin
     btnStart.Enabled       := True;
     btnStart.face.template := tfacecomp7;
   end;
+  end;
 end;
 
 procedure twebstreamerfo.oneventstart(const Sender: TObject);
@@ -747,6 +808,8 @@ begin
   urlname := eurlname.Text;
 
   Visible := True;
+  
+  checkconnection();
 
   isinit := True;
 
@@ -940,11 +1003,11 @@ begin
     boundchildsp[i1].Name   := children[i1].Name;
   end;
 
-  with deleteallurl do
+  with messagedlg do
   begin
-    setlength(boundchildsp, length(boundchildsp) + deleteallurl.childrencount);
+    setlength(boundchildsp, length(boundchildsp) + messagedlg.childrencount);
 
-    for i1 := 0 to deleteallurl.childrencount - 1 do
+    for i1 := 0 to messagedlg.childrencount - 1 do
     begin
       boundchildsp[i1 + childn].left   := children[i1].left;
       boundchildsp[i1 + childn].top    := children[i1].top;
@@ -954,7 +1017,7 @@ begin
     end;
   end;
 
-  childn := childn + deleteallurl.childrencount;
+  childn := childn + messagedlg.childrencount;
 
   with panelcommand do
   begin
@@ -1038,17 +1101,24 @@ end;
 procedure twebstreamerfo.onclearhist(const Sender: TObject);
 begin
   historyfn.dropdown.valuelist.asarray := thistoryedit2.dropdown.valuelist.asarray;
-  deleteallurl.Visible := False;
+  messagedlg.Visible := False;
 end;
 
 procedure twebstreamerfo.cancelclear(const Sender: TObject);
 begin
-  deleteallurl.Visible := False;
+  messagedlg.Visible := False;
 end;
 
 procedure twebstreamerfo.showclear(const Sender: TObject);
 begin
-  deleteallurl.Visible := True;
+  messagedlg.top := 20;
+  messagedlg.text := '  Delete all URL history ?';
+  byes.visible := true;
+  bno.caption := 'No';
+  messagedlg.font.color := font.color;
+  bno.font.color := font.color;
+  byes.font.color := font.color;
+  messagedlg.Visible := True;
 end;
 
 procedure twebstreamerfo.showlis(const Sender: TObject);
@@ -1124,6 +1194,10 @@ begin
 
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
+  
+  messagedlg.font.Height := fontheight;
+  byes.font.Height := fontheight;
+  bno.font.Height := fontheight;
 
   historyfn.dropdown.cols[0].font.Height := fontheight;
 
@@ -1167,17 +1241,17 @@ begin
         end;
   end;
 
-  with deleteallurl do
+  with messagedlg do
   begin
     font.Height := fontheight;
     for i1      := 0 to childrencount - 1 do
       for i2 := 0 to length(boundchildsp) - 1 do
-        if deleteallurl.children[i1].Name = boundchildsp[i2].Name then
+        if messagedlg.children[i1].Name = boundchildsp[i2].Name then
         begin
-          deleteallurl.children[i1].left   := round(boundchildsp[i2].left * ratio);
-          deleteallurl.children[i1].top    := round(boundchildsp[i2].top * ratio);
-          deleteallurl.children[i1].Width  := round(boundchildsp[i2].Width * ratio);
-          deleteallurl.children[i1].Height := round(boundchildsp[i2].Height * ratio);
+          messagedlg.children[i1].left   := round(boundchildsp[i2].left * ratio);
+          messagedlg.children[i1].top    := round(boundchildsp[i2].top * ratio);
+          messagedlg.children[i1].Width  := round(boundchildsp[i2].Width * ratio);
+          messagedlg.children[i1].Height := round(boundchildsp[i2].Height * ratio);
         end;
   end;
 

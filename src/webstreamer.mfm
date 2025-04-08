@@ -3463,7 +3463,7 @@ object webstreamerfo: twebstreamerfo
     font.name = 'unifont'
     font.localprops = []
     textflags = [tf_xcentered, tf_ycentered]
-    reffontheight = 17
+    reffontheight = 13
     object runselect: tbooleanedit
       color = -2147483645
       bounds_x = 158
@@ -3551,11 +3551,11 @@ object webstreamerfo: twebstreamerfo
       bounds_x = 6
       bounds_y = 0
       bounds_cx = 23
-      bounds_cy = 23
+      bounds_cy = 19
       statfile = tstatfile1
       value = -1
       valuemin = -1
-      reffontheight = 17
+      reffontheight = 13
     end
     object edrecformat: tintegeredit
       frame.localprops = []
@@ -3565,9 +3565,9 @@ object webstreamerfo: twebstreamerfo
       bounds_x = 32
       bounds_y = -1
       bounds_cx = 23
-      bounds_cy = 23
+      bounds_cy = 19
       statfile = tstatfile1
-      reffontheight = 17
+      reffontheight = 13
     end
     object edstyle: tintegeredit
       frame.localprops = []
@@ -3577,9 +3577,9 @@ object webstreamerfo: twebstreamerfo
       bounds_x = 62
       bounds_y = 0
       bounds_cx = 23
-      bounds_cy = 23
+      bounds_cy = 19
       statfile = tstatfile1
-      reffontheight = 17
+      reffontheight = 13
     end
     object eurlname: tedit
       frame.localprops = []
@@ -3588,13 +3588,13 @@ object webstreamerfo: twebstreamerfo
       visible = False
       bounds_x = 196
       bounds_y = 18
-      bounds_cy = 23
+      bounds_cy = 19
       statfile = tstatfile1
       text = 'Simple Webstream Player'
-      reffontheight = 17
+      reffontheight = 13
     end
   end
-  object deleteallurl: tstringdisp
+  object messagedlg: tstringdisp
     frame.localprops = []
     frame.localprops1 = []
     frame.template = tframecomp2
@@ -3607,6 +3607,9 @@ object webstreamerfo: twebstreamerfo
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
+    font.height = 12
+    font.name = 'stf_default'
+    font.localprops = []
     textflags = [tf_left, tf_ycentered]
     reffontheight = 17
     object byes: tbutton
@@ -3624,6 +3627,9 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 19
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'Yes'
+      font.height = 12
+      font.name = 'stf_default'
+      font.localprops = []
       imagenr = 27
       focusrectdist = 0
       onexecute = onclearhist
@@ -3644,6 +3650,9 @@ object webstreamerfo: twebstreamerfo
       bounds_cy = 19
       state = [as_localcaption, as_localimagelist, as_localimagenr, as_localimagenrdisabled, as_localcolor, as_localhint, as_localonexecute]
       caption = 'No'
+      font.height = 12
+      font.name = 'stf_default'
+      font.localprops = []
       imagenr = 27
       focusrectdist = 0
       onexecute = cancelclear
