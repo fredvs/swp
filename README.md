@@ -1,6 +1,8 @@
 # swp
 Simple Webstream Player, to listen and record web radios and other web streams from mp3 and aac format.
+
 Change live the tempo and pitch.
+
 Record in wav format.
 
 Simple Webstream Player release was compiled with: FPC 3.2.2: http://www.freepascal.org
