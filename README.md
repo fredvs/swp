@@ -3,7 +3,11 @@ Simple Webstream Player, to listen and record web radios and other web streams f
 
 Change live the tempo and pitch.
 
+Show ICY tag, including image.
+
 Record in wav format.
+
+Can also play webstreams from http**s**.
 
 Simple Webstream Player release was compiled with: FPC 3.2.2: http://www.freepascal.org
 
