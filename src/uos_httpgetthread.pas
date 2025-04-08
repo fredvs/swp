@@ -34,7 +34,7 @@ type
   public
     FIsRunning: Boolean;
     ICYenabled: Boolean;
-    FormatType: integer;  // 0: mp3, 1:aac, 2:opus
+    FormatType: integer;  // 0: mp3, 1:opus, 2:acc
     property IcyMetaInt: int64 read FIcyMetaInt;
     property IsRunning: Boolean read FIsRunning;
     constructor Create(AWantedURL: string; AOutputStream: TOutputPipeStream);
