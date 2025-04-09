@@ -4,52 +4,14 @@ unit webstreamer;
 interface
 
 uses
-  {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}
-  Sockets,
-  Types,
-  uos_flat,
-  Math,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  ctypes,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob,
-  msetimer,
-  BGRABitmap,
-  BGRAAnimatedGif,
-  BGRABitmapTypes,
-  mseimage;
+ {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}Sockets,Types,
+ uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
+ ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
+ mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
+ mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
+ mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
+ msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
+ BGRABitmapTypes,mseimage;
 
 type
   boundchild = record
@@ -112,6 +74,7 @@ type
     PimgPreview: tpaintbox;
     timagelist1: timagelist;
     eurlname: tedit;
+   edfullscreen: tintegeredit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -154,6 +117,8 @@ type
     procedure onurl(const Sender: TObject);
     procedure afterdropdown(const Sender: TObject);
     function checkconnection(): boolean;
+   procedure onafterfullscreen(const sender: TObject);
+   procedure oncreated(const sender: TObject);
   end;
 
 const
@@ -176,6 +141,7 @@ var
   pa, sf, mp, aa, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
+  rectori: rectty;
   urlname: string = 'Simple Webstream Player';
  {$if defined(darwin) and defined(macapp)}
   binPath: string;
@@ -753,6 +719,15 @@ begin
 
   if PChar(sf) <> '' then
     tmainmenu1.menu.itembynames(['config', 'recformat']).Visible := True;
+    
+  if edfullscreen.Value = 0 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := false;
+  end
+  else
+  begin
+    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := true;
+  end;   
 
   if edrecformat.Value = 0 then
   begin
@@ -807,7 +782,7 @@ begin
 
   urlname := eurlname.Text;
 
-  Visible := True;
+//  Visible := True;
   
   checkconnection();
 
@@ -977,7 +952,6 @@ var
   sessiontyp: string;
   {$ENDIF}
 begin
-
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
@@ -1081,7 +1055,7 @@ begin
   begin
     onstop(nil);
     application.ProcessMessages;
-    sleep(3000);
+    sleep(2000);
     onplay(nil);
   end;
 end;
@@ -1265,7 +1239,7 @@ begin
   onchangeshowwave(nil);
 
   setstyle(edstyle.Value);
-
+  
 end;
 
 procedure twebstreamerfo.addrow(const Sender: TObject);
@@ -1496,6 +1470,8 @@ begin
 end;
 
 procedure twebstreamerfo.onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
+var
+  rect1: rectty;
 begin
 
   if isinit then
@@ -1503,14 +1479,34 @@ begin
     begin
       if PimgPreview.tag = 0 then
       begin
+        hide;
+        rectori.cx := left;
+        rectori.cy := top;
         tmainmenu1.menu.Visible := False;
+        if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
+        begin
+        bounds_cxmax := 0;
+        bounds_cymax := 0;
+        rect1 := application.screenrect(window);
+        bounds_cx := rect1.cx ;
+        bounds_cy := rect1.cy - 50; 
+        left := 0;
+        top :=20;
+        bounds_cxmax := bounds_cx;
+        bounds_cymax := bounds_cy;
+        end;
         PimgPreview.top         := 0;
         PimgPreview.Height      := Height + round(2 * fontheight / 12);
         PimgPreview.Width       := Width;
         PimgPreview.tag         := 1;
+        show;
       end
       else
       begin
+        bounds_cxmax := bounds_cxmin;
+        bounds_cymax := bounds_cymin;
+        left := rectori.cx;
+        top := rectori.cy;      
         tmainmenu1.menu.Visible := True;
         PimgPreview.top         := infopanel.top;
         PimgPreview.Height      := infopanel.Height;
@@ -1537,6 +1533,18 @@ procedure twebstreamerfo.afterdropdown(const Sender: TObject);
 begin
   Caption := 'Simple Webstream Player';
   urlname := Caption;
+end;
+
+procedure twebstreamerfo.onafterfullscreen(const sender: TObject);
+begin
+  if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
+ edfullscreen.Value := 1 else edfullscreen.Value := 0;
+end;
+
+procedure twebstreamerfo.oncreated(const sender: TObject);
+begin
+visible := false;
+invalidatewidget;
 end;
 
 end.

@@ -3593,6 +3593,18 @@ object webstreamerfo: twebstreamerfo
       text = 'Simple Webstream Player'
       reffontheight = 13
     end
+    object edfullscreen: tintegeredit
+      frame.localprops = []
+      frame.localprops1 = []
+      taborder = 8
+      visible = False
+      bounds_x = 48
+      bounds_y = 21
+      bounds_cx = 23
+      bounds_cy = 19
+      statfile = tstatfile1
+      reffontheight = 13
+    end
   end
   object messagedlg: tstringdisp
     frame.localprops = []
@@ -3602,8 +3614,8 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 51
-    bounds_y = 3
+    bounds_x = 83
+    bounds_y = 4
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
@@ -3994,7 +4006,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 6
+        submenu.count = 7
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4003,6 +4015,14 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localhint, as_localonafterexecute]
             options = [mao_checkbox, mao_shortcutcaption]
             onafterexecute = onafterplayafter
+          end        
+          item
+            caption = ' Full screen tag image '
+            hint = 'When click on image tag, resize to full screen'
+            name = 'fullscreen'
+            state = [as_localcaption, as_localhint, as_localonexecute]
+            options = [mao_checkbox, mao_shortcutcaption]
+            onexecute = onafterfullscreen
           end        
           item
             submenu.count = 32
@@ -4369,8 +4389,8 @@ object webstreamerfo: twebstreamerfo
     menu.fontactive.color = 15579786
     menu.fontactive.name = 'stf_menu'
     menu.fontactive.localprops = [flp_color]
-    left = 123
-    top = 151
+    left = 32
+    top = 202
   end
   object tfacecomp4: tfacecomp
     template.fade_pos.count = 2
@@ -4444,8 +4464,8 @@ object webstreamerfo: twebstreamerfo
       -1610612729
     )
     template.fade_direction = gd_down
-    left = 138
-    top = 154
+    left = 109
+    top = 185
   end
   object tfacecomp2: tfacecomp
     template.fade_pos.count = 2
