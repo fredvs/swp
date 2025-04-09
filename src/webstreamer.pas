@@ -4,14 +4,52 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}Sockets,Types,
- uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
- ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
- mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
- mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
- mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
- msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
- BGRABitmapTypes,mseimage;
+ {$ifdef unix}Unix,UnixType,{$else}Windows,
+  Winsock,{$endif}Sockets,
+  Types,
+  uos_flat,
+  Math,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  ctypes,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob,
+  msetimer,
+  BGRABitmap,
+  BGRAAnimatedGif,
+  BGRABitmapTypes,
+  mseimage;
 
 type
   boundchild = record
@@ -74,7 +112,7 @@ type
     PimgPreview: tpaintbox;
     timagelist1: timagelist;
     eurlname: tedit;
-   edfullscreen: tintegeredit;
+    edfullscreen: tintegeredit;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -116,9 +154,8 @@ type
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
     procedure onurl(const Sender: TObject);
     procedure afterdropdown(const Sender: TObject);
-    function checkconnection(): boolean;
-   procedure onafterfullscreen(const sender: TObject);
-   procedure oncreated(const sender: TObject);
+    function checkconnection(): Boolean;
+    procedure onafterfullscreen(const Sender: TObject);
   end;
 
 const
@@ -154,62 +191,65 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
-  
-  function checkConnect (const hostAddress: string; portNumber: integer; timeout: integer = 3): Boolean;
-    var
-      sock:    LongInt;
-      addr:    TSockAddr;
-      timeset: TTimeVal;
-    begin
-      sock := fpsocket(AF_INET, SOCK_STREAM, 0);
-      if sock = -1 then begin
-        result := false;
-        Exit;
-      end;
-     
-      timeset.tv_sec  := timeout;
-      timeset.tv_usec := 0;
-      fpsetsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, @timeset, SizeOf(timeset));
-     
-      addr.sin_family := AF_INET;
-      addr.sin_port   := htons(portNumber);
-      addr.sin_addr   := TInAddr(StrToNetAddr(hostAddress));
-     
-      result := 0 = fpconnect(sock, @addr, SizeOf(addr));
-     
-      CloseSocket(Sock);
-    end;
-     
-    function checkAnyConnect (const hosts: TStringDynArray; const port: integer = 53): boolean;
-    var
-      host: string;
-    begin
-      for host in hosts do if checkConnect(host, port) then exit(true);
-      result := false;
-     end;  
- 
-function twebstreamerfo.checkconnection() : boolean;
-begin    
- result := checkAnyConnect([
+
+function checkConnect(const hostAddress: string; portNumber: integer; timeout: integer = 3): Boolean;
+var
+  sock: longint;
+  addr: TSockAddr;
+  timeset: TTimeVal;
+begin
+  sock := fpsocket(AF_INET, SOCK_STREAM, 0);
+  if sock = -1 then
+  begin
+    Result := False;
+    Exit;
+  end;
+
+  timeset.tv_sec  := timeout;
+  timeset.tv_usec := 0;
+  fpsetsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, @timeset, SizeOf(timeset));
+
+  addr.sin_family := AF_INET;
+  addr.sin_port   := htons(portNumber);
+  addr.sin_addr   := TInAddr(StrToNetAddr(hostAddress));
+
+  Result := 0 = fpconnect(sock, @addr, SizeOf(addr));
+
+  CloseSocket(Sock);
+end;
+
+function checkAnyConnect(const hosts: TStringDynArray; const port: integer = 53): Boolean;
+var
+  host: string;
+begin
+  for host in hosts do
+    if checkConnect(host, port) then
+      Exit(True);
+  Result := False;
+end;
+
+function twebstreamerfo.checkconnection(): Boolean;
+begin
+  Result := checkAnyConnect([
     '4.2.2.1',
     '4.2.2.2',
     '4.2.2.3',
     '4.2.2.4',
     '4.2.2.5',
     '4.2.2.6']);
-   
- if result = false then
- begin
-  messagedlg.top := infopanel.top + 5;
-  messagedlg.text := '       No Internet connection...';
-  messagedlg.font.color := cl_red;
-  bno.font.color := font.color;
-  byes.visible := false;
-  bno.caption := 'OK';
-  messagedlg.Visible := True;  
- end;  
- end;   
- 
+
+  if Result = False then
+  begin
+    messagedlg.top        := infopanel.top + 5;
+    messagedlg.Text       := '       No Internet connection...';
+    messagedlg.font.color := cl_red;
+    bno.font.color        := font.color;
+    byes.Visible          := False;
+    bno.Caption           := 'OK';
+    messagedlg.Visible    := True;
+  end;
+end;
+
 {$IFDEF windows}
 procedure OpenURL(const aURL: String);
 begin
@@ -222,6 +262,7 @@ begin
   end;
 end;
 {$ELSE}
+
 procedure OpenURL(const aURL: string);
 var
   Helper: string;
@@ -422,186 +463,186 @@ var
 begin
   if checkconnection() then
   begin
-  hasbitmap  := False;
-  PimgPreview.Visible := False;
-  btnStart.Enabled := False;
-  btnStart.face.template := tfacecomp6;
-  infopanel.font.color := cl_red;
-  infopanel.Value := 'Trying to get ' + historyfn.Value;
-  application.ProcessMessages;
-  webindex   := 0;
-  webinindex := -1;
-  incview    := 0;
-  icystr     := '';
-  uos_CreatePlayer(webindex);
-  // Create the player.
-  // PlayerIndex : from 0 to what your computer can do !
-  // If PlayerIndex exists already, it will be overwriten...
+    hasbitmap  := False;
+    PimgPreview.Visible := False;
+    btnStart.Enabled := False;
+    btnStart.face.template := tfacecomp6;
+    infopanel.font.color := cl_red;
+    infopanel.Value := 'Trying to get ' + historyfn.Value;
+    application.ProcessMessages;
+    webindex   := 0;
+    webinindex := -1;
+    incview    := 0;
+    icystr     := '';
+    uos_CreatePlayer(webindex);
+    // Create the player.
+    // PlayerIndex : from 0 to what your computer can do !
+    // If PlayerIndex exists already, it will be overwriten...
 
-  aboolicy := True;
+    aboolicy := True;
 
-  latency := -1;
-  sizebuf := 16384;
+    latency := -1;
+    sizebuf := 16384;
 
-  if brecord.tag = 0 then
-    aformat := 0
-  else if edrecformat.Value = 0 then
-    aformat := 2
-  else
-    aformat := 0;
-
-  application.ProcessMessages;
-
-  // 'https://radiorecord.hostingradio.ru/ps96.aacp';
-  webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
-
-  theplaying := historyfn.Value;
-
-  // Add a Input from Audio URL with custom parameters
-  // URL : URL of audio file (like  'http://someserver/somesound.mp3')
-  // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
-  // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
-  // FramesCount : default : -1 (1024)
-  // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
-  // ICY data on/off
-
-  if webinindex <> -1 then
-  begin
-    Caption     := urlname;
-    weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
-      uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
-
-    if brecord.tag = 1 then
-    begin
-      if edrecformat.Value = 0 then
-        outputstr := '.wav'
-      else
-      begin
-        sizebuf   := sizebuf div 8;
-        outputstr := '.ogg';  // needs sndfile library
-      end;
-
-      arecnp := 'records' + directoryseparator + 'rec_' +
-        msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
-
-      arec := ordir + arecnp;
-      uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
-
-      btempo.Enabled        := False;
-      edtempo.Enabled       := False;
-      edpitch.Enabled       := False;
-      breset.Enabled        := False;
-      brecord.face.template := tfacecomp9;
-    end;
-
-    // add a Output into device with custom parameters
-    // PlayerIndex : Index of a existing Player
-    // Device ( -1 is default Output device )
-    // Latency  ( -1 is latency suggested ) )
-    // SampleRate : delault : -1 (44100)   // here default samplerate of input
-    // Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
-    // SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
-    // FramesCount : default : -1 (65536)
-    // ChunkCount : default : -1 (= 512)
-    //  result : -1 nothing created, otherwise Output Index in array
-
-    uos_InputSetLevelEnable(webindex, webinindex, 2);
-    // set calculation of level/volume (usefull for showvolume procedure)
-    // set level calculation (default is 0)
-    // 0 => no calcul
-    // 1 => calcul before all DSP procedures.
-    // 2 => calcul after all DSP procedures.
-    // 3 => calcul before and after all DSP procedures.
-
-    uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
-    // Assign the procedure of object to execute inside the loop for a Input
-    // PlayerIndex : Index of a existing Player
-    // InIndex : Index of a existing Input
-    // LoopProcPlayer1 : procedure of object to execute inside the loop
-
-    uos_InputAddDSPVolume(webindex, webinindex, 1, 1);
-    // DSP Volume changer
-    // PlayerIndex1 : Index of a existing Player
-    // In1Index : InputIndex of a existing input
-    // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
-    // VolRight : Right volume
-
-    if (plugsoundtouch = True) and (brecord.tag = 0) then
-    begin
-      if btempo.tag = 0 then
-        abool := False
-      else
-        abool := True;
-      webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
-        uos_InputGetChannels(webindex, webinindex));
-      // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
-      uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
-      // Change plugin settings
-    end;
-
-    btnStart.Enabled        := False;
-    btnStart.face.template  := tfacecomp6;
-    btnResume.Enabled       := False;
-    btnResume.Visible       := False;
-    btnResume.face.template := tfacecomp6;
-    btnStop.Enabled         := True;
-    btnStop.face.template   := tfacecomp7;
-    btnPause.Enabled        := True;
-    btnpause.Visible        := True;
-    btnPause.face.template  := tfacecomp7;
-
-    brecord.Enabled       := False;
-    brecord.face.template := tfacecomp7;
-
-    if brecord.tag = 1 then
-      brecord.face.template := tfacecomp9;
-
-    if edstyle.Value = 0 then
-      infopanel.font.color := cl_black
-    else if edstyle.Value = 1 then
-      infopanel.font.color := cl_white
-    else if edstyle.Value = 2 then
-      infopanel.font.color := cl_black;
-
-    if brecord.tag = 1 then
-      infopanel.Value := 'Play + Record ' + historyfn.Value
+    if brecord.tag = 0 then
+      aformat := 0
+    else if edrecformat.Value = 0 then
+      aformat := 2
     else
-      infopanel.Value := 'Playing ' + historyfn.Value;
-
-    if brecord.tag = 1 then
-    begin
-      brecord.Caption       := 'Recording...';
-      brecord.face.template := tfacecomp9;
-    end
-    else
-    begin
-      brecord.Caption       := 'Playing...';
-      brecord.face.template := tfacecomp7;
-    end;
-
-    onchangevol(nil);
-
-    infopanel.face.template := tfacecomp4;
-
-    InitDrawLive();
-
-    tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
+      aformat := 0;
 
     application.ProcessMessages;
 
-    uos_Play(webindex);  // everything is ready, here we are, lets play it...
+    // 'https://radiorecord.hostingradio.ru/ps96.aacp';
+    webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
 
-    if aboolicy then
-      ttimer1.Enabled := True;
+    theplaying := historyfn.Value;
 
-  end
-  else
-  begin
-    infopanel.font.color   := cl_red;
-    infopanel.Value        := 'URL did not accessed';
-    btnStart.Enabled       := True;
-    btnStart.face.template := tfacecomp7;
-  end;
+    // Add a Input from Audio URL with custom parameters
+    // URL : URL of audio file (like  'http://someserver/somesound.mp3')
+    // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
+    // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
+    // FramesCount : default : -1 (1024)
+    // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
+    // ICY data on/off
+
+    if webinindex <> -1 then
+    begin
+      Caption     := urlname;
+      weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
+        uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
+
+      if brecord.tag = 1 then
+      begin
+        if edrecformat.Value = 0 then
+          outputstr := '.wav'
+        else
+        begin
+          sizebuf   := sizebuf div 8;
+          outputstr := '.ogg';  // needs sndfile library
+        end;
+
+        arecnp := 'records' + directoryseparator + 'rec_' +
+          msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
+
+        arec := ordir + arecnp;
+        uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
+
+        btempo.Enabled        := False;
+        edtempo.Enabled       := False;
+        edpitch.Enabled       := False;
+        breset.Enabled        := False;
+        brecord.face.template := tfacecomp9;
+      end;
+
+      // add a Output into device with custom parameters
+      // PlayerIndex : Index of a existing Player
+      // Device ( -1 is default Output device )
+      // Latency  ( -1 is latency suggested ) )
+      // SampleRate : delault : -1 (44100)   // here default samplerate of input
+      // Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
+      // SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
+      // FramesCount : default : -1 (65536)
+      // ChunkCount : default : -1 (= 512)
+      //  result : -1 nothing created, otherwise Output Index in array
+
+      uos_InputSetLevelEnable(webindex, webinindex, 2);
+      // set calculation of level/volume (usefull for showvolume procedure)
+      // set level calculation (default is 0)
+      // 0 => no calcul
+      // 1 => calcul before all DSP procedures.
+      // 2 => calcul after all DSP procedures.
+      // 3 => calcul before and after all DSP procedures.
+
+      uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
+      // Assign the procedure of object to execute inside the loop for a Input
+      // PlayerIndex : Index of a existing Player
+      // InIndex : Index of a existing Input
+      // LoopProcPlayer1 : procedure of object to execute inside the loop
+
+      uos_InputAddDSPVolume(webindex, webinindex, 1, 1);
+      // DSP Volume changer
+      // PlayerIndex1 : Index of a existing Player
+      // In1Index : InputIndex of a existing input
+      // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
+      // VolRight : Right volume
+
+      if (plugsoundtouch = True) and (brecord.tag = 0) then
+      begin
+        if btempo.tag = 0 then
+          abool := False
+        else
+          abool := True;
+        webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
+          uos_InputGetChannels(webindex, webinindex));
+        // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
+        uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+        // Change plugin settings
+      end;
+
+      btnStart.Enabled        := False;
+      btnStart.face.template  := tfacecomp6;
+      btnResume.Enabled       := False;
+      btnResume.Visible       := False;
+      btnResume.face.template := tfacecomp6;
+      btnStop.Enabled         := True;
+      btnStop.face.template   := tfacecomp7;
+      btnPause.Enabled        := True;
+      btnpause.Visible        := True;
+      btnPause.face.template  := tfacecomp7;
+
+      brecord.Enabled       := False;
+      brecord.face.template := tfacecomp7;
+
+      if brecord.tag = 1 then
+        brecord.face.template := tfacecomp9;
+
+      if edstyle.Value = 0 then
+        infopanel.font.color := cl_black
+      else if edstyle.Value = 1 then
+        infopanel.font.color := cl_white
+      else if edstyle.Value = 2 then
+        infopanel.font.color := cl_black;
+
+      if brecord.tag = 1 then
+        infopanel.Value := 'Play + Record ' + historyfn.Value
+      else
+        infopanel.Value := 'Playing ' + historyfn.Value;
+
+      if brecord.tag = 1 then
+      begin
+        brecord.Caption       := 'Recording...';
+        brecord.face.template := tfacecomp9;
+      end
+      else
+      begin
+        brecord.Caption       := 'Playing...';
+        brecord.face.template := tfacecomp7;
+      end;
+
+      onchangevol(nil);
+
+      infopanel.face.template := tfacecomp4;
+
+      InitDrawLive();
+
+      tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
+
+      application.ProcessMessages;
+
+      uos_Play(webindex);  // everything is ready, here we are, lets play it...
+
+      if aboolicy then
+        ttimer1.Enabled := True;
+
+    end
+    else
+    begin
+      infopanel.font.color   := cl_red;
+      infopanel.Value        := 'URL did not accessed';
+      btnStart.Enabled       := True;
+      btnStart.face.template := tfacecomp7;
+    end;
   end;
 end;
 
@@ -719,15 +760,11 @@ begin
 
   if PChar(sf) <> '' then
     tmainmenu1.menu.itembynames(['config', 'recformat']).Visible := True;
-    
+
   if edfullscreen.Value = 0 then
-  begin
-    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := false;
-  end
+    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := False
   else
-  begin
-    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := true;
-  end;   
+    tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked := True;
 
   if edrecformat.Value = 0 then
   begin
@@ -782,8 +819,8 @@ begin
 
   urlname := eurlname.Text;
 
-//  Visible := True;
-  
+  //  Visible := True;
+
   checkconnection();
 
   isinit := True;
@@ -1085,14 +1122,14 @@ end;
 
 procedure twebstreamerfo.showclear(const Sender: TObject);
 begin
-  messagedlg.top := 20;
-  messagedlg.text := '  Delete all URL history ?';
-  byes.visible := true;
-  bno.caption := 'No';
+  messagedlg.top        := 20;
+  messagedlg.Text       := '  Delete all URL history ?';
+  byes.Visible          := True;
+  bno.Caption           := 'No';
   messagedlg.font.color := font.color;
-  bno.font.color := font.color;
-  byes.font.color := font.color;
-  messagedlg.Visible := True;
+  bno.font.color        := font.color;
+  byes.font.color       := font.color;
+  messagedlg.Visible    := True;
 end;
 
 procedure twebstreamerfo.showlis(const Sender: TObject);
@@ -1168,10 +1205,10 @@ begin
 
   tmainmenu1.menu.font.Height       := fontheight;
   tmainmenu1.menu.fontactive.Height := fontheight;
-  
+
   messagedlg.font.Height := fontheight;
-  byes.font.Height := fontheight;
-  bno.font.Height := fontheight;
+  byes.font.Height       := fontheight;
+  bno.font.Height        := fontheight;
 
   historyfn.dropdown.cols[0].font.Height := fontheight;
 
@@ -1239,7 +1276,7 @@ begin
   onchangeshowwave(nil);
 
   setstyle(edstyle.Value);
-  
+
 end;
 
 procedure twebstreamerfo.addrow(const Sender: TObject);
@@ -1485,33 +1522,33 @@ begin
         tmainmenu1.menu.Visible := False;
         if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
         begin
-        bounds_cxmax := 0;
-        bounds_cymax := 0;
-        rect1 := application.screenrect(window);
-        bounds_cx := rect1.cx ;
-        bounds_cy := rect1.cy - 50; 
-        left := 0;
-        top :=20;
-        bounds_cxmax := bounds_cx;
-        bounds_cymax := bounds_cy;
+          bounds_cxmax := 0;
+          bounds_cymax := 0;
+          rect1        := application.screenrect(window);
+          bounds_cx    := rect1.cx;
+          bounds_cy    := rect1.cy - 50;
+          left         := 0;
+          top          := 20;
+          bounds_cxmax := bounds_cx;
+          bounds_cymax := bounds_cy;
         end;
-        PimgPreview.top         := 0;
-        PimgPreview.Height      := Height + round(2 * fontheight / 12);
-        PimgPreview.Width       := Width;
-        PimgPreview.tag         := 1;
-        show;
+        PimgPreview.top := 0;
+        PimgPreview.Height := Height + round(2 * fontheight / 12);
+        PimgPreview.Width  := Width;
+        PimgPreview.tag    := 1;
+        Show;
       end
       else
       begin
         bounds_cxmax := bounds_cxmin;
         bounds_cymax := bounds_cymin;
-        left := rectori.cx;
-        top := rectori.cy;      
+        left         := rectori.cx;
+        top          := rectori.cy;
         tmainmenu1.menu.Visible := True;
-        PimgPreview.top         := infopanel.top;
-        PimgPreview.Height      := infopanel.Height;
-        PimgPreview.Width       := infopanel.Height;
-        PimgPreview.tag         := 0;
+        PimgPreview.top := infopanel.top;
+        PimgPreview.Height := infopanel.Height;
+        PimgPreview.Width := infopanel.Height;
+        PimgPreview.tag := 0;
       end;
       PimgPreview.invalidatewidget;
     end;
@@ -1535,16 +1572,12 @@ begin
   urlname := Caption;
 end;
 
-procedure twebstreamerfo.onafterfullscreen(const sender: TObject);
+procedure twebstreamerfo.onafterfullscreen(const Sender: TObject);
 begin
   if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
- edfullscreen.Value := 1 else edfullscreen.Value := 0;
-end;
-
-procedure twebstreamerfo.oncreated(const sender: TObject);
-begin
-visible := false;
-invalidatewidget;
+    edfullscreen.Value := 1
+  else
+    edfullscreen.Value := 0;
 end;
 
 end.
