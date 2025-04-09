@@ -4,52 +4,14 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows,
-  Winsock,{$endif}Sockets,
-  Types,
-  uos_flat,
-  Math,
-  msetypes,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  ctypes,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob,
-  msetimer,
-  BGRABitmap,
-  BGRAAnimatedGif,
-  BGRABitmapTypes,
-  mseimage;
+ {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}Sockets,Types,
+ uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
+ ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
+ mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
+ mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
+ mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
+ msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
+ BGRABitmapTypes,mseimage;
 
 type
   boundchild = record
@@ -113,6 +75,7 @@ type
     timagelist1: timagelist;
     eurlname: tedit;
     edfullscreen: tintegeredit;
+    ttimer2: ttimer;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -156,6 +119,7 @@ type
     procedure afterdropdown(const Sender: TObject);
     function checkconnection(): Boolean;
     procedure onafterfullscreen(const Sender: TObject);
+   procedure ontimeout(const sender: TObject);
   end;
 
 const
@@ -463,6 +427,8 @@ var
 begin
   if checkconnection() then
   begin
+    ttimer2.enabled := true;
+    InitDrawLive();
     hasbitmap  := False;
     PimgPreview.Visible := False;
     btnStart.Enabled := False;
@@ -475,10 +441,7 @@ begin
     incview    := 0;
     icystr     := '';
     uos_CreatePlayer(webindex);
-    // Create the player.
-    // PlayerIndex : from 0 to what your computer can do !
-    // If PlayerIndex exists already, it will be overwriten...
-
+   
     aboolicy := True;
 
     latency := -1;
@@ -494,8 +457,7 @@ begin
     application.ProcessMessages;
 
     // 'https://radiorecord.hostingradio.ru/ps96.aacp';
-    webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
-
+    
     theplaying := historyfn.Value;
 
     // Add a Input from Audio URL with custom parameters
@@ -505,7 +467,8 @@ begin
     // FramesCount : default : -1 (1024)
     // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
     // ICY data on/off
-
+     webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
+ 
     if webinindex <> -1 then
     begin
       Caption     := urlname;
@@ -624,17 +587,16 @@ begin
 
       infopanel.face.template := tfacecomp4;
 
-      InitDrawLive();
-
       tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
 
       application.ProcessMessages;
 
       uos_Play(webindex);  // everything is ready, here we are, lets play it...
 
-      if aboolicy then
+      if (aboolicy = true) and (uos_InputGetURLAudioType(webindex, webinindex) = 0) then
         ttimer1.Enabled := True;
-
+     
+      ttimer2.enabled := false;
     end
     else
     begin
@@ -1092,7 +1054,7 @@ begin
   begin
     onstop(nil);
     application.ProcessMessages;
-    sleep(2000);
+    sleep(300);
     onplay(nil);
   end;
 end;
@@ -1486,6 +1448,10 @@ begin
         getpicture(apicture);
         prefix   := '          ';
       end;
+      
+        if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
+         prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
+  
       infopanel.Value := prefix + theplaying + #10 + prefix + aname;
       icystr := sicy;
     end;
@@ -1578,6 +1544,20 @@ begin
     edfullscreen.Value := 1
   else
     edfullscreen.Value := 0;
+end;
+
+procedure twebstreamerfo.ontimeout(const sender: TObject);
+begin
+    onstop(nil);
+    messagedlg.top        := infopanel.top + 5;
+    messagedlg.Text       := '       URL did not respond...';
+    messagedlg.font.color := cl_red;
+    bno.font.color        := font.color;
+    byes.Visible          := False;
+    bno.Caption           := 'OK';
+    btnStart.Enabled       := True;
+    btnStart.face.template := tfacecomp7;
+    messagedlg.Visible    := True;
 end;
 
 end.
