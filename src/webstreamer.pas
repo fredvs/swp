@@ -427,6 +427,7 @@ var
 begin
   if checkconnection() then
   begin
+    ttimer2.enabled := false;
     ttimer2.enabled := true;
     InitDrawLive();
     hasbitmap  := False;
@@ -1398,28 +1399,28 @@ var
 begin
   PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
+  InitSSLInterface;
+  amem           := Tmemorystream.Create;
+  Http           := TFPHTTPClient.Create(nil);
   try
-    InitSSLInterface;
-    amem           := Tmemorystream.Create;
-    Http           := TFPHTTPClient.Create(nil);
     http.AllowRedirect := True;
     http.IOTimeout := 2000;
     Http.Get(aurl, amem);
-    Http.Free;
-
     amem.Position := 0;
-
-    if Assigned(aimage) then
-      aimage.Free;
+    if Assigned(aimage) then aimage.Free;
     aimage    := TBGRAbitmap.Create(amem);
     sleep(100);
     hasbitmap := True;
     PimgPreview.Visible := True;
     PimgPreview.invalidatewidget;
-    amem.Free;
-
-  except
+   except on E: Exception do 
+   begin
+    infopanel.tag   := 1;
+    //Writeln('image failed: ' + E.Message);
+   end; 
   end;
+  Http.Free;
+  amem.Free;  
 end;
 
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
@@ -1430,6 +1431,7 @@ var
 begin
   loopok := False;
   prefix := '';
+  infopanel.tag   := 0;
   uos_InputUpdateICY(0, 0, sicy);
   if sicy <> nil then
     if icystr <> sicy then
@@ -1448,12 +1450,12 @@ begin
         getpicture(apicture);
         prefix   := '          ';
       end;
-      
+        if infopanel.tag = 1 then prefix := '';
+        infopanel.tag := 0;
         if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
          prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
-  
-      infopanel.Value := prefix + theplaying + #10 + prefix + aname;
-      icystr := sicy;
+        infopanel.Value := prefix + theplaying + #10 + prefix + aname;
+        icystr := sicy;
     end;
   loopok     := True;
 end;

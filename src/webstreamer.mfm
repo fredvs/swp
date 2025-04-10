@@ -4485,8 +4485,8 @@ object webstreamerfo: twebstreamerfo
   object ttimer1: ttimer
     interval = 2000000
     ontimer = ontimericy
-    left = 72
-    top = 55
+    left = 48
+    top = 50
   end
   object timagelist1: timagelist
     width = 28
@@ -4720,5 +4720,12 @@ object webstreamerfo: twebstreamerfo
       0000000000000000000000000000000000000000000000000000000000000000
       00000000000000000000000000000000
     }
+  end
+  object ttimer2: ttimer
+    interval = 15000000
+    options = [to_single]
+    ontimer = ontimeout
+    left = 131
+    top = 48
   end
 end
