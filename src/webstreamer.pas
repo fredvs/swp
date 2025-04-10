@@ -1397,6 +1397,7 @@ var
   Http: TFPHTTPClient;
   amem: Tmemorystream;
 begin
+  //Writeln('aurl ' + aurl);
   PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
   InitSSLInterface;
@@ -1447,8 +1448,11 @@ begin
         apicture := Copy(sicy, system.pos('StreamUrl=', sicy) + 10, Length(sicy));
         apicture := Copy(apicture, 2, system.Pos(';', apicture) - 1);
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
+        if trim(apicture) <> '' then
+        begin
         getpicture(apicture);
         prefix   := '          ';
+        end;
       end;
         if infopanel.tag = 1 then prefix := '';
         infopanel.tag := 0;
