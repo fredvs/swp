@@ -1113,10 +1113,12 @@ begin
 
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
       begin
+       if trim(griddisp[2][griddisp.focusedcell.row]) <> '' then
+        begin
         historyfn.Value := griddisp[2][griddisp.focusedcell.row];
         historyfn.savehistoryvalue;
+        end;
       end;
-
     end;
 end;
 
@@ -1131,7 +1133,7 @@ begin
     while x < devcount do
     begin
       if tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Checked then
-        deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
+          deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
       Inc(x);
     end;
   edeviceselected.Value := deviceselected; // for stat file 
