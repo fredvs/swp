@@ -1426,7 +1426,7 @@ end;
 
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
 var
-  aname, apicture, prefix: msestring;
+  atitle, apicture, adescri, agenre, aname, aurl, prefix: msestring;
   ares: integer;
   sicy: PChar;
 begin
@@ -1439,10 +1439,15 @@ begin
     begin
       if system.Pos('StreamTitle=', sicy) > 0 then
       begin
-        aname := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
-        aname := Copy(aname, 1, system.Pos(';', aname) - 1);
+        atitle := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
+        atitle := Copy(atitle, 1, system.Pos(';', atitle) - 1);
       end;
-
+      
+      adescri := uos_InputGetURLicyDescription(webindex, webinindex);
+      agenre := uos_InputGetURLicyGenre(webindex, webinindex);
+      aname := uos_InputGetURLicyName(webindex, webinindex);
+      aurl := uos_InputGetURLicyUrl(webindex, webinindex);
+  
       if system.Pos('StreamUrl=', sicy) > 0 then
       begin
         apicture := Copy(sicy, system.pos('StreamUrl=', sicy) + 10, Length(sicy));
@@ -1456,10 +1461,24 @@ begin
       end;
         if infopanel.tag = 1 then prefix := '';
         infopanel.tag := 0;
-        if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
-         prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
-        infopanel.Value := prefix + theplaying + #10 + prefix + aname;
-        icystr := sicy;
+        
+        if Length(atitle) >  50 then atitle := Copy(atitle, 1, Length(atitle) div 2) + '...' + #10 +
+         prefix + '...' + Copy(atitle, (Length(atitle) div 2)+ 1, (Length(atitle) div 2)+1);
+         
+        if Length(aname) > 35 then aname := trim(Copy(aname, 1, 35) + '...');
+        if Length(agenre) > 10 then agenre := trim(Copy(agenre, 1, 10) + '...');
+      
+        //   if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
+        //   prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
+       
+        if length(adescri) > 0 then adescri := prefix + adescri + #10;
+        if length(aurl) > 0 then theplaying := trim(aurl);
+        if length(agenre) > 0 then agenre := ' ' + agenre;
+        if length(aname) > 0 then  theplaying := aname + agenre  ;
+     
+        infopanel.Value := prefix + theplaying + #10 +
+                           prefix + atitle ;
+      icystr := sicy;
     end;
   loopok     := True;
 end;
