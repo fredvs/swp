@@ -142,6 +142,7 @@ var
   pa, sf, mp, aa, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
+  uaudiotype: integer;
   rectori: rectty;
   urlname: string = 'Simple Webstream Player';
  {$if defined(darwin) and defined(macapp)}
@@ -440,7 +441,7 @@ begin
     webindex   := 0;
     webinindex := -1;
     incview    := 0;
-    icystr     := '';
+    icystr     := 'icy';
     uos_CreatePlayer(webindex);
    
     aboolicy := True;
@@ -593,8 +594,12 @@ begin
       application.ProcessMessages;
 
       uos_Play(webindex);  // everything is ready, here we are, lets play it...
+      
+      uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
+      
+      //writeln('uaudiotype ' + inttostr(uaudiotype)); 
 
-      if (aboolicy = true) and (uos_InputGetURLAudioType(webindex, webinindex) = 0) then
+      if (aboolicy = true) then
         ttimer1.Enabled := True;
      
       ttimer2.enabled := false;
@@ -1432,13 +1437,15 @@ var
   ares: integer;
   sicy: PChar;
 begin
+  sicy := ' ';
   loopok := False;
   prefix := '';
   infopanel.tag   := 0;
-  uos_InputUpdateICY(0, 0, sicy);
-  if sicy <> nil then
+  //writeln('uaudiotype ' + inttostr(uaudiotype)); 
+  if uaudiotype = 0 then uos_InputUpdateICY(0, 0, sicy);
     if icystr <> sicy then
     begin
+      if uaudiotype = 0 then
       if system.Pos('StreamTitle=', sicy) > 0 then
       begin
         atitle := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
@@ -1449,7 +1456,8 @@ begin
       agenre := uos_InputGetURLicyGenre(webindex, webinindex);
       aname := uos_InputGetURLicyName(webindex, webinindex);
       aurl := uos_InputGetURLicyUrl(webindex, webinindex);
-  
+      
+      if uaudiotype = 0 then
       if system.Pos('StreamUrl=', sicy) > 0 then
       begin
         apicture := Copy(sicy, system.pos('StreamUrl=', sicy) + 10, Length(sicy));
@@ -1461,9 +1469,11 @@ begin
         prefix   := '          ';
         end;
       end;
+        
         if infopanel.tag = 1 then prefix := '';
         infopanel.tag := 0;
         
+        if uaudiotype = 0 then
         if Length(atitle) >  50 then atitle := Copy(atitle, 1, Length(atitle) div 2) + '...' + #10 +
          prefix + '...' + Copy(atitle, (Length(atitle) div 2)+ 1, (Length(atitle) div 2)+1);
          
@@ -1473,14 +1483,13 @@ begin
         //   if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
         //   prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
        
-        if length(adescri) > 0 then adescri := prefix + adescri + #10;
         if length(aurl) > 0 then theplaying := trim(aurl);
         if length(agenre) > 0 then agenre := ' ' + agenre;
         if length(aname) > 0 then  theplaying := aname + agenre  ;
-     
+        if (length(atitle) = 0) and (length(adescri) > 0) then atitle := adescri;
         infopanel.Value := prefix + theplaying + #10 +
                            prefix + atitle ;
-      icystr := sicy;
+        icystr := sicy;
     end;
   loopok     := True;
 end;
