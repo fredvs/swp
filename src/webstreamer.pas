@@ -123,7 +123,7 @@ type
   end;
 
 const
-  versionnum = 250408;
+  versionnum = 250411;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -1518,12 +1518,12 @@ begin
     begin
       if PimgPreview.tag = 0 then
       begin
-        hide;
         rectori.cx := left;
         rectori.cy := top;
         tmainmenu1.menu.Visible := False;
         if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
         begin
+          hide;
           bounds_cxmax := 0;
           bounds_cymax := 0;
           rect1        := application.screenrect(window);
@@ -1538,7 +1538,6 @@ begin
         PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
         PimgPreview.tag    := 1;
-        Show;
       end
       else
       begin
@@ -1552,6 +1551,8 @@ begin
         PimgPreview.Width := infopanel.Height;
         PimgPreview.tag := 0;
       end;
+      show;
+      bringtofront;
       PimgPreview.invalidatewidget;
     end;
 end;
