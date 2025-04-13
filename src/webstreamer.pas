@@ -594,8 +594,7 @@ begin
         uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
         // Change plugin settings
       end;
-     
-
+      
       application.ProcessMessages;
 
       uos_Play(webindex);  // everything is ready, here we are, lets play it...
@@ -1460,7 +1459,7 @@ end;
 
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
 var
-  atitle, apicture, adescri, agenre, aname, aurl, prefix: msestring;
+  atitle, apicture, adescri, agenre, aname, aurl, aurlcut, prefix: msestring;
   ares: integer;
   sicy: PChar;
 begin
@@ -1509,12 +1508,21 @@ begin
       
         //   if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
         //   prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
+        
+        aurlcut := copy(theplaying,system.Pos('//',theplaying)+2, Length(theplaying));
        
-        if length(aurl) > 0 then theplaying := trim(aurl);
+        if Length(aurlcut) > 50 then aurlcut := trim(Copy(aurlcut, 1, 50) + '...');
+
+        if Length(adescri) > 50 then adescri := trim(Copy(adescri, 1, 50) + '...');
+             
+        writeln(aurlcut);
+       //http://ibiza-smooth-jazz.vip-radios.fm:8033/stream-128kmp3-IbizaSmooth
+        
+        if length(aurl) > 0 then aurlcut := trim(aurl);
         if length(agenre) > 0 then agenre := ' ' + agenre;
-        if length(aname) > 0 then  theplaying := aname + agenre  ;
+        if length(aname) > 0 then  aurlcut := aname + agenre  ;
         if (length(atitle) = 0) and (length(adescri) > 0) then atitle := adescri;
-        infopanel.Value := prefix + theplaying + #10 +
+        infopanel.Value := prefix + aurlcut + #10 +
                            prefix + atitle ;
         icystr := sicy;
     end;
