@@ -19,7 +19,7 @@
 {$DEFINE mpg123} // uncomment to enable mpg123 (mp3 audio file)
 {.$DEFINE neaac} // uncomment to enable neaac (m4a audio file)
 {$DEFINE fdkaac} // uncomment to enable aacdecoder (acc audio webstream)
-{.$DEFINE opus} // uncomment to enable opus (opus audio file)
+{$DEFINE opus} // uncomment to enable opus (opus audio file)
 {.$DEFINE xmp} // uncomment to enable xmp (mod, it, mods, audio file)
 {.$DEFINE cdrom} // uncomment to enable cdrom audio decoder (cda)
 

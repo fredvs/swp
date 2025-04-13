@@ -12,7 +12,7 @@ uses
  mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
  msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
  BGRABitmapTypes,mseimage;
-
+ 
 type
   boundchild = record
     left: integer;
@@ -648,13 +648,15 @@ begin
   mp := AnsiString(ordir + 'lib\Windows\64bit\LibMpg123-64.dll');
   aa := AnsiString(ordir + 'lib\Windows\64bit\libfdk-aac-64.dll');
   st := AnsiString(ordir + 'lib\Windows\64bit\LibSoundTouch-64.dll');
-  op := AnsiString(ordir + 'lib\Windows\64bit\LibOpusFile-64.dll');
+  // op := AnsiString(ordir + 'lib\Windows\64bit\LibOpusFile-64.dll');
+  op := '';
   {$else}
   pa := AnsiString(ordir + 'lib\Windows\32bit\LibPortaudio-32.dll');
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
   aa := AnsiString(ordir + 'lib\Windows\32bit\libfdk-aac-32.dll');
   st := AnsiString(ordir + 'lib\Windows\32bit\LibSoundTouch-32.dll');
-  op := AnsiString(ordir + 'lib\Windows\32bit\LibOpusFile-32.dll');
+  //op := AnsiString(ordir + 'lib\Windows\32bit\LibOpusFile-32.dll');
+  op := '';
   {$endif}
   {$ENDIF}
 
