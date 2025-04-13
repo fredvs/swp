@@ -139,7 +139,7 @@ var
   isexit: Boolean = False;
   hasbitmap: Boolean = False;
   ordir, arecnp, icystr, theplaying: string;
-  pa, sf, mp, aa, st: string;
+  pa, sf, mp, aa, op, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
   uaudiotype: integer;
@@ -321,6 +321,8 @@ procedure twebstreamerfo.ChangePlugSetSoundTouch(const Sender: TObject);
 var
   abool: Boolean;
 begin
+if uaudiotype <> 1 then
+begin
   if btempo.tag = 0 then
     abool := False
   else
@@ -338,7 +340,7 @@ begin
     if (edtempo.Value > 0.1) and (edpitch.Value > 0.1) then
       uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
   end;
-
+ end;
 end;
 
 procedure twebstreamerfo.InitDrawLive();
@@ -404,10 +406,10 @@ begin
   rightlev := uos_InputGetLevelRight(webindex, webinindex);
 
   if (leftlev >= 0) and (leftlev <= 1) then
-    vuLeft.Value := leftlev;
+    vuLeft.Value := leftlev * edvol.Value;
 
   if (rightlev >= 0) and (rightlev <= 1) then
-    vuRight.Value := rightlev;
+    vuRight.Value := rightlev * edvolr.Value;
 
   if panelwave.Visible = True then
   begin
@@ -511,7 +513,7 @@ begin
       // ChunkCount : default : -1 (= 512)
       //  result : -1 nothing created, otherwise Output Index in array
 
-      uos_InputSetLevelEnable(webindex, webinindex, 2);
+      uos_inputSetLevelEnable(webindex, webinindex, 2);
       // set calculation of level/volume (usefull for showvolume procedure)
       // set level calculation (default is 0)
       // 0 => no calcul
@@ -520,30 +522,17 @@ begin
       // 3 => calcul before and after all DSP procedures.
 
       uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
-      // Assign the procedure of object to execute inside the loop for a Input
+      // Assign the procedure of object to execute inside the loop for a Output
       // PlayerIndex : Index of a existing Player
-      // InIndex : Index of a existing Input
+      // InIndex : Index of a existing Output
       // LoopProcPlayer1 : procedure of object to execute inside the loop
 
-      uos_InputAddDSPVolume(webindex, webinindex, 1, 1);
+      uos_OutputAddDSPVolume(webindex, weboutindex, 1, 1);
       // DSP Volume changer
       // PlayerIndex1 : Index of a existing Player
-      // In1Index : InputIndex of a existing input
+      // In1Index : OutputIndex of a existing Output
       // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
       // VolRight : Right volume
-
-      if (plugsoundtouch = True) and (brecord.tag = 0) then
-      begin
-        if btempo.tag = 0 then
-          abool := False
-        else
-          abool := True;
-        webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
-          uos_InputGetChannels(webindex, webinindex));
-        // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
-        uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
-        // Change plugin settings
-      end;
 
       btnStart.Enabled        := False;
       btnStart.face.template  := tfacecomp6;
@@ -590,12 +579,40 @@ begin
       infopanel.face.template := tfacecomp4;
 
       tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
+      
+      uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
+      
+       if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
+      begin
+        if btempo.tag = 0 then
+          abool := False
+        else
+          abool := True;
+        webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
+          uos_InputGetChannels(webindex, webinindex));
+        // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
+        uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+        // Change plugin settings
+      end;
+     
 
       application.ProcessMessages;
 
       uos_Play(webindex);  // everything is ready, here we are, lets play it...
-      
-      uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
+           
+      if uaudiotype = 1 then
+      begin
+      btempo.enabled := false;
+      breset.enabled := false;
+      edtempo.enabled := false;
+      edpitch.enabled := false;
+      end else
+      begin
+      btempo.enabled := true;
+      breset.enabled := true;
+      edtempo.enabled := true;
+      edpitch.enabled := true;
+      end;;
       
       //writeln('uaudiotype ' + inttostr(uaudiotype)); 
 
@@ -603,6 +620,7 @@ begin
         ttimer1.Enabled := True;
      
       ttimer2.enabled := false;
+      
     end
     else
     begin
@@ -631,11 +649,13 @@ begin
   mp := AnsiString(ordir + 'lib\Windows\64bit\LibMpg123-64.dll');
   aa := AnsiString(ordir + 'lib\Windows\64bit\libfdk-aac-64.dll');
   st := AnsiString(ordir + 'lib\Windows\64bit\LibSoundTouch-64.dll');
+  op := AnsiString(ordir + 'lib\Windows\64bit\LibOpusFile-64.dll');
   {$else}
   pa := AnsiString(ordir + 'lib\Windows\32bit\LibPortaudio-32.dll');
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
   aa := AnsiString(ordir + 'lib\Windows\32bit\libfdk-aac-32.dll');
   st := AnsiString(ordir + 'lib\Windows\32bit\LibSoundTouch-32.dll');
+  op := AnsiString(ordir + 'lib\Windows\32bit\LibOpusFile-32.dll');
   {$endif}
   {$ENDIF}
 
@@ -643,7 +663,7 @@ begin
   pa := ordir + 'lib/Linux/64bit/LibPortaudio-64.so';
   mp := ordir + 'lib/Linux/64bit/LibMpg123-64.so';
   aa := ordir + 'lib/Linux/64bit/libfdk-aac-64.so';
-  //sf := ordir + 'lib/Linux/64bit/LibSndFile-64.so';
+  op := ordir + 'lib/Linux/64bit/LibOpusFile-64.so';
   st := ordir + 'lib/Linux/64bit/LibSoundTouch-64.so';
   {$ENDIF}
 
@@ -652,6 +672,7 @@ begin
   mp := AnsiString(ordir + 'lib/OpenBSD/64bit/LibMpg123-64.so');
   st := AnsiString(ordir + 'lib/OpenBSD/64bit/LibSoundTouch-64.so');
   aa := '';
+  op :=
   noaac := true;
   {$ENDIF}
 
@@ -661,6 +682,7 @@ begin
   st := AnsiString(ordir + 'lib/Mac/64bit/libSoundTouchDLL.dylib');
   noaac := true;
   aa := '';
+  op :=
   {$ENDIF}
 
   {$if defined(cpu86) and defined(linux)}
@@ -668,20 +690,23 @@ begin
   mp := AnsiString(ordir + 'lib/Linux/32bit/LibMpg123-32.so');
   st := AnsiString(ordir + 'lib/Linux/32bit/LibSoundTouch-32.so');
   aa := AnsiString(ordir + 'lib/Linux/32bit/libfdk-aac-32.so');
+  op := AnsiString(ordir + 'lib/Linux/32bit/LibOpusFile-32.so');
   {$ENDIF}
 
   {$if defined(linux) and defined(cpuarm)}
   pa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libportaudio-arm.so');
   mp := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libmpg123-arm.so');
   st := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libsoundtouch-arm.so');
-  aa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libfdk-aac-32.so');
+  aa := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libfdk-aac-arm.so');
+  op := AnsiString(ordir + 'lib/Linux/arm_raspberrypi/libopusfile-arm.so');
   {$ENDIF}
 
   {$if defined(linux) and defined(cpuaarch64)}
   pa := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libportaudio_aarch64.so');
   mp := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libmpg123_aarch64.so');
   st := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libsoundtouch_aarch64.so');
-  aa := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libfdk-aac-64.so');
+  aa := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libfdk-aac_aarch64.so');
+  op := AnsiString(ordir + 'lib/Linux/aarch64_raspberrypi/libopusfile_aarch64.so');
   {$ENDIF}
 
   {$if defined(freebsd) and defined(cpuamd64) }
@@ -697,6 +722,7 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/i386/libmpg123-32.so');
   st := '';
   aa := '';
+  op := '';
   noaac := true;
   {$endif}
 
@@ -705,6 +731,7 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   aa := '';
+  op :=
   noaac := true;
   {$endif}
 
@@ -713,7 +740,7 @@ begin
       if uos_TestLoadLibrary(PChar(sf)) = false then sf := sf + '.2';
   {$endif}
 
-  if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, nil, nil, PChar(aa)) = -1 then
+  if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, PChar(op), nil, PChar(aa)) = -1 then
     if uos_LoadLib('system', 'system', 'system', nil, nil, nil, nil, 'system') = -1 then
       application.terminate;
 
@@ -879,7 +906,7 @@ procedure twebstreamerfo.onchangevol(const Sender: TObject);
 begin
   lvl.Caption := IntToStr(round(edvol.Value * 100));
   lvr.Caption := IntToStr(round(edvolr.Value * 100));
-  uos_InputSetDSPVolume(webindex, webinindex,
+  uos_OutputSetDSPVolume(webindex, weboutindex,
     edvol.Value, edvolr.Value, True);
 end;
 
@@ -1051,7 +1078,7 @@ begin
     btempo.face.template := tfacecomp7;
     btempo.tag           := 0;
   end;
-  ChangePlugSetSoundTouch(nil);
+ if uaudiotype <> 1 then ChangePlugSetSoundTouch(nil);
 end;
 
 procedure twebstreamerfo.onchangehistory(const Sender: TObject);
