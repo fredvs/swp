@@ -1,6 +1,6 @@
 # swp
 
-Simple Webstream Player, to listen and record web radios and other web streams from mp3, aac and opus format.
+Simple Webstream Player, to listen to and record web radio and other web streams in mp3, aac and opus format.
 
 Auto select the type of audio format.
 
