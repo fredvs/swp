@@ -1506,18 +1506,12 @@ begin
         if Length(aname) > 35 then aname := trim(Copy(aname, 1, 35) + '...');
         if Length(agenre) > 10 then agenre := trim(Copy(agenre, 1, 10) + '...');
       
-        //   if Length(aname) > 60 then aname := Copy(aname, 1, Length(aname) div 2) + '...' + #10 +
-        //   prefix + '...' + Copy(aname, (Length(aname) div 2)+ 1, (Length(aname) div 2)+1);
-        
         aurlcut := copy(theplaying,system.Pos('//',theplaying)+2, Length(theplaying));
        
         if Length(aurlcut) > 50 then aurlcut := trim(Copy(aurlcut, 1, 50) + '...');
 
         if Length(adescri) > 50 then adescri := trim(Copy(adescri, 1, 50) + '...');
              
-        writeln(aurlcut);
-       //http://ibiza-smooth-jazz.vip-radios.fm:8033/stream-128kmp3-IbizaSmooth
-        
         if length(aurl) > 0 then aurlcut := trim(aurl);
         if length(agenre) > 0 then agenre := ' ' + agenre;
         if length(aname) > 0 then  aurlcut := aname + agenre  ;
