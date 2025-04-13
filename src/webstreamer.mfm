@@ -4722,7 +4722,7 @@ object webstreamerfo: twebstreamerfo
     }
   end
   object ttimer2: ttimer
-    interval = 15000000
+    interval = 8000000
     options = [to_single]
     ontimer = ontimeout
     left = 131
