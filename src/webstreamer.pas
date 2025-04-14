@@ -124,6 +124,8 @@ type
     procedure ontimeout(const Sender: TObject);
     procedure onimporte(const sender: TObject);
     procedure m3uLoad(am3u: string);
+    procedure onexport(const sender: TObject);
+    procedure m3uexport(am3u: string);
    end;
 
 const
@@ -160,6 +162,25 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
+  
+procedure twebstreamerfo.m3uexport(am3u: string);
+var
+    f  : LongInt;
+    s  : msestring;
+    meuf : Text;
+begin
+AssignFile(meuf, am3u);
+FileMode := 1;
+ReWrite(meuf);
+Writeln(meuf,'#EXTM3U');
+Writeln(meuf,'#PLAYLIST: SWP');
+for f := 0 to griddisp.rowcount -1 do 
+begin
+Writeln(meuf,'#EXTINF:, ' + griddisp[0][f] + ' ; ' + griddisp[1][f]);
+Writeln(meuf, griddisp[2][f]);
+end;
+CloseFile(meuf);
+end;
 
 procedure twebstreamerfo.m3uLoad(am3u: string);
 var
@@ -1707,17 +1728,38 @@ end;
 procedure twebstreamerfo.onimporte(const sender: TObject);
 begin
   tfiledialog1.controller.icon := icon;
-  tfiledialog1.controller.captiondir := 'Choose a .m3u file to import';
+  tfiledialog1.controller.captionopen := 'Choose a .m3u file to import';
   tfiledialog1.controller.nopanel    := False;
   tfiledialog1.controller.compact    := False;
   tfiledialog1.controller.fontheight := font.height;
   tfiledialog1.controller.filter    := '"*.m3u"';
+  tfiledialog1.controller.filename := '';
   tfiledialog1.controller.fontcolor := cl_black;
+  tfiledialog1.dialogkind := fdk_open;
   tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
   tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
   m3uLoad(tfiledialog1.controller.filename);
+end;
+
+procedure twebstreamerfo.onexport(const sender: TObject);
+begin
+  tfiledialog1.controller.icon := icon;
+  tfiledialog1.controller.captionopen := 'Choose a .m3u file name to export';
+  tfiledialog1.controller.nopanel    := False;
+  tfiledialog1.controller.compact    := False;
+  tfiledialog1.controller.fontheight := font.height;
+  tfiledialog1.controller.filter    := '"*.m3u"';
+  tfiledialog1.controller.fontcolor := cl_black;
+  tfiledialog1.dialogkind := fdk_save;
+  tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
+  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.filename := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' 
+   + directoryseparator + 'mylist.m3u';
+  if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
+  m3uexport(tfiledialog1.controller.filename);
 end;
 
 end.

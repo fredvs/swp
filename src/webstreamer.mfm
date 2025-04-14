@@ -4002,7 +4002,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 8
+        submenu.count = 9
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4021,10 +4021,15 @@ object webstreamerfo: twebstreamerfo
             onexecute = onafterfullscreen
           end        
           item
-            caption = ' Import m3u '
+            caption = ' Import  from m3u'
             name = 'm3u'
             state = [as_localcaption, as_localonexecute]
             onexecute = onimporte
+          end        
+          item
+            caption = ' Export to m3u'
+            state = [as_localcaption, as_localonexecute]
+            onexecute = onexport
           end        
           item
             submenu.count = 32
@@ -4321,7 +4326,7 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
             onexecute = showclear
           end>
-        caption = '  Config '
+        caption = '  Config  '
         name = 'config'
         state = [as_localcaption, as_localhint, as_localonexecute, as_localonafterexecute]
         onafterexecute = onexecswpstyle
@@ -4743,7 +4748,6 @@ object webstreamerfo: twebstreamerfo
     controller.hidehistory = False
     controller.hideicons = False
     controller.showhidden = False
-    controller.captionopen = 'Select a .m3u list to import'
     dialogkind = fdk_open
     left = 234
     top = 192
