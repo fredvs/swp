@@ -657,7 +657,7 @@ begin
       tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
 
       uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
-
+    
       if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
       begin
         if btempo.tag = 0 then
@@ -696,6 +696,12 @@ begin
       typurl.text := 'OPUS' else
       if uaudiotype = 2 then
       typurl.text := 'AAC';
+       
+      typurl.hint :=  ' Audio format is ' + typurl.text 
+                      + stringreplace(uos_InputGetURLiceAudioInfo(webindex, webinindex),
+                      ';', ' ', [rfReplaceAll, rfIgnoreCase]) + ' ';
+       
+      infopanel.hint := typurl.hint;
       
       typurl.visible := true;
     

@@ -3609,6 +3609,7 @@ object webstreamerfo: twebstreamerfo
       face.localprops = []
       face.template = tfacecomp3
       taborder = 9
+      hint = ' Format of audio stream '
       visible = False
       bounds_x = 303
       bounds_y = 2
