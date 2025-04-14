@@ -5,14 +5,14 @@ interface
 
 uses
  {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}Sockets,Types,
- uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,mseapplication,msestat,
- ctypes,msemenus,msegui,msegraphics,msegraphutils,mseevent,Classes,mseclasses,
- mseforms,msedock,msesimplewidgets,msewidgets,msedispwidgets,mserichstring,
- mseact,msedataedits,msedropdownlist,mseedit,mseificomp,mseificompglob,
- mseifiglob,msestatfile,msestream,SysUtils,msegraphedits,msescrollbar,msebitmap,
- msedragglob,msegrids,msegridsglob,msetimer,BGRABitmap,BGRAAnimatedGif,
- BGRABitmapTypes,mseimage;
- 
+ uos_httpgetthread,uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,
+ mseapplication,msestat,ctypes,msemenus,msegui,msegraphics,msegraphutils,
+ mseevent,Classes,mseclasses,mseforms,msedock,msesimplewidgets,msewidgets,
+ msedispwidgets,mserichstring,mseact,msedataedits,msedropdownlist,mseedit,
+ mseificomp,mseificompglob,mseifiglob,msestatfile,msestream,SysUtils,
+ msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,msegridsglob,
+ msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage, msefiledialogx;
+
 type
   boundchild = record
     left: integer;
@@ -76,6 +76,8 @@ type
     eurlname: tedit;
     edfullscreen: tintegeredit;
     ttimer2: ttimer;
+   typurl: tstringdisp;
+   tfiledialog1: tfiledialogx;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -119,8 +121,10 @@ type
     procedure afterdropdown(const Sender: TObject);
     function checkconnection(): Boolean;
     procedure onafterfullscreen(const Sender: TObject);
-   procedure ontimeout(const sender: TObject);
-  end;
+    procedure ontimeout(const Sender: TObject);
+    procedure onimporte(const sender: TObject);
+    procedure m3uLoad(am3u: string);
+   end;
 
 const
   versionnum = 250411;
@@ -156,6 +160,53 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
+
+procedure twebstreamerfo.m3uLoad(am3u: string);
+var
+  f: longint;
+  s, s2, s3: string;
+  // sall: string;
+  meuf: Text;
+begin
+  AssignFile(meuf, am3u);
+  FileMode := 0;
+  ReSet(meuf);
+  //sall := '';
+  griddisp.rowcount := 0;
+  while eof(meuf) = false do
+  begin
+    ReadLn(meuf, s);
+    if (copy(s, 1, 8) = 'https://') or (copy(s, 1, 7) = 'http://') then
+    begin
+    griddisp.rowcount := griddisp.rowcount + 1;
+    if s3 = '' then griddisp[1][griddisp.rowcount-1] := 'unknown'
+    else griddisp[1][griddisp.rowcount-1] := s3;
+    if s2 = '' then s2 := copy(s, system.pos('//', s) + 2, 10);
+    griddisp[0][griddisp.rowcount-1] := trim(s2);
+    griddisp[2][griddisp.rowcount-1] := trim(s);
+    // sall := sall + s + ' | ' + s2 + lineending;
+    end  
+    else if system.pos(',', s) > 0 then
+    begin
+      s2    := copy(s, system.pos(',', s) + 1, length(s));
+      if system.pos('[', s2) > 0 then
+        s2 := trim(copy(s2, 1, system.pos('[', s2) - 2));
+     s2 := StringReplace(s2,'&#039;','''', [rfReplaceAll, rfIgnoreCase]);
+     s2 := StringReplace(s2,'&apos;','''', [rfReplaceAll, rfIgnoreCase]);
+     if system.pos(';', s2) > 0 then
+       begin
+        s3 := trim(copy(s2, system.pos(';', s2) +1, length(s2)));
+        s2 := trim(copy(s2, 1, system.pos(';', s2) -1));
+       end;  
+   
+    end;
+  end; {next}
+  
+  //SL.Assign(s);
+  //writeln('SL.values ' + inttostr(SL.count));
+  //writeln(sall);
+  CloseFile(meuf);
+end;
 
 function checkConnect(const hostAddress: string; portNumber: integer; timeout: integer = 3): Boolean;
 var
@@ -321,26 +372,26 @@ procedure twebstreamerfo.ChangePlugSetSoundTouch(const Sender: TObject);
 var
   abool: Boolean;
 begin
-if uaudiotype <> 1 then
-begin
-  if btempo.tag = 0 then
-    abool := False
-  else
-    abool := True;
-  if brecord.tag = 0 then
+  if uaudiotype <> 1 then
   begin
-    if edtempo.Value = 0.5 then
-      lte.Caption := 'Tempo'
+    if btempo.tag = 0 then
+      abool := False
     else
-      lte.Caption := ' T' + IntToStr(round(edtempo.Value * 200));
-    if edpitch.Value = 0.5 then
-      lpi.Caption := 'Pitch'
-    else
-      lpi.Caption := 'P' + IntToStr(round(edpitch.Value * 200));
-    if (edtempo.Value > 0.1) and (edpitch.Value > 0.1) then
-      uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+      abool := True;
+    if brecord.tag = 0 then
+    begin
+      if edtempo.Value = 0.5 then
+        lte.Caption := 'Tempo'
+      else
+        lte.Caption := ' T' + IntToStr(round(edtempo.Value * 200));
+      if edpitch.Value = 0.5 then
+        lpi.Caption := 'Pitch'
+      else
+        lpi.Caption := 'P' + IntToStr(round(edpitch.Value * 200));
+      if (edtempo.Value > 0.1) and (edpitch.Value > 0.1) then
+        uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+    end;
   end;
- end;
 end;
 
 procedure twebstreamerfo.InitDrawLive();
@@ -425,13 +476,17 @@ procedure twebstreamerfo.onplay(const Sender: TObject);
 var
   abool: Boolean;
   arec, outputstr: string;
-  aformat, webformat, sizebuf: integer;
+  aformat, webformat, sizebuf, res: integer;
   latency: cfloat;
 begin
   if checkconnection() then
   begin
-    ttimer2.enabled := false;
-    ttimer2.enabled := true;
+  res := CheckURLStatus(historyfn.Value);
+  //writeln('CheckURLStatus = ', res);
+  if (res = 0) then
+  begin
+    ttimer2.Enabled := False;
+    ttimer2.Enabled := True;
     InitDrawLive();
     hasbitmap  := False;
     PimgPreview.Visible := False;
@@ -445,7 +500,7 @@ begin
     incview    := 0;
     icystr     := 'icy';
     uos_CreatePlayer(webindex);
-   
+
     aboolicy := True;
 
     latency := -1;
@@ -461,7 +516,7 @@ begin
     application.ProcessMessages;
 
     // 'https://radiorecord.hostingradio.ru/ps96.aacp';
-    
+
     theplaying := historyfn.Value;
 
     // Add a Input from Audio URL with custom parameters
@@ -471,8 +526,8 @@ begin
     // FramesCount : default : -1 (1024)
     // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
     // ICY data on/off
-     webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
- 
+    webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
+
     if webinindex <> -1 then
     begin
       Caption     := urlname;
@@ -579,10 +634,10 @@ begin
       infopanel.face.template := tfacecomp4;
 
       tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
-      
+
       uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
-      
-       if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
+
+      if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
       begin
         if btempo.tag = 0 then
           abool := False
@@ -594,32 +649,43 @@ begin
         uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
         // Change plugin settings
       end;
-      
+
       application.ProcessMessages;
 
       uos_Play(webindex);  // everything is ready, here we are, lets play it...
-           
+
       if uaudiotype = 1 then
       begin
-      btempo.enabled := false;
-      breset.enabled := false;
-      edtempo.enabled := false;
-      edpitch.enabled := false;
-      end else
+        btempo.Enabled  := False;
+        breset.Enabled  := False;
+        edtempo.Enabled := False;
+        edpitch.Enabled := False;
+      end
+      else
       begin
-      btempo.enabled := true;
-      breset.enabled := true;
-      edtempo.enabled := true;
-      edpitch.enabled := true;
-      end;;
+        btempo.Enabled  := True;
+        breset.Enabled  := True;
+        edtempo.Enabled := True;
+        edpitch.Enabled := True;
+      end;
       
+      if uaudiotype = 0 then
+      typurl.text := 'MP3' else
+      if uaudiotype = 1 then
+      typurl.text := 'OPUS' else
+      if uaudiotype = 2 then
+      typurl.text := 'AAC';
+      
+      typurl.visible := true;
+    
       //writeln('uaudiotype ' + inttostr(uaudiotype)); 
 
-      if (aboolicy = true) then
+      if (aboolicy = True) then
         ttimer1.Enabled := True;
-     
-      ttimer2.enabled := false;
-      
+        
+      messagedlg.visible := false;
+      ttimer2.Enabled := False;
+    end;
     end
     else
     begin
@@ -827,6 +893,8 @@ procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   ttimer1.Enabled   := False;
   uos_Stop(webindex);
+  typurl.visible := false;
+  messagedlg.visible := false;
   Caption           := 'Simple Webstream Player';
   btnStart.Enabled  := True;
   btnStart.face.template := tfacecomp7;
@@ -1079,7 +1147,8 @@ begin
     btempo.face.template := tfacecomp7;
     btempo.tag           := 0;
   end;
- if uaudiotype <> 1 then ChangePlugSetSoundTouch(nil);
+  if uaudiotype <> 1 then
+    ChangePlugSetSoundTouch(nil);
 end;
 
 procedure twebstreamerfo.onchangehistory(const Sender: TObject);
@@ -1145,13 +1214,11 @@ begin
       urlname := griddisp[0][griddisp.focusedcell.row];
 
       if (ss_double in info.mouseeventinfopo^.shiftstate) then
-      begin
-       if trim(griddisp[2][griddisp.focusedcell.row]) <> '' then
+        if trim(griddisp[2][griddisp.focusedcell.row]) <> '' then
         begin
-        historyfn.Value := griddisp[2][griddisp.focusedcell.row];
-        historyfn.savehistoryvalue;
+          historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+          historyfn.savehistoryvalue;
         end;
-      end;
     end;
 end;
 
@@ -1166,7 +1233,7 @@ begin
     while x < devcount do
     begin
       if tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Checked then
-          deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
+        deviceselected := StrToInt(tmainmenu1.menu.itembynames(['config', 'devices', IntToStr(x)]).Name);
       Inc(x);
     end;
   edeviceselected.Value := deviceselected; // for stat file 
@@ -1225,10 +1292,9 @@ begin
 
   griddisp.datarowheight      := round(15 * ratio);
   griddisp.font.Height        := fontheight;
-  griddisp[0].Width           := round(70 * ratio);
-  griddisp[1].Width           := round(52 * ratio);
-  griddisp[2].Width           := round(160 * ratio);
-  griddisp[3].Width           := round(48 * ratio);
+  griddisp[0].Width           := round(138 * ratio);
+  griddisp[1].Width           := round(70 * ratio);
+  griddisp[2].Width           := round(122 * ratio);
   griddisp.fixrows[-1].Height := round(18 * ratio);
   griddisp.frame.sbvert.Width := round(12 * ratio);
 
@@ -1323,7 +1389,6 @@ begin
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;
-    griddisp[3].color := $E0E0E0;
     griddisp.fixrows[-1].color := $BFCCB9;
     griddisp.zebra_color := $F8FFF5;
     container.color := $B6C4AF;
@@ -1363,7 +1428,6 @@ begin
     griddisp[0].color := cl_black;
     griddisp[1].color := cl_black;
     griddisp[2].color := cl_black;
-    griddisp[3].color := cl_black;
     griddisp.fixrows[-1].color := $5C5C5C;
     griddisp.zebra_color := $5C5C5C;
     container.color := $5C5C5C;
@@ -1405,7 +1469,6 @@ begin
     griddisp[0].color := $E0E0E0;
     griddisp[1].color := $E0E0E0;
     griddisp[2].color := $E0E0E0;
-    griddisp[3].color := $E0E0E0;
     griddisp.fixrows[-1].color := $D4D4D4;
     griddisp.zebra_color := $F2F2F2;
     container.color := cl_default;
@@ -1436,27 +1499,29 @@ begin
   PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
   InitSSLInterface;
-  amem           := Tmemorystream.Create;
-  Http           := TFPHTTPClient.Create(nil);
+  amem := Tmemorystream.Create;
+  Http := TFPHTTPClient.Create(nil);
   try
     http.AllowRedirect := True;
     http.IOTimeout := 2000;
     Http.Get(aurl, amem);
     amem.Position := 0;
-    if Assigned(aimage) then aimage.Free;
+    if Assigned(aimage) then
+      aimage.Free;
     aimage    := TBGRAbitmap.Create(amem);
     sleep(100);
     hasbitmap := True;
     PimgPreview.Visible := True;
     PimgPreview.invalidatewidget;
-   except on E: Exception do 
-   begin
-    infopanel.tag   := 1;
-    //Writeln('image failed: ' + E.Message);
-   end; 
+  except
+    on E: Exception do
+    begin
+      infopanel.tag := 1;
+      //Writeln('image failed: ' + E.Message);
+    end;
   end;
   Http.Free;
-  amem.Free;  
+  amem.Free;
 end;
 
 procedure twebstreamerfo.ontimericy(const Sender: TObject);
@@ -1465,27 +1530,28 @@ var
   ares: integer;
   sicy: PChar;
 begin
-  sicy := ' ';
-  loopok := False;
-  prefix := '';
-  infopanel.tag   := 0;
+  sicy          := ' ';
+  loopok        := False;
+  prefix        := '';
+  infopanel.tag := 0;
   //writeln('uaudiotype ' + inttostr(uaudiotype)); 
-  if uaudiotype = 0 then uos_InputUpdateICY(0, 0, sicy);
-    if icystr <> sicy then
-    begin
-      if uaudiotype = 0 then
+  if uaudiotype = 0 then
+    uos_InputUpdateICY(0, 0, sicy);
+  if icystr <> sicy then
+  begin
+    if uaudiotype = 0 then
       if system.Pos('StreamTitle=', sicy) > 0 then
       begin
         atitle := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
         atitle := Copy(atitle, 1, system.Pos(';', atitle) - 1);
       end;
-      
-      adescri := uos_InputGetURLicyDescription(webindex, webinindex);
-      agenre := uos_InputGetURLicyGenre(webindex, webinindex);
-      aname := uos_InputGetURLicyName(webindex, webinindex);
-      aurl := uos_InputGetURLicyUrl(webindex, webinindex);
-      
-      if uaudiotype = 0 then
+
+    adescri := uos_InputGetURLicyDescription(webindex, webinindex);
+    agenre  := uos_InputGetURLicyGenre(webindex, webinindex);
+    aname   := uos_InputGetURLicyName(webindex, webinindex);
+    aurl    := uos_InputGetURLicyUrl(webindex, webinindex);
+
+    if uaudiotype = 0 then
       if system.Pos('StreamUrl=', sicy) > 0 then
       begin
         apicture := Copy(sicy, system.pos('StreamUrl=', sicy) + 10, Length(sicy));
@@ -1493,36 +1559,46 @@ begin
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
         if trim(apicture) <> '' then
         begin
-        getpicture(apicture);
-        prefix   := '          ';
+          getpicture(apicture);
+          prefix := '          ';
         end;
       end;
-        
-        if infopanel.tag = 1 then prefix := '';
-        infopanel.tag := 0;
-        
-        if uaudiotype = 0 then
-        if Length(atitle) >  50 then atitle := Copy(atitle, 1, Length(atitle) div 2) + '...' + #10 +
-         prefix + '...' + Copy(atitle, (Length(atitle) div 2)+ 1, (Length(atitle) div 2)+1);
-         
-        if Length(aname) > 35 then aname := trim(Copy(aname, 1, 35) + '...');
-        if Length(agenre) > 10 then agenre := trim(Copy(agenre, 1, 10) + '...');
-      
-        aurlcut := copy(theplaying,system.Pos('//',theplaying)+2, Length(theplaying));
-       
-        if Length(aurlcut) > 50 then aurlcut := trim(Copy(aurlcut, 1, 50) + '...');
 
-        if Length(adescri) > 50 then adescri := trim(Copy(adescri, 1, 50) + '...');
-             
-        if length(aurl) > 0 then aurlcut := trim(aurl);
-        if length(agenre) > 0 then agenre := ' ' + agenre;
-        if length(aname) > 0 then  aurlcut := aname + agenre  ;
-        if (length(atitle) = 0) and (length(adescri) > 0) then atitle := adescri;
-        infopanel.Value := prefix + aurlcut + #10 +
-                           prefix + atitle ;
-        icystr := sicy;
-    end;
-  loopok     := True;
+    if infopanel.tag = 1 then
+      prefix      := '';
+    infopanel.tag := 0;
+
+    if uaudiotype = 0 then
+      if Length(atitle) > 50 then
+        atitle := Copy(atitle, 1, Length(atitle) div 2) + '...' + #10 +
+          prefix + '...' + Copy(atitle, (Length(atitle) div 2) + 1, (Length(atitle) div 2) + 1);
+
+    if Length(aname) > 35 then
+      aname  := trim(Copy(aname, 1, 35) + '...');
+    if Length(agenre) > 10 then
+      agenre := trim(Copy(agenre, 1, 10) + '...');
+
+    aurlcut := copy(theplaying, system.Pos('//', theplaying) + 2, Length(theplaying));
+
+    if Length(aurlcut) > 50 then
+      aurlcut := trim(Copy(aurlcut, 1, 50) + '...');
+
+    if Length(adescri) > 50 then
+      adescri := trim(Copy(adescri, 1, 50) + '...');
+
+    if length(aurl) > 0 then
+      aurlcut := trim(aurl);
+    if length(agenre) > 0 then
+      agenre  := ' ' + agenre;
+    if length(aname) > 0 then
+      aurlcut := aname + agenre;
+    if (length(atitle) = 0) and (length(adescri) > 0) then
+      atitle  := adescri;
+    infopanel.Value := prefix + aurlcut + #10 +
+      prefix + atitle;
+    icystr := sicy;
+  end;
+  loopok := True;
 end;
 
 procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
@@ -1582,7 +1658,7 @@ begin
         PimgPreview.Width := infopanel.Height;
         PimgPreview.tag := 0;
       end;
-      show;
+      Show;
       bringtofront;
       PimgPreview.invalidatewidget;
     end;
@@ -1614,18 +1690,36 @@ begin
     edfullscreen.Value := 0;
 end;
 
-procedure twebstreamerfo.ontimeout(const sender: TObject);
+procedure twebstreamerfo.ontimeout(const Sender: TObject);
 begin
-    onstop(nil);
-    messagedlg.top        := infopanel.top + 5;
-    messagedlg.Text       := '       URL did not respond...';
-    messagedlg.font.color := cl_red;
-    bno.font.color        := font.color;
-    byes.Visible          := False;
-    bno.Caption           := 'OK';
-    btnStart.Enabled       := True;
-    btnStart.face.template := tfacecomp7;
-    messagedlg.Visible    := True;
+  onstop(nil);
+  messagedlg.top        := infopanel.top + 5;
+  messagedlg.Text       := '       URL did not respond...';
+  messagedlg.font.color := cl_red;
+  bno.font.color        := font.color;
+  byes.Visible          := False;
+  bno.Caption           := 'OK';
+  btnStart.Enabled      := True;
+  btnStart.face.template := tfacecomp7;
+  messagedlg.Visible    := True;
+end;
+
+procedure twebstreamerfo.onimporte(const sender: TObject);
+begin
+  tfiledialog1.controller.icon := icon;
+  tfiledialog1.controller.captiondir := 'Choose a .m3u file to import';
+  tfiledialog1.controller.nopanel    := False;
+  tfiledialog1.controller.compact    := False;
+  tfiledialog1.controller.fontheight := font.height;
+ 
+  tfiledialog1.controller.filter    := '"*.m3u"';
+  tfiledialog1.controller.fontcolor := cl_black;
+  tfiledialog1.controller.fontheight := font.height;
+ 
+  tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
+  
+  if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
+  m3uLoad(tfiledialog1.controller.filename);
 end;
 
 end.

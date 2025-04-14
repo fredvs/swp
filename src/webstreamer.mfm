@@ -1,9 +1,9 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 790
-  bounds_y = 220
+  bounds_x = 556
+  bounds_y = 225
   bounds_cx = 348
-  bounds_cy = 320
+  bounds_cy = 353
   bounds_cxmin = 348
   bounds_cymin = 148
   bounds_cxmax = 348
@@ -16,7 +16,7 @@ object webstreamerfo: twebstreamerfo
     0
     19
     348
-    301
+    334
   )
   mainmenu = tmainmenu1
   font.height = 12
@@ -3605,6 +3605,20 @@ object webstreamerfo: twebstreamerfo
       statfile = tstatfile1
       reffontheight = 13
     end
+    object typurl: tstringdisp
+      face.localprops = []
+      face.template = tfacecomp3
+      taborder = 9
+      visible = False
+      bounds_x = 303
+      bounds_y = 2
+      bounds_cx = 41
+      bounds_cy = 16
+      anchors = [an_top, an_right]
+      text = 'MP3'
+      textflags = [tf_xcentered, tf_ycentered]
+      reffontheight = 13
+    end
   end
   object messagedlg: tstringdisp
     frame.localprops = []
@@ -3614,8 +3628,8 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 83
-    bounds_y = 4
+    bounds_x = 51
+    bounds_y = 1
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
@@ -3727,19 +3741,19 @@ object webstreamerfo: twebstreamerfo
     taborder = 5
     hint = '2x Click to select a URL'
     visible = False
-    bounds_x = 2
+    bounds_x = 1
     bounds_y = 237
     bounds_cx = 344
     bounds_cy = 98
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
-    datacols.count = 4
+    datacols.count = 3
     datacols.colorfocused = 16767912
     datacols.options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
     datacols.optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
     datacols.items = <    
       item
         colorfocused = 16767912
-        width = 70
+        width = 138
         options = [co_rowselect, co_savevalue, co_savestate, co_cancopy, co_canpaste, co_mousescrollrow]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
         datalist.data = (
@@ -3755,7 +3769,7 @@ object webstreamerfo: twebstreamerfo
       end    
       item
         colorfocused = 16767912
-        width = 53
+        width = 70
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_ycentered, tf_noselect]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
@@ -3772,27 +3786,9 @@ object webstreamerfo: twebstreamerfo
       end    
       item
         colorfocused = 16767912
-        width = 161
+        width = 123
         options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
         textflags = [tf_xcentered, tf_right, tf_ycentered, tf_noselect]
-        optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
-        datalist.data = (
-          ''
-          ''
-          ''
-          ''
-          ''
-          ''
-        )
-        valuefalse = '0'
-        valuetrue = '1'
-      end    
-      item
-        colorfocused = 16767912
-        width = 48
-        options = [co_rowselect, co_savevalue, co_savestate, co_mousescrollrow]
-        textflags = [tf_xcentered, tf_ycentered, tf_noselect]
-        textflagsactive = [tf_xcentered, tf_ycentered]
         optionsedit1 = [oe1_noselectall, oe1_autopopupmenu, oe1_keyexecute, oe1_savevalue, oe1_savestate, oe1_checkvalueafterstatread]
         datalist.data = (
           ''
@@ -4006,7 +4002,7 @@ object webstreamerfo: twebstreamerfo
         onafterexecute = onaftermenushowwav
       end    
       item
-        submenu.count = 7
+        submenu.count = 8
         submenu.items = <        
           item
             caption = ' Select>Play'
@@ -4023,6 +4019,12 @@ object webstreamerfo: twebstreamerfo
             state = [as_localcaption, as_localhint, as_localonexecute]
             options = [mao_checkbox, mao_shortcutcaption]
             onexecute = onafterfullscreen
+          end        
+          item
+            caption = ' Import m3u '
+            name = 'm3u'
+            state = [as_localcaption, as_localonexecute]
+            onexecute = onimporte
           end        
           item
             submenu.count = 32
@@ -4727,5 +4729,20 @@ object webstreamerfo: twebstreamerfo
     ontimer = ontimeout
     left = 131
     top = 48
+  end
+  object tfiledialog1: tfiledialogx
+    controller.fontheight = 0
+    controller.fontname = 'stf_default'
+    controller.fontcolor = -1610612734
+    controller.backcolor = -2147483647
+    controller.filter = '*.m3u'
+    controller.nopanel = False
+    controller.compact = False
+    controller.showoptions = False
+    controller.hidehistory = False
+    controller.hideicons = False
+    controller.showhidden = False
+    left = 234
+    top = 192
   end
 end
