@@ -4731,6 +4731,7 @@ object webstreamerfo: twebstreamerfo
     top = 48
   end
   object tfiledialog1: tfiledialogx
+    statfile = tstatfile1
     controller.fontheight = 0
     controller.fontname = 'stf_default'
     controller.fontcolor = -1610612734
@@ -4742,6 +4743,8 @@ object webstreamerfo: twebstreamerfo
     controller.hidehistory = False
     controller.hideicons = False
     controller.showhidden = False
+    controller.captionopen = 'Select a .m3u list to import'
+    dialogkind = fdk_open
     left = 234
     top = 192
   end

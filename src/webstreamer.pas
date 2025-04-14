@@ -1711,13 +1711,11 @@ begin
   tfiledialog1.controller.nopanel    := False;
   tfiledialog1.controller.compact    := False;
   tfiledialog1.controller.fontheight := font.height;
- 
   tfiledialog1.controller.filter    := '"*.m3u"';
   tfiledialog1.controller.fontcolor := cl_black;
-  tfiledialog1.controller.fontheight := font.height;
- 
   tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
-  
+  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
   m3uLoad(tfiledialog1.controller.filename);
 end;
