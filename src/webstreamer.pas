@@ -766,7 +766,7 @@ begin
   mp := AnsiString(ordir + 'lib/OpenBSD/64bit/LibMpg123-64.so');
   st := AnsiString(ordir + 'lib/OpenBSD/64bit/LibSoundTouch-64.so');
   aa := '';
-  op :=
+  op := '';
   noaac := true;
   {$ENDIF}
 
@@ -776,7 +776,7 @@ begin
   st := AnsiString(ordir + 'lib/Mac/64bit/libSoundTouchDLL.dylib');
   noaac := true;
   aa := '';
-  op :=
+  op := '';
   {$ENDIF}
 
   {$if defined(cpu86) and defined(linux)}
@@ -809,6 +809,7 @@ begin
   st := AnsiString(ordir + 'lib/FreeBSD/amd64/libsoundtouch-64.so');
   noaac := true;
   aa := '';
+  op := '';
   {$endif}
 
   {$if defined(freebsd) and defined(cpui386) }
@@ -825,7 +826,7 @@ begin
   mp := AnsiString(ordir + 'lib/FreeBSD/aarch64/libmpg123-64.so');
   st := '';
   aa := '';
-  op :=
+  op := '';
   noaac := true;
   {$endif}
 
