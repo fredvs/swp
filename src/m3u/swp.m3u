@@ -1,0 +1,40 @@
+#EXTM3U
+#PLAYLIST: Simple Webstream Player
+#EXTINF:, 1 Paradise UK; rock
+http://stream-uk1.radioparadise.com/mp3-128
+#EXTINF:, Can Stream; jazz
+http://radio.canstream.co.uk:8075/live.mp3
+#EXTINF:, Caroline; dance
+http://sc6.radiocaroline.net:8040/stream.mp3
+#EXTINF:, Drone zone; rock
+http://ice1.somafm.com/dronezone-128-mp3
+ #EXTINF:, FM Garden; lotus
+https://radio.lotustechnologieslk.net:2020/stream/hirufmgarden
+ #EXTINF:, Groove Salad; groove
+http://ice1.somafm.com/groovesalad-128-mp3
+ #EXTINF:, Host Radio1; dance
+https://radiorecord.hostingradio.ru/sd9096.aacp
+ #EXTINF:, Host Radio2; dance
+https://radiorecord.hostingradio.ru/rus96.aacp
+ #EXTINF:, Ibiza Jazz; jazz
+http://ibiza-smooth-jazz.vip-radios.fm:8033/stream-128kmp3-IbizaSmooth
+ #EXTINF:, IP Music; global
+http://live9.avf.ch:8000/ipmusicaacplus96
+ #EXTINF:, Kseto; global
+https://stream.p-node.org/kseto.opus
+ #EXTINF:, MusicRadio nl; hit
+http://stream.freemusicradio.nl:8100/stream.aac
+ #EXTINF:, Nostalgy Italy; italy
+https://scdn.nrjaudio.fm/adwz1/fr/30663/mp3_128.mp3
+ #EXTINF:, Paradise US; rock
+http://stream.radioparadise.com/mp3-128
+ #EXTINF:, The Buzz; alternative
+http://icyrelay.181.fm/181-buzz_128k.mp3
+ #EXTINF:, Unity; hindi
+http://live.canstream.co.uk:8000/unity24.mp3
+ #EXTINF:, Vbr dein web radio; hit
+http://s1.knixx.fm:5347/dein_webradio_vbr.opus
+ #EXTINF:, Volosatoff; global
+http://147.185.221.24:48510/b
+ #EXTINF:, Walm; jazz
+http://icecast.walmradio.com:8000/jazz_opus
