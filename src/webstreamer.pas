@@ -1357,6 +1357,11 @@ begin
           messagedlg.children[i1].Height := round(boundchildsp[i2].Height * ratio);
         end;
   end;
+  
+  typurl.width := round(30 * ratio);
+  typurl.Height := round(13 * ratio);
+  typurl.left := round(315 * ratio);
+  typurl.top := round(1 * ratio);
 
   bounds_cxmax := 0;
   bounds_cxmin := 0;
