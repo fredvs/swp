@@ -4,14 +4,54 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows,Winsock,{$endif}Sockets,Types,
- uos_httpgetthread,uos_flat,Math,msetypes,mseglob,mseguiglob,mseguiintf,
- mseapplication,msestat,ctypes,msemenus,msegui,msegraphics,msegraphutils,
- mseevent,Classes,mseclasses,mseforms,msedock,msesimplewidgets,msewidgets,
- msedispwidgets,mserichstring,mseact,msedataedits,msedropdownlist,mseedit,
- mseificomp,mseificompglob,mseifiglob,msestatfile,msestream,SysUtils,
- msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,msegridsglob,
- msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage, msefiledialogx;
+ {$ifdef unix}Unix,UnixType,{$else}Windows,
+  Winsock,{$endif}Sockets,
+  Types,
+  uos_httpgetthread,
+  uos_flat,
+  Math,
+  msetypes,
+  mseglob,
+  mseguiglob,
+  mseguiintf,
+  mseapplication,
+  msestat,
+  ctypes,
+  msemenus,
+  msegui,
+  msegraphics,
+  msegraphutils,
+  mseevent,
+  Classes,
+  mseclasses,
+  mseforms,
+  msedock,
+  msesimplewidgets,
+  msewidgets,
+  msedispwidgets,
+  mserichstring,
+  mseact,
+  msedataedits,
+  msedropdownlist,
+  mseedit,
+  mseificomp,
+  mseificompglob,
+  mseifiglob,
+  msestatfile,
+  msestream,
+  SysUtils,
+  msegraphedits,
+  msescrollbar,
+  msebitmap,
+  msedragglob,
+  msegrids,
+  msegridsglob,
+  msetimer,
+  BGRABitmap,
+  BGRAAnimatedGif,
+  BGRABitmapTypes,
+  mseimage,
+  msefiledialogx;
 
 type
   boundchild = record
@@ -76,8 +116,8 @@ type
     eurlname: tedit;
     edfullscreen: tintegeredit;
     ttimer2: ttimer;
-   typurl: tstringdisp;
-   tfiledialog1: tfiledialogx;
+    typurl: tstringdisp;
+    tfiledialog1: tfiledialogx;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -122,11 +162,11 @@ type
     function checkconnection(): Boolean;
     procedure onafterfullscreen(const Sender: TObject);
     procedure ontimeout(const Sender: TObject);
-    procedure onimporte(const sender: TObject);
+    procedure onimporte(const Sender: TObject);
     procedure m3uLoad(am3u: string);
-    procedure onexport(const sender: TObject);
+    procedure onexport(const Sender: TObject);
     procedure m3uexport(am3u: string);
-   end;
+  end;
 
 const
   versionnum = 250411;
@@ -162,24 +202,24 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
-  
+
 procedure twebstreamerfo.m3uexport(am3u: string);
 var
-    f  : LongInt;
-    s  : msestring;
-    meuf : Text;
+  f: longint;
+  s: msestring;
+  meuf: Text;
 begin
-AssignFile(meuf, am3u);
-FileMode := 1;
-ReWrite(meuf);
-Writeln(meuf,'#EXTM3U');
-Writeln(meuf,'#PLAYLIST: SWP');
-for f := 0 to griddisp.rowcount -1 do 
-begin
-Writeln(meuf,'#EXTINF:, ' + griddisp[0][f] + ' ; ' + griddisp[1][f]);
-Writeln(meuf, griddisp[2][f]);
-end;
-CloseFile(meuf);
+  AssignFile(meuf, am3u);
+  FileMode := 1;
+  ReWrite(meuf);
+  Writeln(meuf, '#EXTM3U');
+  Writeln(meuf, '#PLAYLIST: SWP');
+  for f := 0 to griddisp.rowcount - 1 do
+  begin
+    Writeln(meuf, '#EXTINF:, ' + griddisp[0][f] + ' ; ' + griddisp[1][f]);
+    Writeln(meuf, griddisp[2][f]);
+  end;
+  CloseFile(meuf);
 end;
 
 procedure twebstreamerfo.m3uLoad(am3u: string);
@@ -190,42 +230,45 @@ var
   meuf: Text;
 begin
   AssignFile(meuf, am3u);
-  FileMode := 0;
+  FileMode          := 0;
   ReSet(meuf);
   //sall := '';
   griddisp.rowcount := 0;
-  while eof(meuf) = false do
+  while EOF(meuf) = False do
   begin
     ReadLn(meuf, s);
     if (copy(s, 1, 8) = 'https://') or (copy(s, 1, 7) = 'http://') then
     begin
-    griddisp.rowcount := griddisp.rowcount + 1;
-    if s3 = '' then griddisp[1][griddisp.rowcount-1] := 'unknown'
-    else griddisp[1][griddisp.rowcount-1] := s3;
-    if s2 = '' then s2 := copy(s, system.pos('//', s) + 2, 10);
-    griddisp[0][griddisp.rowcount-1] := trim(s2);
-    griddisp[2][griddisp.rowcount-1] := trim(s);
-    // sall := sall + s + ' | ' + s2 + lineending;
-    end  
+      griddisp.rowcount := griddisp.rowcount + 1;
+      if s3 = '' then
+        griddisp[1][griddisp.rowcount - 1] := 'unknown'
+      else
+        griddisp[1][griddisp.rowcount - 1] := s3;
+      if s2 = '' then
+        s2 := copy(s, system.pos('//', s) + 2, 10);
+      griddisp[0][griddisp.rowcount - 1] := trim(s2);
+      griddisp[2][griddisp.rowcount - 1] := trim(s);
+      // sall := sall + s + ' | ' + s2 + lineending;
+    end
     else if system.pos(',', s) > 0 then
     begin
-      s2    := copy(s, system.pos(',', s) + 1, length(s));
+      s2   := copy(s, system.pos(',', s) + 1, length(s));
       if system.pos('[', s2) > 0 then
         s2 := trim(copy(s2, 1, system.pos('[', s2) - 2));
-     s2 := StringReplace(s2,'&#039;','''', [rfReplaceAll, rfIgnoreCase]);
-     s2 := StringReplace(s2,'&apos;','''', [rfReplaceAll, rfIgnoreCase]);
-     if system.pos(';', s2) > 0 then
-       begin
-        s3 := trim(copy(s2, system.pos(';', s2) +1, length(s2)));
-        s2 := trim(copy(s2, 1, system.pos(';', s2) -1));
-       end;  
-   
+      s2 := StringReplace(s2, '&#039;', '''', [rfReplaceAll, rfIgnoreCase]);
+      s2 := StringReplace(s2, '&apos;', '''', [rfReplaceAll, rfIgnoreCase]);
+      if system.pos(';', s2) > 0 then
+      begin
+        s3 := trim(copy(s2, system.pos(';', s2) + 1, length(s2)));
+        s2 := trim(copy(s2, 1, system.pos(';', s2) - 1));
+      end;
+
     end;
   end; {next}
-  
-  //SL.Assign(s);
-  //writeln('SL.values ' + inttostr(SL.count));
-  //writeln(sall);
+
+       //SL.Assign(s);
+       //writeln('SL.values ' + inttostr(SL.count));
+       //writeln(sall);
   CloseFile(meuf);
 end;
 
@@ -502,217 +545,219 @@ var
 begin
   if checkconnection() then
   begin
-  res := CheckURLStatus(historyfn.Value);
-  //writeln('CheckURLStatus = ', res);
-  if (res = 0) then
-  begin
-    ttimer2.Enabled := False;
-    ttimer2.Enabled := True;
-    InitDrawLive();
-    hasbitmap  := False;
-    PimgPreview.Visible := False;
-    btnStart.Enabled := False;
-    btnStart.face.template := tfacecomp6;
-    infopanel.font.color := cl_red;
-    infopanel.Value := 'Trying to get ' + historyfn.Value;
-    application.ProcessMessages;
-    webindex   := 0;
-    webinindex := -1;
-    incview    := 0;
-    icystr     := 'icy';
-    uos_CreatePlayer(webindex);
-
-    aboolicy := True;
-
-    latency := -1;
-    sizebuf := 16384;
-
-    if brecord.tag = 0 then
-      aformat := 0
-    else if edrecformat.Value = 0 then
-      aformat := 2
-    else
-      aformat := 0;
-
-    application.ProcessMessages;
-
-    // 'https://radiorecord.hostingradio.ru/ps96.aacp';
-
-    theplaying := historyfn.Value;
-
-    // Add a Input from Audio URL with custom parameters
-    // URL : URL of audio file (like  'http://someserver/somesound.mp3')
-    // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
-    // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
-    // FramesCount : default : -1 (1024)
-    // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
-    // ICY data on/off
-    webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
-
-    if webinindex <> -1 then
+    res := CheckURLStatus(historyfn.Value);
+    writeln('CheckURLStatus = ', res);
+    if (res = 0) then
     begin
-      Caption     := urlname;
-      weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
-        uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
+      ttimer2.Enabled := False;
+      ttimer2.Enabled := True;
+      InitDrawLive();
+      hasbitmap  := False;
+      PimgPreview.Visible := False;
+      btnStart.Enabled := False;
+      btnStart.face.template := tfacecomp6;
+      infopanel.font.color := cl_red;
+      infopanel.Value := 'Trying to get ' + historyfn.Value;
+      application.ProcessMessages;
+      webindex   := 0;
+      webinindex := -1;
+      incview    := 0;
+      icystr     := 'icy';
+      uos_CreatePlayer(webindex);
 
-      if brecord.tag = 1 then
-      begin
-        if edrecformat.Value = 0 then
-          outputstr := '.wav'
-        else
-        begin
-          sizebuf   := sizebuf div 8;
-          outputstr := '.ogg';  // needs sndfile library
-        end;
+      aboolicy := True;
 
-        arecnp := 'records' + directoryseparator + 'rec_' +
-          msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
+      latency := -1;
+      sizebuf := 16384;
 
-        arec := ordir + arecnp;
-        uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
-
-        btempo.Enabled        := False;
-        edtempo.Enabled       := False;
-        edpitch.Enabled       := False;
-        breset.Enabled        := False;
-        brecord.face.template := tfacecomp9;
-      end;
-
-      // add a Output into device with custom parameters
-      // PlayerIndex : Index of a existing Player
-      // Device ( -1 is default Output device )
-      // Latency  ( -1 is latency suggested ) )
-      // SampleRate : delault : -1 (44100)   // here default samplerate of input
-      // Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
-      // SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
-      // FramesCount : default : -1 (65536)
-      // ChunkCount : default : -1 (= 512)
-      //  result : -1 nothing created, otherwise Output Index in array
-
-      uos_inputSetLevelEnable(webindex, webinindex, 2);
-      // set calculation of level/volume (usefull for showvolume procedure)
-      // set level calculation (default is 0)
-      // 0 => no calcul
-      // 1 => calcul before all DSP procedures.
-      // 2 => calcul after all DSP procedures.
-      // 3 => calcul before and after all DSP procedures.
-
-      uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
-      // Assign the procedure of object to execute inside the loop for a Output
-      // PlayerIndex : Index of a existing Player
-      // InIndex : Index of a existing Output
-      // LoopProcPlayer1 : procedure of object to execute inside the loop
-
-      uos_OutputAddDSPVolume(webindex, weboutindex, 1, 1);
-      // DSP Volume changer
-      // PlayerIndex1 : Index of a existing Player
-      // In1Index : OutputIndex of a existing Output
-      // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
-      // VolRight : Right volume
-
-      btnStart.Enabled        := False;
-      btnStart.face.template  := tfacecomp6;
-      btnResume.Enabled       := False;
-      btnResume.Visible       := False;
-      btnResume.face.template := tfacecomp6;
-      btnStop.Enabled         := True;
-      btnStop.face.template   := tfacecomp7;
-      btnPause.Enabled        := True;
-      btnpause.Visible        := True;
-      btnPause.face.template  := tfacecomp7;
-
-      brecord.Enabled       := False;
-      brecord.face.template := tfacecomp7;
-
-      if brecord.tag = 1 then
-        brecord.face.template := tfacecomp9;
-
-      if edstyle.Value = 0 then
-        infopanel.font.color := cl_black
-      else if edstyle.Value = 1 then
-        infopanel.font.color := cl_white
-      else if edstyle.Value = 2 then
-        infopanel.font.color := cl_black;
-
-      if brecord.tag = 1 then
-        infopanel.Value := 'Play + Record ' + historyfn.Value
+      if brecord.tag = 0 then
+        aformat := 0
+      else if edrecformat.Value = 0 then
+        aformat := 2
       else
-        infopanel.Value := 'Playing ' + historyfn.Value;
-
-      if brecord.tag = 1 then
-      begin
-        brecord.Caption       := 'Recording...';
-        brecord.face.template := tfacecomp9;
-      end
-      else
-      begin
-        brecord.Caption       := 'Playing...';
-        brecord.face.template := tfacecomp7;
-      end;
-
-      onchangevol(nil);
-
-      infopanel.face.template := tfacecomp4;
-
-      tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
-
-      uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
-    
-      if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
-      begin
-        if btempo.tag = 0 then
-          abool := False
-        else
-          abool := True;
-        webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
-          uos_InputGetChannels(webindex, webinindex));
-        // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
-        uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
-        // Change plugin settings
-      end;
+        aformat := 0;
 
       application.ProcessMessages;
 
-      uos_Play(webindex);  // everything is ready, here we are, lets play it...
+      // 'https://radiorecord.hostingradio.ru/ps96.aacp';
 
-      if uaudiotype = 1 then
+      theplaying := historyfn.Value;
+
+      // Add a Input from Audio URL with custom parameters
+      // URL : URL of audio file (like  'http://someserver/somesound.mp3')
+      // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
+      // SampleFormat : -1 default : Int16 (0: Float32, 1:Int32, 2:Int16)
+      // FramesCount : default : -1 (1024)
+      // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
+      // ICY data on/off
+      webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
+
+      if webinindex <> -1 then
       begin
-        btempo.Enabled  := False;
-        breset.Enabled  := False;
-        edtempo.Enabled := False;
-        edpitch.Enabled := False;
-      end
-      else
-      begin
-        btempo.Enabled  := True;
-        breset.Enabled  := True;
-        edtempo.Enabled := True;
-        edpitch.Enabled := True;
+        Caption     := urlname;
+        weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
+          uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
+
+        if brecord.tag = 1 then
+        begin
+          if edrecformat.Value = 0 then
+            outputstr := '.wav'
+          else
+          begin
+            sizebuf   := sizebuf div 8;
+            outputstr := '.ogg';  // needs sndfile library
+          end;
+
+          arecnp := 'records' + directoryseparator + 'rec_' +
+            msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
+
+          arec := ordir + arecnp;
+          uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
+
+          btempo.Enabled        := False;
+          edtempo.Enabled       := False;
+          edpitch.Enabled       := False;
+          breset.Enabled        := False;
+          brecord.face.template := tfacecomp9;
+        end;
+
+        // add a Output into device with custom parameters
+        // PlayerIndex : Index of a existing Player
+        // Device ( -1 is default Output device )
+        // Latency  ( -1 is latency suggested ) )
+        // SampleRate : delault : -1 (44100)   // here default samplerate of input
+        // Channels : delault : -1 (2:stereo) (0: no channels, 1:mono, 2:stereo, ...)
+        // SampleFormat : -1 default : Int16 : (0: Float32, 1:Int32, 2:Int16)
+        // FramesCount : default : -1 (65536)
+        // ChunkCount : default : -1 (= 512)
+        //  result : -1 nothing created, otherwise Output Index in array
+
+        uos_inputSetLevelEnable(webindex, webinindex, 2);
+        // set calculation of level/volume (usefull for showvolume procedure)
+        // set level calculation (default is 0)
+        // 0 => no calcul
+        // 1 => calcul before all DSP procedures.
+        // 2 => calcul after all DSP procedures.
+        // 3 => calcul before and after all DSP procedures.
+
+        uos_LoopProcIn(webindex, webinindex, @LoopProcPlayer1);
+        // Assign the procedure of object to execute inside the loop for a Output
+        // PlayerIndex : Index of a existing Player
+        // InIndex : Index of a existing Output
+        // LoopProcPlayer1 : procedure of object to execute inside the loop
+
+        uos_OutputAddDSPVolume(webindex, weboutindex, 1, 1);
+        // DSP Volume changer
+        // PlayerIndex1 : Index of a existing Player
+        // In1Index : OutputIndex of a existing Output
+        // VolLeft : Left volume  ( from 0 to 1 => gain > 1 )
+        // VolRight : Right volume
+
+        btnStart.Enabled        := False;
+        btnStart.face.template  := tfacecomp6;
+        btnResume.Enabled       := False;
+        btnResume.Visible       := False;
+        btnResume.face.template := tfacecomp6;
+        btnStop.Enabled         := True;
+        btnStop.face.template   := tfacecomp7;
+        btnPause.Enabled        := True;
+        btnpause.Visible        := True;
+        btnPause.face.template  := tfacecomp7;
+
+        brecord.Enabled       := False;
+        brecord.face.template := tfacecomp7;
+
+        if brecord.tag = 1 then
+          brecord.face.template := tfacecomp9;
+
+        if edstyle.Value = 0 then
+          infopanel.font.color := cl_black
+        else if edstyle.Value = 1 then
+          infopanel.font.color := cl_white
+        else if edstyle.Value = 2 then
+          infopanel.font.color := cl_black;
+
+        if brecord.tag = 1 then
+          infopanel.Value := 'Play + Record ' + historyfn.Value
+        else
+          infopanel.Value := 'Playing ' + historyfn.Value;
+
+        if brecord.tag = 1 then
+        begin
+          brecord.Caption       := 'Recording...';
+          brecord.face.template := tfacecomp9;
+        end
+        else
+        begin
+          brecord.Caption       := 'Playing...';
+          brecord.face.template := tfacecomp7;
+        end;
+
+        onchangevol(nil);
+
+        infopanel.face.template := tfacecomp4;
+
+        tmainmenu1.menu.itembynames(['config', 'refresh']).Enabled := False;
+
+        uaudiotype := uos_InputGetURLAudioType(webindex, webinindex);
+
+        if (plugsoundtouch = True) and (brecord.tag = 0) and (uaudiotype <> 1) then
+        begin
+          if btempo.tag = 0 then
+            abool := False
+          else
+            abool := True;
+          webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
+            uos_InputGetChannels(webindex, webinindex));
+          // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
+          uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
+          // Change plugin settings
+        end;
+
+        application.ProcessMessages;
+
+        uos_Play(webindex);  // everything is ready, here we are, lets play it...
+
+        if uaudiotype = 1 then
+        begin
+          btempo.Enabled  := False;
+          breset.Enabled  := False;
+          edtempo.Enabled := False;
+          edpitch.Enabled := False;
+        end
+        else
+        begin
+          btempo.Enabled  := True;
+          breset.Enabled  := True;
+          edtempo.Enabled := True;
+          edpitch.Enabled := True;
+        end;
+
+        if uaudiotype = 0 then
+          typurl.Text := 'MP3'
+        else if uaudiotype = 1 then
+          typurl.Text := 'OPUS'
+        else if uaudiotype = 2 then
+          typurl.Text := 'AAC';
+
+        typurl.hint := ' Audio format is ' + typurl.Text + stringreplace(uos_InputGetURLiceAudioInfo(webindex, webinindex),
+          ';', ' ', [rfReplaceAll, rfIgnoreCase]) + ' ';
+
+        infopanel.hint := typurl.hint;
+
+        typurl.Visible := True;
+
+        //writeln('uaudiotype ' + inttostr(uaudiotype)); 
+
+        if (aboolicy = True) then
+          if uaudiotype = 0 then
+            ttimer1.Enabled := True
+          else
+            ontimericy(nil);
+
+        messagedlg.Visible := False;
+        ttimer2.Enabled    := False;
       end;
-      
-      if uaudiotype = 0 then
-      typurl.text := 'MP3' else
-      if uaudiotype = 1 then
-      typurl.text := 'OPUS' else
-      if uaudiotype = 2 then
-      typurl.text := 'AAC';
-       
-      typurl.hint :=  ' Audio format is ' + typurl.text 
-                      + stringreplace(uos_InputGetURLiceAudioInfo(webindex, webinindex),
-                      ';', ' ', [rfReplaceAll, rfIgnoreCase]) + ' ';
-       
-      infopanel.hint := typurl.hint;
-      
-      typurl.visible := true;
-    
-      //writeln('uaudiotype ' + inttostr(uaudiotype)); 
-
-      if (aboolicy = True) then
-        ttimer1.Enabled := True;
-        
-      messagedlg.visible := false;
-      ttimer2.Enabled := False;
-    end;
     end
     else
     begin
@@ -921,8 +966,8 @@ procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   ttimer1.Enabled   := False;
   uos_Stop(webindex);
-  typurl.visible := false;
-  messagedlg.visible := false;
+  typurl.Visible    := False;
+  messagedlg.Visible := False;
   Caption           := 'Simple Webstream Player';
   btnStart.Enabled  := True;
   btnStart.face.template := tfacecomp7;
@@ -1357,11 +1402,11 @@ begin
           messagedlg.children[i1].Height := round(boundchildsp[i2].Height * ratio);
         end;
   end;
-  
-  typurl.width := round(30 * ratio);
+
+  typurl.Width  := round(30 * ratio);
   typurl.Height := round(13 * ratio);
-  typurl.left := round(315 * ratio);
-  typurl.top := round(1 * ratio);
+  typurl.left   := round(315 * ratio);
+  typurl.top    := round(1 * ratio);
 
   bounds_cxmax := 0;
   bounds_cxmin := 0;
@@ -1737,41 +1782,40 @@ begin
   messagedlg.Visible    := True;
 end;
 
-procedure twebstreamerfo.onimporte(const sender: TObject);
+procedure twebstreamerfo.onimporte(const Sender: TObject);
 begin
-  tfiledialog1.controller.icon := icon;
+  tfiledialog1.controller.icon    := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file to import';
-  tfiledialog1.controller.nopanel    := False;
-  tfiledialog1.controller.compact    := False;
-  tfiledialog1.controller.fontheight := font.height;
-  tfiledialog1.controller.filter    := '"*.m3u"';
+  tfiledialog1.controller.nopanel := False;
+  tfiledialog1.controller.compact := False;
+  tfiledialog1.controller.fontheight := font.Height;
+  tfiledialog1.controller.filter  := '"*.m3u"';
   tfiledialog1.controller.filename := '';
   tfiledialog1.controller.fontcolor := cl_black;
-  tfiledialog1.dialogkind := fdk_open;
+  tfiledialog1.dialogkind         := fdk_open;
   tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
   tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
-  m3uLoad(tfiledialog1.controller.filename);
+    m3uLoad(tfiledialog1.controller.filename);
 end;
 
-procedure twebstreamerfo.onexport(const sender: TObject);
+procedure twebstreamerfo.onexport(const Sender: TObject);
 begin
-  tfiledialog1.controller.icon := icon;
+  tfiledialog1.controller.icon     := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file name to export';
-  tfiledialog1.controller.nopanel    := False;
-  tfiledialog1.controller.compact    := False;
-  tfiledialog1.controller.fontheight := font.height;
-  tfiledialog1.controller.filter    := '"*.m3u"';
+  tfiledialog1.controller.nopanel  := False;
+  tfiledialog1.controller.compact  := False;
+  tfiledialog1.controller.fontheight := font.Height;
+  tfiledialog1.controller.filter   := '"*.m3u"';
   tfiledialog1.controller.fontcolor := cl_black;
-  tfiledialog1.dialogkind := fdk_save;
-  tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
-  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
-  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
-  tfiledialog1.controller.filename := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' 
-   + directoryseparator + 'mylist.m3u';
+  tfiledialog1.dialogkind          := fdk_save;
+  tfiledialog1.controller.options  := [fdo_sysfilename, fdo_savelastdir];
+  tfiledialog1.controller.basedir  := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.lastdir  := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.filename := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' + directoryseparator + 'mylist.m3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
-  m3uexport(tfiledialog1.controller.filename);
+    m3uexport(tfiledialog1.controller.filename);
 end;
 
 end.
