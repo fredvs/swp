@@ -546,7 +546,7 @@ begin
   if checkconnection() then
   begin
     res := CheckURLStatus(historyfn.Value);
-    writeln('CheckURLStatus = ', res);
+    // writeln('CheckURLStatus = ', res);
     if (res = 0) then
     begin
       ttimer2.Enabled := False;
@@ -1012,7 +1012,8 @@ end;
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-  ttimer1.Enabled         := False;
+  if uaudiotype = 0 then
+    ttimer1.Enabled         := False;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := True;
@@ -1029,8 +1030,8 @@ end;
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-  if aboolicy then
-    ttimer1.Enabled       := True;
+  if uaudiotype = 0 then
+    ttimer1.Enabled         := true;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := False;
