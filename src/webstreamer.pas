@@ -940,7 +940,7 @@ begin
   onchangeshowwave(nil);
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
-    '            Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
+    '                 Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
 
   rect1 := application.screenrect(window);
 
