@@ -962,7 +962,7 @@ begin
 
   isinit := True;
   
-  optionswindow := [];
+  optionswindow := [wo_taskbar];
   
   window.recreatewindow;
   

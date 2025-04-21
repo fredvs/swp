@@ -1,9 +1,9 @@
 object webstreamerfo: twebstreamerfo
   visible = False
-  bounds_x = 556
-  bounds_y = 225
-  bounds_cx = 120
-  bounds_cy = 1
+  bounds_x = 563
+  bounds_y = 317
+  bounds_cx = 168
+  bounds_cy = 93
   bounds_cxmax = 348
   container.color = 11977903
   container.frame.localprops = []
@@ -12,11 +12,11 @@ object webstreamerfo: twebstreamerfo
   container.frame.sbvert.options = []
   container.bounds = (
     0
-    57
-    120
-    -56
+    38
+    168
+    55
   )
-  optionswindow = [wo_noframe]
+  optionswindow = [wo_noframe, wo_notaskbar]
   mainmenu = tmainmenu1
   font.height = 12
   font.name = 'stf_default'
