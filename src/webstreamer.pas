@@ -166,6 +166,7 @@ type
     procedure m3uLoad(am3u: string);
     procedure onexport(const Sender: TObject);
     procedure m3uexport(am3u: string);
+   procedure oncreated(const sender: TObject);
   end;
 
 const
@@ -773,6 +774,7 @@ procedure twebstreamerfo.oneventstart(const Sender: TObject);
 var
   rect1: rectty;
 begin
+  hide;
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
   ordir := copy(binPath, 1, length(binPath) -6) + 'Resources/';
@@ -945,9 +947,9 @@ begin
   rect1 := application.screenrect(window);
 
   fontheight := round(rect1.cy / 800 * 12);
-
+  hide;
   resizesp(fontheight);
-
+  hide;
   oncheckdevices();
 
   edrecformat.Value := 0;
@@ -959,6 +961,12 @@ begin
   checkconnection();
 
   isinit := True;
+  
+  optionswindow := [];
+  
+  window.recreatewindow;
+  
+  show;
 
 end;
 
@@ -1004,7 +1012,7 @@ begin
   eurlname.Text   := urlname;
   ttimer1.Enabled := False;
   uos_Stop(webindex);
-  sleep(200);
+  sleep(500);
   if Assigned(aimage) then
     aimage.Free;
 end;
@@ -1127,6 +1135,8 @@ var
   sessiontyp: string;
   {$ENDIF}
 begin
+  hide;
+  
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
@@ -1817,6 +1827,11 @@ begin
   tfiledialog1.controller.filename := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' + directoryseparator + 'mylist.m3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
     m3uexport(tfiledialog1.controller.filename);
+end;
+
+procedure twebstreamerfo.oncreated(const sender: TObject);
+begin
+hide;
 end;
 
 end.

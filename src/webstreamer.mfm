@@ -2,10 +2,8 @@ object webstreamerfo: twebstreamerfo
   visible = False
   bounds_x = 556
   bounds_y = 225
-  bounds_cx = 348
-  bounds_cy = 353
-  bounds_cxmin = 348
-  bounds_cymin = 148
+  bounds_cx = 120
+  bounds_cy = 1
   bounds_cxmax = 348
   container.color = 11977903
   container.frame.localprops = []
@@ -14,10 +12,11 @@ object webstreamerfo: twebstreamerfo
   container.frame.sbvert.options = []
   container.bounds = (
     0
-    19
-    348
-    334
+    57
+    120
+    -56
   )
+  optionswindow = [wo_noframe]
   mainmenu = tmainmenu1
   font.height = 12
   font.name = 'stf_default'
@@ -2976,6 +2975,7 @@ object webstreamerfo: twebstreamerfo
   }
   windowopacity = -Inf
   oncreate = oncreate
+  oncreated = oncreated
   oneventloopstart = oneventstart
   onclose = onclosed
   moduleclassname = 'tdockform'
