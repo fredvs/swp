@@ -877,7 +877,7 @@ begin
   noaac := true;
   {$endif}
 
-  {$if defined(cpu86) and defined(linux)}
+  {$if defined(cpu86) and defined(windows)}
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libcrypto-1_1.dll'));
   {$endif}
