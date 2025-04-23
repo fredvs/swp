@@ -2,8 +2,8 @@ object webstreamerfo: twebstreamerfo
   visible = False
   bounds_x = 563
   bounds_y = 317
-  bounds_cx = 168
-  bounds_cy = 93
+  bounds_cx = 348
+  bounds_cy = 357
   bounds_cxmax = 348
   container.color = 11977903
   container.frame.localprops = []
@@ -12,9 +12,9 @@ object webstreamerfo: twebstreamerfo
   container.frame.sbvert.options = []
   container.bounds = (
     0
-    38
-    168
-    55
+    19
+    348
+    338
   )
   optionswindow = [wo_noframe, wo_notaskbar]
   mainmenu = tmainmenu1
@@ -3611,9 +3611,9 @@ object webstreamerfo: twebstreamerfo
       taborder = 9
       hint = ' Format of audio stream '
       visible = False
-      bounds_x = 303
-      bounds_y = 2
-      bounds_cx = 41
+      bounds_x = 309
+      bounds_y = 1
+      bounds_cx = 36
       bounds_cy = 16
       anchors = [an_top, an_right]
       text = 'MP3'

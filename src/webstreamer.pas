@@ -1416,9 +1416,9 @@ begin
         end;
   end;
 
-  typurl.Width  := round(35 * ratio);
+  typurl.Width  := round(36 * ratio);
   typurl.Height := round(13 * ratio);
-  typurl.left   := round(310 * ratio);
+  typurl.left   := round(309 * ratio);
   typurl.top    := round(1 * ratio);
 
   bounds_cxmax := 0;
