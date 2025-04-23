@@ -7039,7 +7039,9 @@ begin
       {$IF DEFINED(uos_debug) and DEFINED(unix)}
       WriteLn('Begin opus');
       {$ENDIF}
-
+      
+      sleep(2000);
+      
       if StreamIn[x].httpget.IsRunning then
       begin
         len := 1;
