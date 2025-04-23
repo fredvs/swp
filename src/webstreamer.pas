@@ -4,7 +4,7 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows,
+ {$ifdef unix}Unix,UnixType,{$else}Windows, dynlibs,
   Winsock,{$endif}Sockets,
   Types,
   uos_httpgetthread,
@@ -170,7 +170,7 @@ type
   end;
 
 const
-  versionnum = 250411;
+  versionnum = 250424;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -506,7 +506,7 @@ end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
-  if loopok then
+//  if loopok then
     if (PimgPreview.tag = 0) then
       ShowLevel;
 end;
@@ -795,8 +795,8 @@ begin
   mp := AnsiString(ordir + 'lib\Windows\32bit\LibMpg123-32.dll');
   aa := AnsiString(ordir + 'lib\Windows\32bit\libfdk-aac-32.dll');
   st := AnsiString(ordir + 'lib\Windows\32bit\LibSoundTouch-32.dll');
-  //op := AnsiString(ordir + 'lib\Windows\32bit\LibOpusFile-32.dll');
-  op := '';
+  op := AnsiString(ordir + 'lib\Windows\32bit\LibOpusFile-32.dll');
+  //op := '';
   {$endif}
   {$ENDIF}
 
@@ -877,9 +877,9 @@ begin
   noaac := true;
   {$endif}
 
-  {$if defined(CPUAMD64) and defined(linux) }      
-   if (sf <> 'system') and (sf <> '') then     
-      if uos_TestLoadLibrary(PChar(sf)) = false then sf := sf + '.2';
+  {$if defined(cpu86) and defined(linux)}
+    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
+    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libcrypto-1_1.dll'));
   {$endif}
 
   if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, PChar(op), nil, PChar(aa)) = -1 then
@@ -967,6 +967,8 @@ begin
   window.recreatewindow;
   
   show;
+  
+  bringtofront;
 
 end;
 
@@ -1414,9 +1416,9 @@ begin
         end;
   end;
 
-  typurl.Width  := round(30 * ratio);
+  typurl.Width  := round(35 * ratio);
   typurl.Height := round(13 * ratio);
-  typurl.left   := round(315 * ratio);
+  typurl.left   := round(310 * ratio);
   typurl.top    := round(1 * ratio);
 
   bounds_cxmax := 0;
@@ -1626,7 +1628,7 @@ begin
   //writeln('uaudiotype ' + inttostr(uaudiotype)); 
   if uaudiotype = 0 then
     uos_InputUpdateICY(0, 0, sicy);
-  if icystr <> sicy then
+  if trim(icystr) <> trim(sicy) then
   begin
     if uaudiotype = 0 then
       if system.Pos('StreamTitle=', sicy) > 0 then
@@ -1835,4 +1837,3 @@ hide;
 end;
 
 end.
-
