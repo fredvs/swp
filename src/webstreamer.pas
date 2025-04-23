@@ -878,9 +878,9 @@ begin
   {$endif}
 
   {$if defined(cpu86) and defined(windows)}
-    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libcrypto-1_1.dll'));
-  {$endif}
+    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
+   {$endif}
 
   if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, PChar(op), nil, PChar(aa)) = -1 then
     if uos_LoadLib('system', 'system', 'system', nil, nil, nil, nil, 'system') = -1 then
