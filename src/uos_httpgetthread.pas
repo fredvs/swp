@@ -8,6 +8,7 @@
 unit uos_httpgetthread;
 
 {$mode objfpc}{$H+}
+{$RANGECHECKS OFF} 
 
 interface
 

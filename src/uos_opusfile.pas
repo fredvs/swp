@@ -9,6 +9,7 @@ unit uos_OpusFile;
 
 {$mode objfpc}{$H+}
 {$PACKRECORDS C}
+{$RANGECHECKS OFF} 
 
 interface
 

@@ -7,6 +7,7 @@ program simplewebplayer;
 {$ifdef mswindows}
  {$R dp.res}
 {$endif}
+{$RANGECHECKS OFF} 
 
 uses
   cmem,
