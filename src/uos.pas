@@ -83,7 +83,7 @@ uos_cdrom,
 Classes, DynLibs, ctypes, Math, sysutils;
 
 const 
-  uos_version : cint32 = 2250411;
+  uos_version : cint32 = 2250424;
 
 {$IF DEFINED (bs2b)}
   BS2B_HIGH_CLEVEL = (CInt32 (700)) or ( (CInt32 (30)) shl 16);

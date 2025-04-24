@@ -1,7 +1,8 @@
 unit webstreamer;
 
 {$ifdef FPC}{$mode objfpc}{$h+}{$endif}
-{$RANGECHECKS OFF} 
+{$RANGECHECKS OFF}
+
 interface
 
 uses
