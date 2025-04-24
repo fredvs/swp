@@ -881,6 +881,11 @@ begin
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libcrypto-1_1.dll'));
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
    {$endif}
+   
+   {$if defined(cpu64) and defined(windows)}
+    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\64bit\libeay32.dll'));
+    dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\64bit\ssleay32.dll'));
+   {$endif} 
 
   if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, PChar(op), nil, PChar(aa)) = -1 then
     if uos_LoadLib('system', 'system', 'system', nil, nil, nil, nil, 'system') = -1 then
@@ -1634,7 +1639,7 @@ begin
       if system.Pos('StreamTitle=', sicy) > 0 then
       begin
         atitle := Copy(sicy, system.pos('StreamTitle=', sicy) + 12, Length(sicy));
-        atitle := Copy(atitle, 1, system.Pos(';', atitle) - 1);
+        atitle := (Copy(atitle, 1, system.Pos(';', atitle) - 1));
       end;
 
     adescri := uos_InputGetURLicyDescription(webindex, webinindex);
