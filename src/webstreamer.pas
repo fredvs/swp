@@ -2,11 +2,11 @@ unit webstreamer;
 
 {$ifdef FPC}{$mode objfpc}{$h+}{$endif}
 {$RANGECHECKS OFF}
-
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows, dynlibs,
+ {$ifdef unix}Unix,UnixType,{$else}Windows,
+  dynlibs,
   Winsock,{$endif}Sockets,
   Types,
   uos_httpgetthread,
@@ -155,7 +155,7 @@ type
     procedure addrow(const Sender: TObject);
     procedure deleterow(const Sender: TObject);
     procedure onexecswpstyle(const Sender: TObject);
-    procedure ontimericy(const Sender: TObject);
+    procedure onicyget(const Sender: TObject);
     procedure onpaintimg(const Sender: twidget; const acanvas: tcanvas);
     procedure getpicture(aurl: string);
     procedure onclickimage(const Sender: twidget; var ainfo: mouseeventinfoty);
@@ -168,7 +168,9 @@ type
     procedure m3uLoad(am3u: string);
     procedure onexport(const Sender: TObject);
     procedure m3uexport(am3u: string);
-   procedure oncreated(const sender: TObject);
+    procedure oncreated(const Sender: TObject);
+    procedure onicygetpicture(const Sender: TObject);
+    procedure onicygetlive(const Sender: TObject);
   end;
 
 const
@@ -187,11 +189,11 @@ var
   isbusy: Boolean = False;
   isexit: Boolean = False;
   hasbitmap: Boolean = False;
-  ordir, arecnp, icystr, theplaying: string;
+  ordir, arecnp, icystr, theplaying, apicture: string;
   pa, sf, mp, aa, op, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
-  uaudiotype: integer;
+  uaudiotype, incicy: integer;
   rectori: rectty;
   urlname: string = 'Simple Webstream Player';
  {$if defined(darwin) and defined(macapp)}
@@ -508,9 +510,18 @@ end;
 
 procedure twebstreamerfo.LoopProcPlayer1;
 begin
-//  if loopok then
-    if (PimgPreview.tag = 0) then
-      ShowLevel;
+  //  if loopok then
+  if (PimgPreview.tag = 0) then
+    ShowLevel;
+  if uaudiotype = 0 then
+  begin
+    Inc(incicy);
+    if incicy > 50 then
+    begin
+      onicygetlive(nil);
+      incicy := 0;
+    end;
+  end;
 end;
 
 procedure twebstreamerfo.ShowLevel();
@@ -752,11 +763,12 @@ begin
 
         //writeln('uaudiotype ' + inttostr(uaudiotype)); 
 
+        incicy := 0;
+
+        ttimer1.Enabled := False;
+
         if (aboolicy = True) then
-          if uaudiotype = 0 then
-            ttimer1.Enabled := True
-          else
-            ontimericy(nil);
+          onicyget(nil);
 
         messagedlg.Visible := False;
         ttimer2.Enabled    := False;
@@ -834,6 +846,7 @@ begin
   st := AnsiString(ordir + 'lib/Linux/32bit/LibSoundTouch-32.so');
   aa := AnsiString(ordir + 'lib/Linux/32bit/libfdk-aac-32.so');
   op := AnsiString(ordir + 'lib/Linux/32bit/LibOpusFile-32.so');
+  // op := '';
   {$ENDIF}
 
   {$if defined(linux) and defined(cpuarm)}
@@ -883,11 +896,11 @@ begin
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libcrypto-1_1.dll'));
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\32bit\libssl-1_1.dll'));
    {$endif}
-   
+
    {$if defined(cpu64) and defined(windows)}
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\64bit\libeay32.dll'));
     dynlibs.safeloadlibrary(AnsiString(ordir + 'lib\Windows\64bit\ssleay32.dll'));
-   {$endif} 
+   {$endif}
 
   if uos_LoadLib(PChar(pa), PChar(sf), PChar(mp), nil, nil, PChar(op), nil, PChar(aa)) = -1 then
     if uos_LoadLib('system', 'system', 'system', nil, nil, nil, nil, 'system') = -1 then
@@ -968,20 +981,20 @@ begin
   checkconnection();
 
   isinit := True;
-  
+
   optionswindow := [wo_taskbar];
-  
+
   window.recreatewindow;
-  
-  show;
-  
+
+  Show;
+
   bringtofront;
 
 end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
-  ttimer1.Enabled   := False;
+  //ttimer1.Enabled   := False;
   uos_Stop(webindex);
   typurl.Visible    := False;
   messagedlg.Visible := False;
@@ -1018,8 +1031,8 @@ end;
 
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
-  eurlname.Text   := urlname;
-  ttimer1.Enabled := False;
+  eurlname.Text := urlname;
+  //ttimer1.Enabled := False;
   uos_Stop(webindex);
   sleep(500);
   if Assigned(aimage) then
@@ -1029,8 +1042,8 @@ end;
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-  if uaudiotype = 0 then
-    ttimer1.Enabled         := False;
+  // if uaudiotype = 0 then
+  // ttimer1.Enabled       := False;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := True;
@@ -1047,8 +1060,8 @@ end;
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-  if uaudiotype = 0 then
-    ttimer1.Enabled         := true;
+  // if uaudiotype = 0 then
+  // ttimer1.Enabled       := True;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := False;
@@ -1145,7 +1158,7 @@ var
   {$ENDIF}
 begin
   hide;
-  
+
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
@@ -1622,9 +1635,53 @@ begin
   amem.Free;
 end;
 
-procedure twebstreamerfo.ontimericy(const Sender: TObject);
+procedure twebstreamerfo.onicyget(const Sender: TObject);
 var
-  atitle, apicture, adescri, agenre, aname, aurl, aurlcut, prefix: msestring;
+  adescri, agenre, aname, aurl, aurlcut, prefix: msestring;
+  ares: integer;
+begin
+  loopok        := False;
+  prefix        := '';
+  infopanel.tag := 0;
+
+  adescri := uos_InputGetURLicyDescription(webindex, webinindex);
+  agenre  := uos_InputGetURLicyGenre(webindex, webinindex);
+  aname   := uos_InputGetURLicyName(webindex, webinindex);
+  aurl    := uos_InputGetURLicyUrl(webindex, webinindex);
+
+  if infopanel.tag = 1 then
+    prefix      := '';
+  infopanel.tag := 0;
+
+  if Length(aname) > 35 then
+    aname  := trim(Copy(aname, 1, 35) + '...');
+  if Length(agenre) > 10 then
+    agenre := trim(Copy(agenre, 1, 10) + '...');
+
+  aurlcut := copy(theplaying, system.Pos('//', theplaying) + 2, Length(theplaying));
+
+  if Length(aurlcut) > 50 then
+    aurlcut := trim(Copy(aurlcut, 1, 50) + '...');
+
+  if Length(adescri) > 50 then
+    adescri := trim(Copy(adescri, 1, 50) + '...');
+
+  if length(aurl) > 0 then
+    aurlcut := trim(aurl);
+  if length(agenre) > 0 then
+    agenre  := ' ' + agenre;
+  if length(aname) > 0 then
+    aurlcut := aname + agenre;
+
+  infopanel.Value := aurlcut + #10 + adescri;
+
+  loopok := True;
+end;
+
+
+procedure twebstreamerfo.onicygetlive(const Sender: TObject);
+var
+  atitle, adescri, agenre, aname, aurl, aurlcut, prefix: msestring;
   ares: integer;
   sicy: PChar;
 begin
@@ -1657,8 +1714,8 @@ begin
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
         if trim(apicture) <> '' then
         begin
-          getpicture(apicture);
-          prefix := '          ';
+          ttimer1.Enabled := True;
+          prefix          := '          ';
         end;
       end;
 
@@ -1698,6 +1755,7 @@ begin
   end;
   loopok := True;
 end;
+
 
 procedure twebstreamerfo.onpaintimg(const Sender: twidget; const acanvas: tcanvas);
 var
@@ -1838,9 +1896,15 @@ begin
     m3uexport(tfiledialog1.controller.filename);
 end;
 
-procedure twebstreamerfo.oncreated(const sender: TObject);
+procedure twebstreamerfo.oncreated(const Sender: TObject);
 begin
-hide;
+  hide;
+end;
+
+procedure twebstreamerfo.onicygetpicture(const Sender: TObject);
+begin
+  getpicture(apicture);
 end;
 
 end.
+

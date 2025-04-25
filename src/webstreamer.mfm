@@ -4491,8 +4491,9 @@ object webstreamerfo: twebstreamerfo
     top = 156
   end
   object ttimer1: ttimer
-    interval = 2000000
-    ontimer = ontimericy
+    interval = 100000
+    options = [to_single]
+    ontimer = onicygetpicture
     left = 48
     top = 50
   end
