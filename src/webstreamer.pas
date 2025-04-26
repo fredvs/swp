@@ -63,6 +63,13 @@ type
     Height: integer;
     Name: string;
   end;
+  
+type 
+  TPictureThread = class (TThread)
+    protected 
+      procedure execute;
+      override;
+  end;  
 
 type
   twebstreamerfo = class(tdockform)
@@ -112,7 +119,6 @@ type
     bdelrow: TButton;
     tfacecomp2: tfacecomp;
     edstyle: tintegeredit;
-    ttimer1: ttimer;
     PimgPreview: tpaintbox;
     timagelist1: timagelist;
     eurlname: tedit;
@@ -169,7 +175,6 @@ type
     procedure onexport(const Sender: TObject);
     procedure m3uexport(am3u: string);
     procedure oncreated(const Sender: TObject);
-    procedure onicygetpicture(const Sender: TObject);
     procedure onicygetlive(const Sender: TObject);
   end;
 
@@ -207,6 +212,13 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
+  
+procedure TPictureThread.Execute;
+begin
+  FreeOnTerminate := True;
+  webstreamerfo.getpicture(apicture);
+  Terminate;
+end;  
 
 procedure twebstreamerfo.m3uexport(am3u: string);
 var
@@ -765,8 +777,6 @@ begin
 
         incicy := 0;
 
-        ttimer1.Enabled := False;
-
         if (aboolicy = True) then
           onicyget(nil);
 
@@ -994,7 +1004,6 @@ end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
-  //ttimer1.Enabled   := False;
   uos_Stop(webindex);
   typurl.Visible    := False;
   messagedlg.Visible := False;
@@ -1032,7 +1041,6 @@ end;
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   eurlname.Text := urlname;
-  //ttimer1.Enabled := False;
   uos_Stop(webindex);
   sleep(500);
   if Assigned(aimage) then
@@ -1042,8 +1050,6 @@ end;
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-  // if uaudiotype = 0 then
-  // ttimer1.Enabled       := False;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := True;
@@ -1060,8 +1066,6 @@ end;
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-  // if uaudiotype = 0 then
-  // ttimer1.Enabled       := True;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := False;
@@ -1714,7 +1718,7 @@ begin
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
         if trim(apicture) <> '' then
         begin
-          ttimer1.Enabled := True;
+          TPictureThread.Create (false);
           prefix          := '          ';
         end;
       end;
@@ -1899,11 +1903,6 @@ end;
 procedure twebstreamerfo.oncreated(const Sender: TObject);
 begin
   hide;
-end;
-
-procedure twebstreamerfo.onicygetpicture(const Sender: TObject);
-begin
-  getpicture(apicture);
 end;
 
 end.
