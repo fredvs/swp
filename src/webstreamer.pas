@@ -70,6 +70,14 @@ type
       procedure execute;
       override;
   end;  
+  
+type 
+  TURLThread = class (TThread)
+    protected 
+      procedure execute;
+      override;
+  end;    
+  
 
 type
   twebstreamerfo = class(tdockform)
@@ -176,6 +184,8 @@ type
     procedure m3uexport(am3u: string);
     procedure oncreated(const Sender: TObject);
     procedure onicygetlive(const Sender: TObject);
+    procedure onthreadurl(thetag : integer);
+
   end;
 
 const
@@ -193,12 +203,13 @@ var
   isinit: Boolean = False;
   isbusy: Boolean = False;
   isexit: Boolean = False;
+  isplaying : Boolean = false;
   hasbitmap: Boolean = False;
   ordir, arecnp, icystr, theplaying, apicture: string;
   pa, sf, mp, aa, op, st: string;
   boundchildsp: array of boundchild;
   noaac: Boolean = False;
-  uaudiotype, incicy: integer;
+  uaudiotype, incicy, openurltag: integer;
   rectori: rectty;
   urlname: string = 'Simple Webstream Player';
  {$if defined(darwin) and defined(macapp)}
@@ -217,6 +228,13 @@ procedure TPictureThread.Execute;
 begin
   FreeOnTerminate := True;
   webstreamerfo.getpicture(apicture);
+  Terminate;
+end; 
+
+procedure TURLThread.Execute;
+begin
+  FreeOnTerminate := True;
+  webstreamerfo.onthreadurl(openurltag);
   Terminate;
 end;  
 
@@ -743,6 +761,8 @@ begin
         application.ProcessMessages;
 
         uos_Play(webindex);  // everything is ready, here we are, lets play it...
+        
+        isplaying := true;
 
         if uaudiotype = 1 then
         begin
@@ -1005,6 +1025,7 @@ end;
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   uos_Stop(webindex);
+  isplaying := false;
   typurl.Visible    := False;
   messagedlg.Visible := False;
   Caption           := 'Simple Webstream Player';
@@ -1060,12 +1081,14 @@ begin
   btnPause.Enabled        := False;
   btnPause.Visible        := False;
   btnPause.face.template  := tfacecomp6;
+  isplaying := false;
   brecord.Caption         := 'Paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
+  isplaying := true;
   btnStart.Enabled        := False;
   btnStart.face.template  := tfacecomp6;
   btnResume.Enabled       := False;
@@ -1826,7 +1849,16 @@ end;
 
 procedure twebstreamerfo.onurl(const Sender: TObject);
 begin
-  case tmenuitem(Sender).tag of
+  if isplaying = false then
+  begin
+   openurltag := tmenuitem(Sender).tag;
+   TURLThread.Create (false);
+  end; 
+end;
+
+procedure twebstreamerfo.onthreadurl(thetag : integer);
+begin
+  case thetag of
     0: openurl('https://www.freepascal.org/');
     1: openurl('https://github.com/mse-org/mseide-msegui/');
     2: openurl('https://github.com/fredvs/uos/');
