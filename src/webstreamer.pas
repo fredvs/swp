@@ -357,7 +357,10 @@ begin
   begin
     messagedlg.top        := infopanel.top + 5;
     messagedlg.Text       := '       No Internet connection...';
+   if (edstyle.Value = 1) or (edstyle.Value = 4) then
+    messagedlg.font.color := cl_ltred else
     messagedlg.font.color := cl_red;
+    
     bno.font.color        := font.color;
     byes.Visible          := False;
     bno.Caption           := 'OK';
@@ -605,6 +608,8 @@ begin
       PimgPreview.Visible := False;
       btnStart.Enabled := False;
       btnStart.face.template := tfacecomp6;
+       if (edstyle.Value = 1) or (edstyle.Value = 4) then
+      infopanel.font.color := cl_ltred else
       infopanel.font.color := cl_red;
       infopanel.Value := 'Trying to get ' + historyfn.Value;
       application.ProcessMessages;
@@ -726,9 +731,9 @@ begin
         else if edstyle.Value = 2 then
           infopanel.font.color := cl_black
         else if edstyle.Value = 3 then
-          infopanel.font.color := cl_black
+          infopanel.font.color := $001014
         else if edstyle.Value = 4 then
-          infopanel.font.color := cl_white;    
+          infopanel.font.color := $FDF6E3;    
 
         if brecord.tag = 1 then
           infopanel.Value := 'Play + Record ' + historyfn.Value
@@ -815,7 +820,9 @@ begin
     end
     else
     begin
-      infopanel.font.color   := cl_red;
+       if (edstyle.Value = 1) or (edstyle.Value = 4) then
+     infopanel.font.color := cl_ltred else
+     infopanel.font.color := cl_red;
       infopanel.Value        := 'URL did not accessed';
       btnStart.Enabled       := True;
       btnStart.face.template := tfacecomp7;
@@ -1648,18 +1655,18 @@ begin
   
   if style = 3 then
   begin
-    color           := cl_default;
-    font.color      := cl_black;
-    font.color      := cl_black;
+    color           := $D1CBBA;
+    font.color      := $001014;
+    font.color      := $001014;
     vuRight.bar_face.fade_color[1] := $666666;
     vuleft.bar_face.fade_color[1] := $666666;
-    infopanel.font.color := cl_black;
-    griddisp.font.color := cl_black;
-    tmainmenu1.menu.color := cl_default;
-    tmainmenu1.menu.font.color := cl_black;
+    infopanel.font.color := $001014;
+    griddisp.font.color := $001014;
+    tmainmenu1.menu.color := $D1CBBA;
+    tmainmenu1.menu.font.color := $001014;
     tmainmenu1.menu.fontactive.color := $DE6B00;
-    tmainmenu1.menu.colorglyph := cl_black;
-    tmainmenu1.menu.colorglyphactive := cl_black;
+    tmainmenu1.menu.colorglyph := $001014;
+    tmainmenu1.menu.colorglyphactive := $001014;
     tfacecomp7.template.fade_color.items[0] := $FDF6E3;
     tfacecomp7.template.fade_color.items[1] := $D1CBBA;
     tfacecomp3.template.fade_color.items[0] := $FDF6E3;
@@ -1682,24 +1689,24 @@ begin
     griddisp.fixrows[-1].color := $D1CBBA;
     griddisp.zebra_color := $D1CBBA;
     container.color := cl_default;
-    infopanel.font.color := cl_black;
-    historyfn.frame.button.colorglyph := cl_black;
-    griddisp.frame.sbvert.colorglyph := cl_black;
+    infopanel.font.color := $001014;
+    historyfn.frame.button.colorglyph := $001014;
+    griddisp.frame.sbvert.colorglyph := $001014;
   end;
   
    if style = 4 then
   begin
-    color           := $575757;
-    font.color      := cl_white;
-    infopanel.font.color := cl_white;
-    griddisp.font.color := cl_white;
+    color           := $062D38;
+    font.color      := $FDF6E3;
+    infopanel.font.color := $FDF6E3;
+    griddisp.font.color := $FDF6E3;
     vuRight.bar_face.fade_color[1] := $0E0E0E;
     vuleft.bar_face.fade_color[1] := $0E0E0E;
-    tmainmenu1.menu.color := $575757;
-    tmainmenu1.menu.font.color := cl_white;
+    tmainmenu1.menu.color := $062D38;
+    tmainmenu1.menu.font.color := $FDF6E3;
     tmainmenu1.menu.fontactive.color := $EDBA8A;
-    tmainmenu1.menu.colorglyph := cl_white;
-    tmainmenu1.menu.colorglyphactive := cl_white;
+    tmainmenu1.menu.colorglyph := $FDF6E3;
+    tmainmenu1.menu.colorglyphactive := $FDF6E3;
     tfacecomp7.template.fade_color.items[0] := $062D38;
     tfacecomp7.template.fade_color.items[1] := $002B36;
     tfacecomp3.template.fade_color.items[0] := $062D38;
@@ -1721,9 +1728,9 @@ begin
     griddisp.fixrows[-1].color := $001014;
     griddisp.zebra_color := $073642;
     container.color := $001014;
-    infopanel.font.color := cl_white;
-    historyfn.frame.button.colorglyph := cl_white;
-    griddisp.frame.sbvert.colorglyph := cl_white;
+    infopanel.font.color := $FDF6E3;
+    historyfn.frame.button.colorglyph := $FDF6E3;
+    griddisp.frame.sbvert.colorglyph := $FDF6E3;
   end;
   
 end;
@@ -2003,6 +2010,8 @@ begin
   onstop(nil);
   messagedlg.top        := infopanel.top + 5;
   messagedlg.Text       := '       URL did not respond...';
+  if (edstyle.Value = 1) or (edstyle.Value = 4) then
+  messagedlg.font.color := cl_ltred else
   messagedlg.font.color := cl_red;
   bno.font.color        := font.color;
   byes.Visible          := False;
