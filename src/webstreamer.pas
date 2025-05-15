@@ -504,6 +504,11 @@ begin
     transpcolor := cl_black;
   if edstyle.Value = 2 then
     transpcolor := $636363;
+  if edstyle.Value = 3 then
+    transpcolor := $EEE8D5;
+  if edstyle.Value = 4 then
+    transpcolor := $002B36;  
+      
 
   rectrecform.pos  := nullpoint;
   rectrecform.size := panelwave.size;
@@ -719,7 +724,11 @@ begin
         else if edstyle.Value = 1 then
           infopanel.font.color := cl_white
         else if edstyle.Value = 2 then
-          infopanel.font.color := cl_black;
+          infopanel.font.color := cl_black
+        else if edstyle.Value = 3 then
+          infopanel.font.color := cl_black
+        else if edstyle.Value = 4 then
+          infopanel.font.color := cl_white;    
 
         if brecord.tag = 1 then
           infopanel.Value := 'Play + Record ' + historyfn.Value
@@ -969,18 +978,40 @@ begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
   end
   else if edstyle.Value = 1 then
   begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
   end
   else if edstyle.Value = 2 then
   begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+  end
+  else if edstyle.Value = 3 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := true;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+  end
+  else if edstyle.Value = 4 then
+  begin
+    tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := true;
   end;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
@@ -1614,6 +1645,87 @@ begin
     historyfn.frame.button.colorglyph := cl_black;
     griddisp.frame.sbvert.colorglyph := cl_black;
   end;
+  
+  if style = 3 then
+  begin
+    color           := cl_default;
+    font.color      := cl_black;
+    font.color      := cl_black;
+    vuRight.bar_face.fade_color[1] := $666666;
+    vuleft.bar_face.fade_color[1] := $666666;
+    infopanel.font.color := cl_black;
+    griddisp.font.color := cl_black;
+    tmainmenu1.menu.color := cl_default;
+    tmainmenu1.menu.font.color := cl_black;
+    tmainmenu1.menu.fontactive.color := $DE6B00;
+    tmainmenu1.menu.colorglyph := cl_black;
+    tmainmenu1.menu.colorglyphactive := cl_black;
+    tfacecomp7.template.fade_color.items[0] := $FDF6E3;
+    tfacecomp7.template.fade_color.items[1] := $D1CBBA;
+    tfacecomp3.template.fade_color.items[0] := $FDF6E3;
+    tfacecomp3.template.fade_color.items[1] := $B5B0A1;
+    tfacecomp4.template.fade_color.items[0] := $FDF6E3;
+    tfacecomp4.template.fade_color.items[1] := $EEE8D5;
+    tfacecomp6.template.fade_color.items[0] := $FDF6E3;
+    tfacecomp6.template.fade_color.items[1] := $B5B0A1;
+    tfacecomp9.template.fade_color.items[0] := $FFBDBD;
+    tfacecomp9.template.fade_color.items[1] := cl_red;
+    tfacecomp8.template.fade_color.items[0] := $EEE8D5;
+    tfacecomp8.template.fade_color.items[1] := $EEE8D5;
+    tfacecomp2.template.fade_color.items[0] := $FDF6E3;
+    tfacecomp2.template.fade_color.items[1] := $B5B0A1;
+    container.color := $EEE8D5;
+    griddisp.datacols.colorfocused := $FFDBA8;
+    griddisp[0].color := $FDF6E3;
+    griddisp[1].color := $FDF6E3;
+    griddisp[2].color := $FDF6E3;
+    griddisp.fixrows[-1].color := $D1CBBA;
+    griddisp.zebra_color := $D1CBBA;
+    container.color := cl_default;
+    infopanel.font.color := cl_black;
+    historyfn.frame.button.colorglyph := cl_black;
+    griddisp.frame.sbvert.colorglyph := cl_black;
+  end;
+  
+   if style = 4 then
+  begin
+    color           := $575757;
+    font.color      := cl_white;
+    infopanel.font.color := cl_white;
+    griddisp.font.color := cl_white;
+    vuRight.bar_face.fade_color[1] := $0E0E0E;
+    vuleft.bar_face.fade_color[1] := $0E0E0E;
+    tmainmenu1.menu.color := $575757;
+    tmainmenu1.menu.font.color := cl_white;
+    tmainmenu1.menu.fontactive.color := $EDBA8A;
+    tmainmenu1.menu.colorglyph := cl_white;
+    tmainmenu1.menu.colorglyphactive := cl_white;
+    tfacecomp7.template.fade_color.items[0] := $062D38;
+    tfacecomp7.template.fade_color.items[1] := $002B36;
+    tfacecomp3.template.fade_color.items[0] := $062D38;
+    tfacecomp3.template.fade_color.items[1] := $001014;
+    tfacecomp4.template.fade_color.items[0] := $062D38;
+    tfacecomp4.template.fade_color.items[1] := $001014;
+    tfacecomp6.template.fade_color.items[0] := $002B36;
+    tfacecomp6.template.fade_color.items[1] := $001014;
+    tfacecomp9.template.fade_color.items[0] := $FFBDBD;
+    tfacecomp9.template.fade_color.items[1] := cl_dkred;
+    tfacecomp8.template.fade_color.items[0] := $FF9900;
+    tfacecomp8.template.fade_color.items[1] := $633C00;
+    tfacecomp2.template.fade_color.items[0] := $062D38;
+    tfacecomp2.template.fade_color.items[1] := $001014;
+    griddisp.datacols.colorfocused := $B86B00;
+    griddisp[0].color := $001014;
+    griddisp[1].color := $001014;
+    griddisp[2].color := $001014;
+    griddisp.fixrows[-1].color := $001014;
+    griddisp.zebra_color := $073642;
+    container.color := $001014;
+    infopanel.font.color := cl_white;
+    historyfn.frame.button.colorglyph := cl_white;
+    griddisp.frame.sbvert.colorglyph := cl_white;
+  end;
+  
 end;
 
 procedure twebstreamerfo.onexecswpstyle(const Sender: TObject);
@@ -1623,7 +1735,11 @@ begin
   else if tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked = True then
     edstyle.Value := 1
   else if tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked = True then
-    edstyle.Value := 2;
+    edstyle.Value := 2
+  else if tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked = True then
+    edstyle.Value := 3
+  else if tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked = True then
+    edstyle.Value := 4;    
   setstyle(edstyle.Value);
   InitDrawLive();
 end;
