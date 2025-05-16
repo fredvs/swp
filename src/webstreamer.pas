@@ -1677,8 +1677,8 @@ begin
     tfacecomp6.template.fade_color.items[1] := $B5B0A1;
     tfacecomp9.template.fade_color.items[0] := $FFBDBD;
     tfacecomp9.template.fade_color.items[1] := cl_red;
-    tfacecomp8.template.fade_color.items[0] := $EEE8D5;
-    tfacecomp8.template.fade_color.items[1] := $EEE8D5;
+    tfacecomp8.template.fade_color.items[0] := $FFF8EB;
+    tfacecomp8.template.fade_color.items[1] := $F0BB60;
     tfacecomp2.template.fade_color.items[0] := $FDF6E3;
     tfacecomp2.template.fade_color.items[1] := $B5B0A1;
     container.color := $EEE8D5;
