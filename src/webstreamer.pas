@@ -13,6 +13,7 @@ uses
   uos_flat,
   Math,
   msetypes,
+  msekeyboard,
   mseglob,
   mseguiglob,
   mseguiintf,
@@ -1384,8 +1385,16 @@ begin
     begin
       urlname := griddisp[0][griddisp.focusedcell.row];
 
-      if (ss_double in info.mouseeventinfopo^.shiftstate) then
+      if (ss_double in info.mouseeventinfopo^.shiftstate)  then
         if trim(griddisp[2][griddisp.focusedcell.row]) <> '' then
+        begin
+          historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+          historyfn.savehistoryvalue;
+        end;
+    end else if (info.eventkind = cek_keyup) then
+    begin
+     if (info.keyeventinfopo^.key = key_return) and
+     (trim(griddisp[2][griddisp.focusedcell.row]) <> '') then
         begin
           historyfn.Value := griddisp[2][griddisp.focusedcell.row];
           historyfn.savehistoryvalue;
@@ -2029,12 +2038,12 @@ begin
   tfiledialog1.controller.compact := False;
   tfiledialog1.controller.fontheight := font.Height;
   tfiledialog1.controller.filter  := '"*.m3u"';
-  tfiledialog1.controller.filename := '';
+ // tfiledialog1.controller.filename := '';
   tfiledialog1.controller.fontcolor := cl_black;
   tfiledialog1.dialogkind         := fdk_open;
-  tfiledialog1.controller.options := [fdo_sysfilename, fdo_savelastdir];
-  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
-  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.options := [fdo_sysfilename];
+ // tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+ // tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
     m3uLoad(tfiledialog1.controller.filename);
 end;
