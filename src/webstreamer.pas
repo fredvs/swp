@@ -2042,8 +2042,8 @@ begin
   tfiledialog1.controller.fontcolor := cl_black;
   tfiledialog1.dialogkind         := fdk_open;
   tfiledialog1.controller.options := [fdo_sysfilename];
- // tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
- // tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) ;
+  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) ;
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
     m3uLoad(tfiledialog1.controller.filename);
 end;
