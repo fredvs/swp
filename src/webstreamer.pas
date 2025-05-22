@@ -2035,15 +2035,17 @@ begin
   tfiledialog1.controller.icon    := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file to import';
   tfiledialog1.controller.nopanel := False;
-  tfiledialog1.controller.compact := False;
+  tfiledialog1.controller.compact := true;
   tfiledialog1.controller.fontheight := font.Height;
   tfiledialog1.controller.filter  := '"*.m3u"';
  // tfiledialog1.controller.filename := '';
+   
   tfiledialog1.controller.fontcolor := cl_black;
   tfiledialog1.dialogkind         := fdk_open;
   tfiledialog1.controller.options := [fdo_sysfilename];
-  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) ;
-  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) ;
+  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' ;
+  application.processmessages;
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
     m3uLoad(tfiledialog1.controller.filename);
 end;
@@ -2053,7 +2055,7 @@ begin
   tfiledialog1.controller.icon     := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file name to export';
   tfiledialog1.controller.nopanel  := False;
-  tfiledialog1.controller.compact  := False;
+  tfiledialog1.controller.compact  := true;
   tfiledialog1.controller.fontheight := font.Height;
   tfiledialog1.controller.filter   := '"*.m3u"';
   tfiledialog1.controller.fontcolor := cl_black;

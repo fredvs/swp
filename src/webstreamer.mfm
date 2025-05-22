@@ -4747,7 +4747,6 @@ object webstreamerfo: twebstreamerfo
     top = 48
   end
   object tfiledialog1: tfiledialogx
-    statfile = tstatfile1
     controller.fontheight = 0
     controller.fontname = 'stf_default'
     controller.fontcolor = -1610612734
