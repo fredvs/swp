@@ -1977,7 +1977,9 @@ begin
       begin
         bounds_cxmin := 0;
         bounds_cymin := 0;
-                
+        bounds_cxmax := 0;
+        bounds_cymax := 0;
+        
         left         := rectori.cx;
         top          := rectori.cy;
         width        := rectori.x ;

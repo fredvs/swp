@@ -3,7 +3,7 @@ object webstreamerfo: twebstreamerfo
   bounds_x = 563
   bounds_y = 317
   bounds_cx = 348
-  bounds_cy = 357
+  bounds_cy = 438
   bounds_cxmax = 348
   container.color = 11977903
   container.frame.localprops = []
@@ -14,7 +14,7 @@ object webstreamerfo: twebstreamerfo
     0
     19
     348
-    338
+    419
   )
   optionswindow = [wo_noframe, wo_notaskbar]
   mainmenu = tmainmenu1
@@ -2978,6 +2978,7 @@ object webstreamerfo: twebstreamerfo
   oncreated = oncreated
   oneventloopstart = oneventstart
   onclose = onclosed
+  onresize = onresize
   moduleclassname = 'tdockform'
   object panelcommand: tpaintbox
     optionswidget = [ow_mousefocus, ow_tabfocus, ow_arrowfocus, ow_mousewheel, ow_destroywidgets]
