@@ -187,6 +187,7 @@ type
     procedure onicygetlive(const Sender: TObject);
     procedure onthreadurl(thetag : integer);
 
+   procedure onresize(const sender: TObject);
   end;
 
 const
@@ -1049,8 +1050,6 @@ begin
 
   checkconnection();
 
-  isinit := True;
-
   optionswindow := [wo_taskbar];
 
   window.recreatewindow;
@@ -1058,7 +1057,7 @@ begin
   Show;
 
   bringtofront;
-
+  isinit := True;
 end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
@@ -1202,8 +1201,15 @@ begin
   end;
   application.ProcessMessages;
 
+ if showgrid.Value then
+ begin
+  bounds_cymax := 0;
+  bounds_cymin := griddisp.top + 100;
+  end else
+  begin
   bounds_cymax := bounds_cy;
   bounds_cymin := bounds_cy;
+  end;
 
   if (PimgPreview.tag = 1) and (PimgPreview.Visible) then
   begin
@@ -2071,6 +2077,18 @@ end;
 procedure twebstreamerfo.oncreated(const Sender: TObject);
 begin
   hide;
+end;
+
+procedure twebstreamerfo.onresize(const sender: TObject);
+begin
+
+ if (showgrid.Value) and (isinit) then
+ begin
+  griddisp.height := height - griddisp.top - baddrow.height - 18 - font.height;
+  baddrow.top := griddisp.bottom + 6;
+  bdelrow.top := baddrow.top;
+ end;
+
 end;
 
 end.
