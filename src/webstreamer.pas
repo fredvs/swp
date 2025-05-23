@@ -1948,6 +1948,8 @@ begin
       begin
         rectori.cx := left;
         rectori.cy := top;
+        rectori.x := width;
+        rectori.y := height;
         tmainmenu1.menu.Visible := False;
         if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
         begin
@@ -1965,20 +1967,44 @@ begin
         PimgPreview.top := 0;
         PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
+        bounds_cxmax := bounds_cx;
+        bounds_cxmin := bounds_cx;
+        bounds_cymax := bounds_cy;
+        bounds_cymin := bounds_cy;
         PimgPreview.tag    := 1;
       end
       else
       begin
-        bounds_cxmax := bounds_cxmin;
-        bounds_cymax := bounds_cymin;
+        bounds_cxmin := 0;
+        bounds_cymin := 0;
+                
         left         := rectori.cx;
         top          := rectori.cy;
+        width        := rectori.x ;
+        height       := rectori.y ;
+        
+        bounds_cxmin := width;
+        bounds_cxmax := width;
+        
+        invalidatewidget;
+     
+         if showgrid.Value then
+       begin
+       bounds_cymax := 0;
+       bounds_cymin := griddisp.top + 100;
+       end else
+       begin
+       bounds_cymax := bounds_cy;
+       bounds_cymin := bounds_cy;
+       end;
+        
         tmainmenu1.menu.Visible := True;
         PimgPreview.top := infopanel.top;
         PimgPreview.Height := infopanel.Height;
         PimgPreview.Width := infopanel.Height;
         PimgPreview.tag := 0;
       end;
+       
       Show;
       bringtofront;
       PimgPreview.invalidatewidget;
