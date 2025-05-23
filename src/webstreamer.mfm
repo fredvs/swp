@@ -3731,23 +3731,13 @@ object webstreamerfo: twebstreamerfo
     frame.sbhorz.width = 0
     frame.localprops = [frl_levelo, frl_colorframe, frl_fileft, frl_fitop, frl_firight, frl_fibottom, frl_colorclient]
     frame.localprops1 = []
-    face.fade_pos.count = 1
-    face.fade_pos.items = (
-      0
-    )
-    face.fade_color.count = 1
-    face.fade_color.items = (
-      -1610612731
-    )
-    face.fade_direction = gd_down
-    face.localprops = []
     taborder = 5
     hint = '2x Click to select a URL'
     visible = False
     bounds_x = 1
     bounds_y = 237
     bounds_cx = 344
-    bounds_cy = 98
+    bounds_cy = 165
     optionsgrid = [og_rowmoving, og_keyrowmoving, og_rowinserting, og_rowdeleting, og_focuscellonenter, og_autoappend, og_savestate, og_colchangeontabkey, og_wrapcol, og_autopopup, og_mousescrollcol]
     datacols.count = 3
     datacols.colorfocused = 16767912
