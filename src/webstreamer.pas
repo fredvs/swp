@@ -1988,9 +1988,18 @@ begin
         bounds_cxmin := width;
         bounds_cxmax := width;
         
+           if (showgrid.Value) and (tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked) then
+       begin
+        showgrid.Value := false;
+        onchangeshowwave(nil);
         invalidatewidget;
-     
-         if showgrid.Value then
+        showgrid.Value := true;
+        onchangeshowwave(nil);
+       end;
+       
+       invalidatewidget;
+                
+       if (showgrid.Value) then
        begin
        bounds_cymax := 0;
        bounds_cymin := griddisp.top + 100;
