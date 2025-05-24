@@ -64,21 +64,21 @@ type
     Height: integer;
     Name: string;
   end;
-  
-type 
-  TPictureThread = class (TThread)
-    protected 
-      procedure execute;
+
+type
+  TPictureThread = class(TThread)
+  protected
+    procedure Execute;
       override;
-  end;  
-  
-type 
-  TURLThread = class (TThread)
-    protected 
-      procedure execute;
+  end;
+
+type
+  TURLThread = class(TThread)
+  protected
+    procedure Execute;
       override;
-  end;    
-  
+  end;
+
 
 type
   twebstreamerfo = class(tdockform)
@@ -185,9 +185,9 @@ type
     procedure m3uexport(am3u: string);
     procedure oncreated(const Sender: TObject);
     procedure onicygetlive(const Sender: TObject);
-    procedure onthreadurl(thetag : integer);
+    procedure onthreadurl(thetag: integer);
 
-   procedure onresize(const sender: TObject);
+    procedure onresize(const Sender: TObject);
   end;
 
 const
@@ -205,7 +205,7 @@ var
   isinit: Boolean = False;
   isbusy: Boolean = False;
   isexit: Boolean = False;
-  isplaying : Boolean = false;
+  isplaying: Boolean = False;
   hasbitmap: Boolean = False;
   ordir, arecnp, icystr, theplaying, apicture: string;
   pa, sf, mp, aa, op, st: string;
@@ -225,20 +225,20 @@ uses
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
   webstreamer_mfm;
-  
+
 procedure TPictureThread.Execute;
 begin
   FreeOnTerminate := True;
   webstreamerfo.getpicture(apicture);
   Terminate;
-end; 
+end;
 
 procedure TURLThread.Execute;
 begin
   FreeOnTerminate := True;
   webstreamerfo.onthreadurl(openurltag);
   Terminate;
-end;  
+end;
 
 procedure twebstreamerfo.m3uexport(am3u: string);
 var
@@ -357,16 +357,17 @@ begin
 
   if Result = False then
   begin
-    messagedlg.top        := infopanel.top + 5;
-    messagedlg.Text       := '       No Internet connection...';
-   if (edstyle.Value = 1) or (edstyle.Value = 4) then
-    messagedlg.font.color := cl_ltred else
-    messagedlg.font.color := cl_red;
-    
-    bno.font.color        := font.color;
-    byes.Visible          := False;
-    bno.Caption           := 'OK';
-    messagedlg.Visible    := True;
+    messagedlg.top  := infopanel.top + 5;
+    messagedlg.Text := '       No Internet connection...';
+    if (edstyle.Value = 1) or (edstyle.Value = 4) then
+      messagedlg.font.color := cl_ltred
+    else
+      messagedlg.font.color := cl_red;
+
+    bno.font.color     := font.color;
+    byes.Visible       := False;
+    bno.Caption        := 'OK';
+    messagedlg.Visible := True;
   end;
 end;
 
@@ -512,8 +513,8 @@ begin
   if edstyle.Value = 3 then
     transpcolor := $EEE8D5;
   if edstyle.Value = 4 then
-    transpcolor := $002B36;  
-      
+    transpcolor := $002B36;
+
 
   rectrecform.pos  := nullpoint;
   rectrecform.size := panelwave.size;
@@ -603,16 +604,17 @@ begin
     // writeln('CheckURLStatus = ', res);
     if (res = 0) then
     begin
-      ttimer2.Enabled := False;
-      ttimer2.Enabled := True;
+      ttimer2.Enabled     := False;
+      ttimer2.Enabled     := True;
       InitDrawLive();
-      hasbitmap  := False;
+      hasbitmap           := False;
       PimgPreview.Visible := False;
-      btnStart.Enabled := False;
+      btnStart.Enabled    := False;
       btnStart.face.template := tfacecomp6;
-       if (edstyle.Value = 1) or (edstyle.Value = 4) then
-      infopanel.font.color := cl_ltred else
-      infopanel.font.color := cl_red;
+      if (edstyle.Value = 1) or (edstyle.Value = 4) then
+        infopanel.font.color := cl_ltred
+      else
+        infopanel.font.color := cl_red;
       infopanel.Value := 'Trying to get ' + historyfn.Value;
       application.ProcessMessages;
       webindex   := 0;
@@ -735,7 +737,7 @@ begin
         else if edstyle.Value = 3 then
           infopanel.font.color := $001014
         else if edstyle.Value = 4 then
-          infopanel.font.color := $FDF6E3;    
+          infopanel.font.color := $FDF6E3;
 
         if brecord.tag = 1 then
           infopanel.Value := 'Play + Record ' + historyfn.Value
@@ -777,8 +779,8 @@ begin
         application.ProcessMessages;
 
         uos_Play(webindex);  // everything is ready, here we are, lets play it...
-        
-        isplaying := true;
+
+        isplaying := True;
 
         if uaudiotype = 1 then
         begin
@@ -822,11 +824,12 @@ begin
     end
     else
     begin
-       if (edstyle.Value = 1) or (edstyle.Value = 4) then
-     infopanel.font.color := cl_ltred else
-     infopanel.font.color := cl_red;
-      infopanel.Value        := 'URL did not accessed';
-      btnStart.Enabled       := True;
+      if (edstyle.Value = 1) or (edstyle.Value = 4) then
+        infopanel.font.color := cl_ltred
+      else
+        infopanel.font.color := cl_red;
+      infopanel.Value := 'URL did not accessed';
+      btnStart.Enabled := True;
       btnStart.face.template := tfacecomp7;
     end;
   end;
@@ -988,7 +991,7 @@ begin
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked  := False;
   end
   else if edstyle.Value = 1 then
   begin
@@ -996,7 +999,7 @@ begin
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked  := False;
   end
   else if edstyle.Value = 2 then
   begin
@@ -1004,23 +1007,23 @@ begin
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := True;
     tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked  := False;
   end
   else if edstyle.Value = 3 then
   begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := true;
-    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := False;
+    tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := True;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked  := False;
   end
   else if edstyle.Value = 4 then
   begin
     tmainmenu1.menu.itembynames(['config', 'style', 'swpstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'carbonstyle']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := false;
+    tmainmenu1.menu.itembynames(['config', 'style', 'silverstyle']).Checked := False;
     tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked := False;
-    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked := true;
+    tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked  := True;
   end;
 
   tmainmenu1.menu.itembynames(['showwav']).Checked := showwave.Value;
@@ -1063,7 +1066,7 @@ end;
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   uos_Stop(webindex);
-  isplaying := false;
+  isplaying         := False;
   typurl.Visible    := False;
   messagedlg.Visible := False;
   Caption           := 'Simple Webstream Player';
@@ -1109,35 +1112,35 @@ end;
 procedure twebstreamerfo.onpause(const Sender: TObject);
 begin
   uos_Pause(webindex);
-  btnStart.Enabled        := False;
-  btnStart.face.template  := tfacecomp6;
-  btnResume.Enabled       := True;
-  btnResume.Visible       := True;
+  btnStart.Enabled := False;
+  btnStart.face.template := tfacecomp6;
+  btnResume.Enabled := True;
+  btnResume.Visible := True;
   btnResume.face.template := tfacecomp7;
-  btnStop.Enabled         := True;
-  btnStop.face.template   := tfacecomp7;
-  btnPause.Enabled        := False;
-  btnPause.Visible        := False;
-  btnPause.face.template  := tfacecomp6;
-  isplaying := false;
-  brecord.Caption         := 'Paused...';
+  btnStop.Enabled := True;
+  btnStop.face.template := tfacecomp7;
+  btnPause.Enabled := False;
+  btnPause.Visible := False;
+  btnPause.face.template := tfacecomp6;
+  isplaying       := False;
+  brecord.Caption := 'Paused...';
 end;
 
 procedure twebstreamerfo.onresume(const Sender: TObject);
 begin
   uos_replay(webindex);
-  isplaying := true;
-  btnStart.Enabled        := False;
-  btnStart.face.template  := tfacecomp6;
-  btnResume.Enabled       := False;
-  btnResume.Visible       := False;
+  isplaying         := True;
+  btnStart.Enabled  := False;
+  btnStart.face.template := tfacecomp6;
+  btnResume.Enabled := False;
+  btnResume.Visible := False;
   btnResume.face.template := tfacecomp6;
-  btnStop.Enabled         := True;
-  btnStop.face.template   := tfacecomp7;
-  btnPause.Enabled        := True;
-  btnpause.Visible        := True;
-  btnPause.face.template  := tfacecomp7;
-  brecord.Caption         := 'Resumed...';
+  btnStop.Enabled   := True;
+  btnStop.face.template := tfacecomp7;
+  btnPause.Enabled  := True;
+  btnpause.Visible  := True;
+  btnPause.face.template := tfacecomp7;
+  brecord.Caption   := 'Resumed...';
 end;
 
 procedure twebstreamerfo.onchangevol(const Sender: TObject);
@@ -1201,14 +1204,15 @@ begin
   end;
   application.ProcessMessages;
 
- if showgrid.Value then
- begin
-  bounds_cymax := 0;
-  bounds_cymin := griddisp.top + 100;
-  end else
+  if showgrid.Value then
   begin
-  bounds_cymax := bounds_cy;
-  bounds_cymin := bounds_cy;
+    bounds_cymax := 0;
+    bounds_cymin := griddisp.top + 100;
+  end
+  else
+  begin
+    bounds_cymax := bounds_cy;
+    bounds_cymin := bounds_cy;
   end;
 
   if (PimgPreview.tag = 1) and (PimgPreview.Visible) then
@@ -1391,21 +1395,20 @@ begin
     begin
       urlname := griddisp[0][griddisp.focusedcell.row];
 
-      if (ss_double in info.mouseeventinfopo^.shiftstate)  then
+      if (ss_double in info.mouseeventinfopo^.shiftstate) then
         if trim(griddisp[2][griddisp.focusedcell.row]) <> '' then
         begin
           historyfn.Value := griddisp[2][griddisp.focusedcell.row];
           historyfn.savehistoryvalue;
         end;
-    end else if (info.eventkind = cek_keyup) then
-    begin
-     if (info.keyeventinfopo^.key = key_return) and
-     (trim(griddisp[2][griddisp.focusedcell.row]) <> '') then
-        begin
-          historyfn.Value := griddisp[2][griddisp.focusedcell.row];
-          historyfn.savehistoryvalue;
-        end;
-    end;
+    end
+    else if (info.eventkind = cek_keyup) then
+      if (info.keyeventinfopo^.key = key_return) and
+        (trim(griddisp[2][griddisp.focusedcell.row]) <> '') then
+      begin
+        historyfn.Value := griddisp[2][griddisp.focusedcell.row];
+        historyfn.savehistoryvalue;
+      end;
 end;
 
 procedure twebstreamerfo.onafterdevice(const Sender: TObject);
@@ -1667,7 +1670,7 @@ begin
     historyfn.frame.button.colorglyph := cl_black;
     griddisp.frame.sbvert.colorglyph := cl_black;
   end;
-  
+
   if style = 3 then
   begin
     color           := $D1CBBA;
@@ -1708,8 +1711,8 @@ begin
     historyfn.frame.button.colorglyph := $001014;
     griddisp.frame.sbvert.colorglyph := $001014;
   end;
-  
-   if style = 4 then
+
+  if style = 4 then
   begin
     color           := $062D38;
     font.color      := $FDF6E3;
@@ -1747,7 +1750,7 @@ begin
     historyfn.frame.button.colorglyph := $FDF6E3;
     griddisp.frame.sbvert.colorglyph := $FDF6E3;
   end;
-  
+
 end;
 
 procedure twebstreamerfo.onexecswpstyle(const Sender: TObject);
@@ -1761,7 +1764,7 @@ begin
   else if tmainmenu1.menu.itembynames(['config', 'style', 'sollight']).Checked = True then
     edstyle.Value := 3
   else if tmainmenu1.menu.itembynames(['config', 'style', 'soldark']).Checked = True then
-    edstyle.Value := 4;    
+    edstyle.Value := 4;
   setstyle(edstyle.Value);
   InitDrawLive();
 end;
@@ -1879,8 +1882,8 @@ begin
         apicture := Copy(apicture, 1, system.Pos('''', apicture) - 1);
         if trim(apicture) <> '' then
         begin
-          TPictureThread.Create (false);
-          prefix          := '          ';
+          TPictureThread.Create(False);
+          prefix := '          ';
         end;
       end;
 
@@ -1948,8 +1951,8 @@ begin
       begin
         rectori.cx := left;
         rectori.cy := top;
-        rectori.x := width;
-        rectori.y := height;
+        rectori.x  := Width;
+        rectori.y  := Height;
         tmainmenu1.menu.Visible := False;
         if tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked then
         begin
@@ -1967,10 +1970,10 @@ begin
         PimgPreview.top := 0;
         PimgPreview.Height := Height + round(2 * fontheight / 12);
         PimgPreview.Width  := Width;
-        bounds_cxmax := bounds_cx;
-        bounds_cxmin := bounds_cx;
-        bounds_cymax := bounds_cy;
-        bounds_cymin := bounds_cy;
+        bounds_cxmax       := bounds_cx;
+        bounds_cxmin       := bounds_cx;
+        bounds_cymax       := bounds_cy;
+        bounds_cymin       := bounds_cy;
         PimgPreview.tag    := 1;
       end
       else
@@ -1979,43 +1982,44 @@ begin
         bounds_cymin := 0;
         bounds_cxmax := 0;
         bounds_cymax := 0;
-        
-        left         := rectori.cx;
-        top          := rectori.cy;
-        width        := rectori.x ;
-        height       := rectori.y ;
-        
-        bounds_cxmin := width;
-        bounds_cxmax := width;
-        
-           if (showgrid.Value) and (tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked) then
-       begin
-        showgrid.Value := false;
-        onchangeshowwave(nil);
+
+        left   := rectori.cx;
+        top    := rectori.cy;
+        Width  := rectori.x;
+        Height := rectori.y;
+
+        bounds_cxmin := Width;
+        bounds_cxmax := Width;
+
+        if (showgrid.Value) and (tmainmenu1.menu.itembynames(['config', 'fullscreen']).Checked) then
+        begin
+          showgrid.Value := False;
+          onchangeshowwave(nil);
+          invalidatewidget;
+          showgrid.Value := True;
+          onchangeshowwave(nil);
+        end;
+
         invalidatewidget;
-        showgrid.Value := true;
-        onchangeshowwave(nil);
-       end;
-       
-       invalidatewidget;
-                
-       if (showgrid.Value) then
-       begin
-       bounds_cymax := 0;
-       bounds_cymin := griddisp.top + 100;
-       end else
-       begin
-       bounds_cymax := bounds_cy;
-       bounds_cymin := bounds_cy;
-       end;
-        
+
+        if (showgrid.Value) then
+        begin
+          bounds_cymax := 0;
+          bounds_cymin := griddisp.top + 100;
+        end
+        else
+        begin
+          bounds_cymax := bounds_cy;
+          bounds_cymin := bounds_cy;
+        end;
+
         tmainmenu1.menu.Visible := True;
-        PimgPreview.top := infopanel.top;
-        PimgPreview.Height := infopanel.Height;
-        PimgPreview.Width := infopanel.Height;
-        PimgPreview.tag := 0;
+        PimgPreview.top         := infopanel.top;
+        PimgPreview.Height      := infopanel.Height;
+        PimgPreview.Width       := infopanel.Height;
+        PimgPreview.tag         := 0;
       end;
-       
+
       Show;
       bringtofront;
       PimgPreview.invalidatewidget;
@@ -2024,14 +2028,14 @@ end;
 
 procedure twebstreamerfo.onurl(const Sender: TObject);
 begin
-  if isplaying = false then
+  if isplaying = False then
   begin
-   openurltag := tmenuitem(Sender).tag;
-   TURLThread.Create (false);
-  end; 
+    openurltag := tmenuitem(Sender).tag;
+    TURLThread.Create(False);
+  end;
 end;
 
-procedure twebstreamerfo.onthreadurl(thetag : integer);
+procedure twebstreamerfo.onthreadurl(thetag: integer);
 begin
   case thetag of
     0: openurl('https://www.freepascal.org/');
@@ -2060,35 +2064,36 @@ end;
 procedure twebstreamerfo.ontimeout(const Sender: TObject);
 begin
   onstop(nil);
-  messagedlg.top        := infopanel.top + 5;
-  messagedlg.Text       := '       URL did not respond...';
+  messagedlg.top  := infopanel.top + 5;
+  messagedlg.Text := '       URL did not respond...';
   if (edstyle.Value = 1) or (edstyle.Value = 4) then
-  messagedlg.font.color := cl_ltred else
-  messagedlg.font.color := cl_red;
-  bno.font.color        := font.color;
-  byes.Visible          := False;
-  bno.Caption           := 'OK';
-  btnStart.Enabled      := True;
+    messagedlg.font.color := cl_ltred
+  else
+    messagedlg.font.color := cl_red;
+  bno.font.color     := font.color;
+  byes.Visible       := False;
+  bno.Caption        := 'OK';
+  btnStart.Enabled   := True;
   btnStart.face.template := tfacecomp7;
-  messagedlg.Visible    := True;
+  messagedlg.Visible := True;
 end;
 
 procedure twebstreamerfo.onimporte(const Sender: TObject);
 begin
-  tfiledialog1.controller.icon    := icon;
+  tfiledialog1.controller.icon        := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file to import';
-  tfiledialog1.controller.nopanel := False;
-  tfiledialog1.controller.compact := true;
-  tfiledialog1.controller.fontheight := font.Height;
-  tfiledialog1.controller.filter  := '"*.m3u"';
- // tfiledialog1.controller.filename := '';
-   
+  tfiledialog1.controller.nopanel     := False;
+  tfiledialog1.controller.compact     := True;
+  tfiledialog1.controller.fontheight  := font.Height;
+  tfiledialog1.controller.filter      := '"*.m3u"';
+  // tfiledialog1.controller.filename := '';
+
   tfiledialog1.controller.fontcolor := cl_black;
-  tfiledialog1.dialogkind         := fdk_open;
-  tfiledialog1.controller.options := [fdo_sysfilename];
-  tfiledialog1.controller.basedir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
-  tfiledialog1.controller.lastdir := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u' ;
-  application.processmessages;
+  tfiledialog1.dialogkind           := fdk_open;
+  tfiledialog1.controller.options   := [fdo_sysfilename];
+  tfiledialog1.controller.basedir   := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  tfiledialog1.controller.lastdir   := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'm3u';
+  application.ProcessMessages;
   if tfiledialog1.controller.Execute(fdk_open) = mr_ok then
     m3uLoad(tfiledialog1.controller.filename);
 end;
@@ -2098,7 +2103,7 @@ begin
   tfiledialog1.controller.icon     := icon;
   tfiledialog1.controller.captionopen := 'Choose a .m3u file name to export';
   tfiledialog1.controller.nopanel  := False;
-  tfiledialog1.controller.compact  := true;
+  tfiledialog1.controller.compact  := True;
   tfiledialog1.controller.fontheight := font.Height;
   tfiledialog1.controller.filter   := '"*.m3u"';
   tfiledialog1.controller.fontcolor := cl_black;
@@ -2116,15 +2121,15 @@ begin
   hide;
 end;
 
-procedure twebstreamerfo.onresize(const sender: TObject);
+procedure twebstreamerfo.onresize(const Sender: TObject);
 begin
 
- if (showgrid.Value) and (isinit) then
- begin
-  griddisp.height := height - griddisp.top - baddrow.height - 18 - font.height;
-  baddrow.top := griddisp.bottom + 6;
-  bdelrow.top := baddrow.top;
- end;
+  if (showgrid.Value) and (isinit) then
+  begin
+    griddisp.Height := Height - griddisp.top - baddrow.Height - 18 - font.Height;
+    baddrow.top     := griddisp.bottom + 6;
+    bdelrow.top     := baddrow.top;
+  end;
 
 end;
 
