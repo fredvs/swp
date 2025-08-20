@@ -1772,7 +1772,7 @@ var
   Http: TFPHTTPClient;
   amem: Tmemorystream;
 begin
-  Writeln('aurl ' + aurl);
+  //Writeln('aurl ' + aurl);
   PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
   InitSSLInterface;
@@ -1794,7 +1794,7 @@ begin
     on E: Exception do
     begin
       infopanel.tag := 1;
-      Writeln('image failed: ' + E.Message);
+     // Writeln('image failed: ' + E.Message);
     end;
   end;
   Http.Free;
