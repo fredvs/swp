@@ -840,7 +840,6 @@ var
   rect1: rectty;
 begin
 
-  hide;
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
   ordir := copy(binPath, 1, length(binPath) -6) + 'Resources/';
@@ -1033,19 +1032,12 @@ begin
 
   tmainmenu1.menu.itembynames(['showgrid']).Checked := showgrid.Value;
 
-  // onchangeshowwave(nil);
-
-
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '                 Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
-
 
   rect1 := application.screenrect(window);
 
   fontheight := round(rect1.cy / 800 * 12);
-  // hide;
-  // resizesp(fontheight);
-  // hide;
   oncheckdevices();
 
   edrecformat.Value := 0;
@@ -1054,14 +1046,12 @@ begin
 
   checkconnection();
 
-  Visible := False;
-
   optionswindow := [wo_taskbar]; 
   window.recreatewindow;
 
-  Visible := False;
-
   application.ProcessMessages;
+  
+  Visible := False;
   onchangeshowwave(nil);
   resizesp(fontheight);
   Show;
@@ -1243,7 +1233,7 @@ var
   {$ENDIF}
 begin
   hide;
-
+ 
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
@@ -1300,7 +1290,7 @@ begin
 
   statname := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0))) + 'swp.ini';
   tstatfile1.filename := statname;
-
+ 
 end;
 
 procedure twebstreamerfo.onreset(const Sender: TObject);
@@ -2127,18 +2117,18 @@ end;
 procedure twebstreamerfo.oncreated(const Sender: TObject);
 begin
   hide;
+  height := 1;
+  width := 1;
 end;
 
 procedure twebstreamerfo.onresize(const Sender: TObject);
 begin
-
   if (showgrid.Value) and (isinit) then
   begin
     griddisp.Height := Height - griddisp.top - baddrow.Height - 18 - font.Height;
     baddrow.top     := griddisp.bottom + 6;
     bdelrow.top     := baddrow.top;
   end;
-
 end;
 
 end.
