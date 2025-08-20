@@ -1100,12 +1100,12 @@ end;
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   eurlname.Text := urlname;
- {
+ 
   uos_Stop(webindex);
   sleep(500);
   if Assigned(aimage) then
     aimage.Free;
-  }  
+   
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
