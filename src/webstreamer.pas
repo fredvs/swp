@@ -839,6 +839,7 @@ procedure twebstreamerfo.oneventstart(const Sender: TObject);
 var
   rect1: rectty;
 begin
+
   hide;
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
@@ -1032,31 +1033,37 @@ begin
 
   tmainmenu1.menu.itembynames(['showgrid']).Checked := showgrid.Value;
 
-  onchangeshowwave(nil);
+  // onchangeshowwave(nil);
+
 
   tmainmenu1.menu.itembynames(['about', 'title']).Caption :=
     '                 Simple Web Player v1.' + IntToStr(versionnum) + ' on ' + platformtext;
 
+
   rect1 := application.screenrect(window);
 
   fontheight := round(rect1.cy / 800 * 12);
-  hide;
-  resizesp(fontheight);
-  hide;
+  // hide;
+  // resizesp(fontheight);
+  // hide;
   oncheckdevices();
 
   edrecformat.Value := 0;
 
   urlname := eurlname.Text;
 
-  //  Visible := True;
-
   checkconnection();
 
-  optionswindow := [wo_taskbar];
+  Visible := False;
 
+  optionswindow := [wo_taskbar]; 
   window.recreatewindow;
 
+  Visible := False;
+
+  application.ProcessMessages;
+  onchangeshowwave(nil);
+  resizesp(fontheight);
   Show;
 
   bringtofront;
@@ -1103,10 +1110,12 @@ end;
 procedure twebstreamerfo.onclosed(const Sender: TObject);
 begin
   eurlname.Text := urlname;
+ {
   uos_Stop(webindex);
   sleep(500);
   if Assigned(aimage) then
     aimage.Free;
+  }  
 end;
 
 procedure twebstreamerfo.onpause(const Sender: TObject);
@@ -1247,7 +1256,6 @@ begin
    {$if defined(netbsd) or defined(darwin)}
    timagelist1.options := [bmo_masked] ;
    {$endif}
-
   setlength(boundchildsp, childrencount);
   childn := childrencount;
 
@@ -1774,7 +1782,7 @@ var
   Http: TFPHTTPClient;
   amem: Tmemorystream;
 begin
-  //Writeln('aurl ' + aurl);
+  Writeln('aurl ' + aurl);
   PimgPreview.Visible := False;
   PimgPreview.invalidatewidget;
   InitSSLInterface;
@@ -1796,7 +1804,7 @@ begin
     on E: Exception do
     begin
       infopanel.tag := 1;
-      //Writeln('image failed: ' + E.Message);
+      Writeln('image failed: ' + E.Message);
     end;
   end;
   Http.Free;
