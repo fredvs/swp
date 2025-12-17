@@ -1158,9 +1158,19 @@ begin
   bounds_cymin := 0;
 
   ratio := fontheight / 12;
+  
+  historyfn.top := 0;
+  historyfn.invalidatewidget;
+  infopanel.top := historyfn.height;
+  PimgPreview.top := infopanel.top;
+  
+  panelcommand.top := infopanel.bottom;
+  
+  
 
   if showwave.Value then
   begin
+    panelwave.top := panelcommand.bottom;
     panelwave.Visible := True;
     if showgrid.Value then
     begin
@@ -1980,6 +1990,8 @@ begin
         bounds_cymin := 0;
         bounds_cxmax := 0;
         bounds_cymax := 0;
+        
+        historyfn.top := 0;
 
         left   := rectori.cx;
         top    := rectori.cy;
@@ -2012,9 +2024,12 @@ begin
         end;
 
         tmainmenu1.menu.Visible := True;
+        historyfn.top := 0;
+        infopanel.top :=    historyfn.bottom;
         PimgPreview.top         := infopanel.top;
         PimgPreview.Height      := infopanel.Height;
         PimgPreview.Width       := infopanel.Height;
+        panelcommand.top := infopanel.bottom;
         PimgPreview.tag         := 0;
       end;
 
