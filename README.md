@@ -53,4 +53,6 @@ Silver style:
 
 
 
+Release for Linux and Windows: https://github.com/fredvs/swp/releases/
+
 Fred van Stappen <fiens@hotmail.com>

@@ -4386,7 +4386,7 @@ object webstreamerfo: twebstreamerfo
             options = [mao_separator, mao_shortcutcaption]
           end        
           item
-            caption = '                  Fred van Stappen 2025 <fiens@hotmail.com>'
+            caption = '                  Fred van Stappen 2026 <fiens@hotmail.com>'
             state = [as_localdisabled, as_localcaption]
           end>
         caption = ' &About  '
