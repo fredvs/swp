@@ -10,15 +10,16 @@ program simplewebplayer;
 {$RANGECHECKS OFF} 
 
 uses
-  cmem,
- {$ifdef FPC} {$ifdef unix}cthreads, {$endif} {$endif}
+  {$ifdef FPC} {$ifdef unix}cthreads, {$endif} {$endif}
   msegui,
   uos_flat,
-  webstreamer,
-  SysUtils;
+  //webstreamer
+  splash;
+ // SysUtils;
 
 begin
-  application.createform(twebstreamerfo, webstreamerfo);
+ // application.createform(twebstreamerfo, webstreamerfo);
+  application.createform(tsplashfo, splashfo);
   application.run;
   {$ifdef unix}uos_free();{$endif} 
 end.

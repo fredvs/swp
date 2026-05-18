@@ -5,56 +5,14 @@ unit webstreamer;
 interface
 
 uses
- {$ifdef unix}Unix,UnixType,{$else}Windows,
-  dynlibs,
-  Winsock,{$endif}Sockets,
-  Types,
-  uos_httpgetthread,
-  uos_flat,
-  Math,
-  msetypes,
-  msekeyboard,
-  mseglob,
-  mseguiglob,
-  mseguiintf,
-  mseapplication,
-  msestat,
-  ctypes,
-  msemenus,
-  msegui,
-  msegraphics,
-  msegraphutils,
-  mseevent,
-  Classes,
-  mseclasses,
-  mseforms,
-  msedock,
-  msesimplewidgets,
-  msewidgets,
-  msedispwidgets,
-  mserichstring,
-  mseact,
-  msedataedits,
-  msedropdownlist,
-  mseedit,
-  mseificomp,
-  mseificompglob,
-  mseifiglob,
-  msestatfile,
-  msestream,
-  SysUtils,
-  msegraphedits,
-  msescrollbar,
-  msebitmap,
-  msedragglob,
-  msegrids,
-  msegridsglob,
-  msetimer,
-  BGRABitmap,
-  BGRAAnimatedGif,
-  BGRABitmapTypes,
-  mseimage,
-  msefiledialogx;
+ {$ifdef unix}Unix,UnixType,{$else}Windows,dynlibs,Winsock,{$endif}Sockets,
+ Types,uos_httpgetthread,uos_flat,Math,msetypes,msekeyboard,mseglob,mseguiglob,
+ mseguiintf,mseapplication,msestat,ctypes,msemenus,msegui,msegraphics,
+ msegraphutils,mseevent,Classes,mseclasses,mseforms,msedock,msesimplewidgets,
+ msewidgets,msedispwidgets,mserichstring,mseact,msedataedits,msedropdownlist,
+ mseedit,mseificomp,mseificompglob,mseifiglob,msestatfile,msestream,SysUtils,
+ msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,msegridsglob,
+ msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage,msefiledialogx;
 
 type
   boundchild = record
@@ -135,6 +93,7 @@ type
     ttimer2: ttimer;
     typurl: tstringdisp;
     tfiledialog1: tfiledialogx;
+    ttimer1: ttimer;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -188,10 +147,11 @@ type
     procedure onthreadurl(thetag: integer);
 
     procedure onresize(const Sender: TObject);
+   procedure ontimer(const sender: TObject);
   end;
 
 const
-  versionnum = 250424;
+  versionnum = 260518;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -221,6 +181,7 @@ var
 implementation
 
 uses
+  splash,
   fphttpclient,
   openssl, { This implements the procedure InitSSLInterface }
   opensslsockets,
@@ -829,6 +790,10 @@ begin
       else
         infopanel.font.color := cl_red;
       infopanel.Value := 'URL did not accessed';
+      if res = 1 then infopanel.Value := infopanel.Value + ': Invalid URL format.' else
+      if res = 2 then infopanel.Value := infopanel.Value + ': Connection timeout.' else
+      if res = 3 then infopanel.Value := infopanel.Value + ': DNS resolution failure.' else
+      if res = 4 then infopanel.Value := infopanel.Value + ': Redirect loop or failure.';      
       btnStart.Enabled := True;
       btnStart.face.template := tfacecomp7;
     end;
@@ -839,7 +804,8 @@ procedure twebstreamerfo.oneventstart(const Sender: TObject);
 var
   rect1: rectty;
 begin
-
+   //application.ProcessMessages;
+   splashfo.invalidatewidget;
   {$if defined(darwin) and defined(macapp)}
   binPath := IncludeTrailingBackslash(ExtractFilePath(ParamStr(0)));
   ordir := copy(binPath, 1, length(binPath) -6) + 'Resources/';
@@ -1056,8 +1022,10 @@ begin
   resizesp(fontheight);
   Show;
 
-  bringtofront;
   isinit := True;
+  ttimer1.enabled := true;
+  bringtofront;
+ // splashfo.close;
 end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
@@ -1243,7 +1211,8 @@ var
   {$ENDIF}
 begin
   hide;
- 
+  splashfo.invalidate;
+  
   SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
     [exDenormalized] + [exOverflow] + [exUnderflow] + [exPrecision]);
 
@@ -2134,6 +2103,7 @@ begin
   hide;
   height := 1;
   width := 1;
+  splashfo.invalidatewidget;
 end;
 
 procedure twebstreamerfo.onresize(const Sender: TObject);
@@ -2144,6 +2114,11 @@ begin
     baddrow.top     := griddisp.bottom + 6;
     bdelrow.top     := baddrow.top;
   end;
+end;
+
+procedure twebstreamerfo.ontimer(const sender: TObject);
+begin
+ splashfo.close;
 end;
 
 end.
