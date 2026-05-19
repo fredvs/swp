@@ -8,7 +8,9 @@ program simplewebplayer;
  {$R dp.res}
 {$endif}
 {$RANGECHECKS OFF} 
-
+{$ifdef unix}
+{$define FPC_USE_LIBC}
+{$endif}
 uses
   {$ifdef FPC} {$ifdef unix}cthreads, {$endif} {$endif}
   msegui,

@@ -59,6 +59,7 @@ function CheckURLStatus(const URL: string): Integer;
 implementation
 
 uses
+{$IFDEF unix} netdb, {$ENDIF}
   fphttpclient, openssl, opensslsockets;
 
 { Check URL status with detailed error codes }
