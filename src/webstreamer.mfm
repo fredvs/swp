@@ -3631,8 +3631,8 @@ object webstreamerfo: twebstreamerfo
     face.template = tfacecomp3
     taborder = 3
     visible = False
-    bounds_x = 51
-    bounds_y = 1
+    bounds_x = 38
+    bounds_y = 22
     bounds_cx = 237
     bounds_cy = 38
     text = '  Delete all URL history ?'
@@ -3957,9 +3957,9 @@ object webstreamerfo: twebstreamerfo
       FFFFFF038B8B8B02FFFFFF068B8B8B01FFFFFF038B8B8B01FFFFFF018B8B8B01
       FFFFFF048B8B8B01FFFFFF048B8B8B07FFFFFF04D6D6D6018B8B8B03FFFFFF02
       8B8B8B0400000004FFFFFF028B8B8B01FFFFFF04D6D6D60100000004FFFFFF03
-      8B8B8B01FFFFFF0400000004FFFFFF038B8B8B01FFFFFF04000000041C010000
-      1201000011020000110C00008008000080080000400800003F080000F3000000
-      040000000800000008000000
+      8B8B8B01FFFFFF0400000004FFFFFF038B8B8B01FFFFFF04000000041C31608E
+      12710000113299A3116C00008008000080080000400800003F080000F3808B00
+      04F0FF0008F0FF0008F0FF00
     }
   end
   object tframecomp2: tframecomp
@@ -3976,6 +3976,7 @@ object webstreamerfo: twebstreamerfo
     top = 151
   end
   object tmainmenu1: tmainmenu
+    facetemplate = tfacecomp2
     menu.submenu.count = 5
     menu.submenu.items = <    
       item
@@ -4759,5 +4760,57 @@ object webstreamerfo: twebstreamerfo
     ontimer = ontimer
     left = 34
     top = 44
+  end
+  object tfacecomp5: tfacecomp
+    template.fade_pos.count = 1
+    template.fade_pos.items = (
+      0
+    )
+    template.fade_color.count = 1
+    template.fade_color.items = (
+      5723991
+    )
+    template.fade_direction = gd_down
+    left = 103
+    top = 211
+  end
+  object tfacecomp10: tfacecomp
+    template.fade_pos.count = 1
+    template.fade_pos.items = (
+      0
+    )
+    template.fade_color.count = 1
+    template.fade_color.items = (
+      13749178
+    )
+    template.fade_direction = gd_down
+    left = 93
+    top = 247
+  end
+  object tfacecomp11: tfacecomp
+    template.fade_pos.count = 1
+    template.fade_pos.items = (
+      0
+    )
+    template.fade_color.count = 1
+    template.fade_color.items = (
+      404792
+    )
+    template.fade_direction = gd_down
+    left = 84
+    top = 281
+  end
+  object tfacecomp12: tfacecomp
+    template.fade_pos.count = 1
+    template.fade_pos.items = (
+      0
+    )
+    template.fade_color.count = 1
+    template.fade_color.items = (
+      13421772
+    )
+    template.fade_direction = gd_down
+    left = 84
+    top = 306
   end
 end

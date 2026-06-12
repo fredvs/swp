@@ -94,6 +94,10 @@ type
     typurl: tstringdisp;
     tfiledialog1: tfiledialogx;
     ttimer1: ttimer;
+   tfacecomp5: tfacecomp;
+   tfacecomp10: tfacecomp;
+   tfacecomp11: tfacecomp;
+   tfacecomp12: tfacecomp;
     procedure onplay(const Sender: TObject);
     procedure oneventstart(const Sender: TObject);
     procedure onstop(const Sender: TObject);
@@ -1529,6 +1533,7 @@ procedure twebstreamerfo.setstyle(style: integer);
 begin
   if style = 0 then
   begin
+    tmainmenu1.facetemplate           := tfacecomp3;
     color           := cl_default;
     font.color      := cl_black;
     font.color      := cl_black;
@@ -1570,7 +1575,8 @@ begin
 
   if style = 1 then
   begin
-    color           := $575757;
+    tmainmenu1.facetemplate           := tfacecomp5;
+    color           := cl_default;
     font.color      := cl_white;
     infopanel.font.color := cl_white;
     griddisp.font.color := cl_white;
@@ -1610,6 +1616,7 @@ begin
   if style = 2 then
   begin
     color           := cl_default;
+    tmainmenu1.facetemplate           := tfacecomp12;
     font.color      := cl_black;
     font.color      := cl_black;
     vuRight.bar_face.fade_color[1] := $666666;
@@ -1651,6 +1658,8 @@ begin
   if style = 3 then
   begin
     color           := $D1CBBA;
+    tmainmenu1.facetemplate           := tfacecomp10;
+    
     font.color      := $001014;
     font.color      := $001014;
     vuRight.bar_face.fade_color[1] := $666666;
@@ -1691,7 +1700,9 @@ begin
 
   if style = 4 then
   begin
-    color           := $062D38;
+    tmainmenu1.facetemplate           := tfacecomp11;
+    color           := cl_gray;
+  
     font.color      := $FDF6E3;
     infopanel.font.color := $FDF6E3;
     griddisp.font.color := $FDF6E3;
