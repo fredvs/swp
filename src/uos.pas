@@ -7,7 +7,6 @@ unit uos;
 
 {$mode objfpc}{$H+}{$inline on}
 {$PACKRECORDS C}
-{$RANGECHECKS OFF} 
 
 // For custom configuration of directive to compiler --->  uos_define.inc
 {$I uos_define.inc}
@@ -83,7 +82,7 @@ uos_cdrom,
 Classes, DynLibs, ctypes, Math, sysutils;
 
 const 
-  uos_version : cint32 = 2250424;
+  uos_version : cint32 = 2260630;
 
 {$IF DEFINED (bs2b)}
   BS2B_HIGH_CLEVEL = (CInt32 (700)) or ( (CInt32 (30)) shl 16);
@@ -6944,6 +6943,7 @@ begin
   if StreamIn[x].httpget.IsRunning = false then
   begin
     result := -1;
+    StreamIn[x].httpget.http.Terminate;
     StreamIn[x].httpget.Terminate;
     sleep(100);
     StreamIn[x].InPipe.Destroy;
@@ -7022,6 +7022,7 @@ begin
       else
       begin
         result := -1;
+        StreamIn[x].httpget.http.Terminate;
         StreamIn[x].httpget.Terminate;
         sleep(100);
         StreamIn[x].InPipe.Destroy;
@@ -7166,6 +7167,7 @@ begin
       else
       begin
         result := -1;
+        StreamIn[x].httpget.http.Terminate;
         StreamIn[x].httpget.Terminate;
         sleep(100);
         StreamIn[x].InPipe.Destroy;
@@ -7323,6 +7325,7 @@ begin
       else
       begin
         result := -1;
+        StreamIn[x].httpget.http.Terminate;
         StreamIn[x].httpget.Terminate;
         sleep(100);
         StreamIn[x].InPipe.Destroy;
@@ -7680,7 +7683,7 @@ begin
       tell  := @m_tell;
     end;
 
-  if (AudioFormat = 0) then
+  if (AudioFormat = 0) or (AudioFormat = -1) then
     sfInfo.format := SF_FORMAT_WAV Or SF_FORMAT_PCM_16;
   if (AudioFormat = 1) then
     sfInfo.format := SF_FORMAT_OGG Or SF_FORMAT_VORBIS;
@@ -10027,6 +10030,7 @@ begin
    {$IF DEFINED (webstream)}
                                                      2:
                                                         begin
+                                                          StreamIn[x].httpget.http.Terminate;
                                                           StreamIn[x].httpget.Terminate;
                                                           sleep (100);
                                                           StreamIn[x].inpipe.destroy;

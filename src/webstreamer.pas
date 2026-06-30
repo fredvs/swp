@@ -155,7 +155,7 @@ type
   end;
 
 const
-  versionnum = 260518;
+  versionnum = 260630;
 
 var
   webstreamerfo: twebstreamerfo;
@@ -593,19 +593,21 @@ begin
       latency := -1;
       sizebuf := 16384;
 
-      if brecord.tag = 0 then
-        aformat := 0
-      else if edrecformat.Value = 0 then
-        aformat := 2
-      else
-        aformat := 0;
-
+      aformat := 2;
+      
+      //else if edrecformat.Value = 0 then
+       // aformat := 2
+      //else
+        //aformat := 0;
+      
+      
       application.ProcessMessages;
 
       // 'https://radiorecord.hostingradio.ru/ps96.aacp';
 
       theplaying := historyfn.Value;
-
+       //uos_Stop(webindex);
+       
       // Add a Input from Audio URL with custom parameters
       // URL : URL of audio file (like  'http://someserver/somesound.mp3')
       // OutputIndex : OutputIndex of existing Output // -1: all output, -2: no output, other LongInt : existing Output
@@ -1035,6 +1037,7 @@ end;
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
   uos_Stop(webindex);
+  
   isplaying         := False;
   typurl.Visible    := False;
   messagedlg.Visible := False;

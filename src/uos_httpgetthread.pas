@@ -9,11 +9,11 @@ unit uos_httpgetthread;
 
 {$mode objfpc}{$H+}
 {$RANGECHECKS OFF} 
-
+{$R-}{$Q-}
 interface
 
 uses
-  Classes, SysUtils, Pipes;
+  Classes, SysUtils, Pipes, fphttpclient, openssl, opensslsockets;
 
 type
   { TThreadHttpGetter }
@@ -29,6 +29,7 @@ type
   protected
     procedure Execute; override;
   public
+    Http: TFPHTTPClient;
     FIsRunning: Boolean;
     ICYenabled: Boolean;
     FormatType: integer;  // 0: mp3, 1: opus, 2: aac
@@ -58,10 +59,8 @@ function CheckURLStatus(const URL: string): Integer;
 
 implementation
 
-uses
-{$IFDEF unix} netdb, {$ENDIF}
-  fphttpclient, openssl, opensslsockets;
-
+{$IFDEF unix} uses netdb; {$ENDIF}
+  
 { Check URL status with detailed error codes }
 function CheckURLStatus(const URL: string): Integer;
 var
@@ -72,6 +71,7 @@ begin
     Exit(1); // Invalid URL format
 
   Http := TFPHTTPClient.Create(nil);
+ 
   try
     Http.AllowRedirect := True;
     Http.MaxRedirects := 5; // Prevent infinite redirect loops
@@ -153,7 +153,6 @@ end;
 
 procedure TThreadHttpGetter.Execute;
 var
-  Http: TFPHTTPClient;
   SL: TStringList;
   URL: string;
 begin
@@ -300,8 +299,8 @@ begin
       end;
     end;
   finally
-    SL.Free;
-    Http.Free;
+    FreeAndNil(SL); 
+    FreeAndNil(Http); 
     FIsRunning := False;
   end;
 end;
