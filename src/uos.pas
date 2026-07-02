@@ -10941,12 +10941,17 @@ begin
       writeln('===> Before op_read_x.');
       {$ENDIF}
 
+       if StreamIn[x].Data.channels <= 0 then StreamIn[x].Data.channels := 2;
+
+       StreamIn[x].Data.Wantframes := 6144;
+        setlength(StreamIn[x].Data.Buffer, 6144 * StreamIn[x].Data.channels);
+
+
       case StreamIn[x].Data.SampleFormat of
         0:
         begin
           StreamIn[x].Data.outframes := cint(op_read_float(StreamIn[x].Data.HandleOP,
-                                            @StreamIn[x].Data.Buffer[0], cint(StreamIn[x].Data.Wantframes
-                                            Div StreamIn[x].Data.channels), Nil));
+                                            Pointer(StreamIn[x].Data.Buffer), cint(StreamIn[x].Data.Wantframes), Nil));
         end;
         1:
         begin
@@ -10955,17 +10960,18 @@ begin
                                             Div StreamIn[x].Data.channels), Nil));
 
           // no int32 format with opus => need a conversion from float32 to int32.
+         if StreamIn[x].Data.outframes > 0 then
           StreamIn[x].Data.Buffer := Cvfloat32ToInt32fl(StreamIn[x].Data.Buffer,
                                      StreamIn[x].Data.outframes * StreamIn[x].Data.Channels);
         end;
         2:
         begin
           StreamIn[x].Data.outframes := cint(op_read(StreamIn[x].Data.HandleOP,
-                                             @StreamIn[x].Data.Buffer[0], cint(StreamIn[x].Data.Wantframes
-                                             Div StreamIn[x].Data.channels), Nil));
+                                             Pointer(StreamIn[x].Data.Buffer), cint(StreamIn[x].Data.Wantframes), Nil));
+  
         end;
       end;
-
+ 
       setlength(StreamIn[x].data.Buffer, StreamIn[x].Data.outframes * StreamIn[x].Data.Channels);
 
       {$IF DEFINED(uos_debug) and DEFINED(unix)}

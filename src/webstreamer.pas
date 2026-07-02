@@ -591,9 +591,12 @@ begin
       aboolicy := True;
 
       latency := -1;
-      sizebuf := 16384;
+      //sizebuf := 16384;
 
-      aformat := 2;
+      sizebuf := 6144 * 2;
+    
+     if brecord.tag = 1 then
+      aformat := 0 else aformat := 2;
       
       //else if edrecformat.Value = 0 then
        // aformat := 2
@@ -617,12 +620,12 @@ begin
       // ICY data on/off
       webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
 
-      if webinindex <> -1 then
-      begin
-        Caption     := urlname;
-        weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
+      weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
           uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
-
+      
+      if (webinindex <> -1) and (weboutindex <> -1) then
+      begin
+         Caption     := urlname;
         if brecord.tag = 1 then
         begin
           if edrecformat.Value = 0 then
@@ -1036,6 +1039,7 @@ end;
 
 procedure twebstreamerfo.onstop(const Sender: TObject);
 begin
+ application.processmessages;
   uos_Stop(webindex);
   
   isplaying         := False;
