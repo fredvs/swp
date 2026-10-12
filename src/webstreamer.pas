@@ -10,7 +10,7 @@ uses
  mseguiintf,mseapplication,msestat,ctypes,msemenus,msegui,msegraphics,
  msegraphutils,mseevent,Classes,mseclasses,mseforms,msedock,msesimplewidgets,
  msewidgets,msedispwidgets,mserichstring,mseact,msedataedits,msedropdownlist,
- mseedit,mseificomp,mseificompglob,mseifiglob,msestatfile,msestream,SysUtils,
+ mseedit,mseificomp,mseificompglob,mseifiglob,msestatfile,msestream,SysUtils,StrUtils,
  msegraphedits,msescrollbar,msebitmap,msedragglob,msegrids,msegridsglob,
  msetimer,BGRABitmap,BGRAAnimatedGif,BGRABitmapTypes,mseimage,msefiledialogx;
 
@@ -561,6 +561,8 @@ var
   abool: Boolean;
   arec, outputstr: string;
   aformat, webformat, sizebuf, res: integer;
+  sr : double;
+  nch :integer;
   latency: cfloat;
 begin
   if checkconnection() then
@@ -591,18 +593,14 @@ begin
       aboolicy := True;
 
       latency := -1;
-      //sizebuf := 16384;
-
+      
+      sr := -1 ;
+      
       sizebuf := 6144 * 2;
     
      if brecord.tag = 1 then
-      aformat := 0 else aformat := 2;
-      
-      //else if edrecformat.Value = 0 then
-       // aformat := 2
-      //else
-        //aformat := 0;
-      
+      aformat := 2 else
+      aformat := 0;
       
       application.ProcessMessages;
 
@@ -619,9 +617,12 @@ begin
       // AudioFormat : default : -1 (mp3) (0: mp3, 1: opus, 2: aac)
       // ICY data on/off
       webinindex := uos_AddFromURL(webindex, PChar(ansistring(historyfn.Value)), -1, aformat, sizebuf, -1, aboolicy);
-
-      weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, uos_InputGetSampleRate(webindex, webinindex),
-          uos_InputGetChannels(webindex, webinindex), aformat, sizebuf, -1);
+      
+      sr := uos_InputGetSampleRate(webindex, webinindex);
+      nch := uos_InputGetChannels(webindex, webinindex);
+          
+      weboutindex := uos_AddIntoDevOut(webindex, deviceselected, latency, sr,
+       nch, aformat, sizebuf, -1);
       
       if (webinindex <> -1) and (weboutindex <> -1) then
       begin
@@ -638,9 +639,17 @@ begin
 
           arecnp := 'records' + directoryseparator + 'rec_' +
             msestring(formatdatetime('YY_MM_DD_HH_mm_ss', now)) + outputstr;
-
+          
+          {
+          if ContainsText(historyfn.Value, 'opus') then 
+          begin
+          aformat := 2;
+          writeln('yep opus');
+          end else writeln('no opus'); 
+          }
+                             
           arec := ordir + arecnp;
-          uos_AddIntoFile(webindex, PChar(arec), -1, -1, aformat, sizebuf, edrecformat.Value);
+          uos_AddIntoFile(webindex, PChar(arec), sr, nch, aformat, sizebuf, edrecformat.Value);
 
           btempo.Enabled        := False;
           edtempo.Enabled       := False;
@@ -739,8 +748,7 @@ begin
             abool := False
           else
             abool := True;
-          webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', uos_InputGetSampleRate(webindex, webinindex),
-            uos_InputGetChannels(webindex, webinindex));
+          webPlugIndex := uos_AddPlugin(webindex, 'soundtouch', sr, nch);
           // add SoundTouch plugin with default samplerate(44100) / channels(2 = stereo)
           uos_SetPluginSoundTouch(webindex, webplugindex, edtempo.Value * 2, edpitch.Value * 2, abool);
           // Change plugin settings
